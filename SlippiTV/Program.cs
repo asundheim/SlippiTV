@@ -1,4 +1,6 @@
 
+using SlippiTV.Hubs;
+
 namespace SlippiTV
 {
     public class Program
@@ -9,11 +11,12 @@ namespace SlippiTV
 
             // Add services to the container.
 
+            builder.Services.AddHttpLogging();
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+            builder.Services.AddSignalR();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -23,12 +26,14 @@ namespace SlippiTV
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
+            app.UseHttpLogging();
+            app.UseWebSockets();
+            
+            //app.UseHttpsRedirection();
+            //app.UseAuthorization();
 
             app.MapControllers();
+            app.MapHub<StreamHub>("/streams");
 
             app.Run();
         }

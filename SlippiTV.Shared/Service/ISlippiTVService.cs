@@ -1,25 +1,13 @@
 ﻿using Refit;
+using System.Net.WebSockets;
 
 namespace SlippiTV.Shared.Service;
 
-public interface ISlippiTVService
+public interface ISlippiTVService : IDisposable
 {
-    [Multipart]
-    [Post("/stream/{user}")]
-    Task Stream(string user, Stream FileStream);
+    Task<ClientWebSocket> Stream(string user);
 
-    [Get("/stream/{user}")]
-    Task<ApiResponse<Stream>> WatchStream(string user);
+    Task<ClientWebSocket> WatchStream(string user);
 
-    [Get("/status/activity/{user}")]
     Task<bool> IsLive(string user);
-
-    [Post("/status/activity/{user}")]
-    Task<bool> GoLive(string user);
-
-    [Get("/status/stream/{user}/currentFrame")]
-    Task<int> GetCurrentFrameOfStream(string user);
-
-    [Get("/status/watchers/{user}")]
-    Task<bool> HasWatchers(string user);
 }

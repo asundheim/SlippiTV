@@ -4,12 +4,24 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SlippiTV.Client"
+    xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
     Shell.FlyoutBehavior="Disabled"
-    Title="SlippiTV.Client">
-
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
-
+    x:DataType="{x:Type vm:ShellViewModel}"
+    Title="SlippiTV.Client" Padding="10">
+    <TabBar>
+        <Tab Title="Friends">
+            <ShellContent
+                Title="Friends"
+                ContentTemplate="{DataTemplate local:FriendsPage}"
+                BindingContext="{Binding FriendsViewModel}"
+                Route="FriendsPage" />
+        </Tab>
+        <Tab Title="Settings">
+            <ShellContent
+                Title="Settings"
+                ContentTemplate="{DataTemplate local:SettingsPage}"
+                BindingContext="{Binding SettingsViewModel}"
+                Route="SettingsPage" />
+        </Tab>
+    </TabBar>
 </Shell>

@@ -28,6 +28,30 @@ public static class StatusManager
             });
     }
 
+    public static void EndLive(string user)
+    {
+        if (_players.Remove(user, out PlayerStatus? old))
+        {
+            old.StopLive();
+        }
+    }
+
+    public static void AddWatcher(string user)
+    {
+        if (_players.TryGetValue(user, out PlayerStatus? status))
+        {
+            status.AddWatcher();
+        }
+    }
+
+    public static void RemoveWatcher(string user)
+    {
+        if (_players.TryGetValue(user, out PlayerStatus? status))
+        {
+            status.RemoveWatcher();
+        }
+    }
+
     public static bool HasWatchers(string user)
     {
         return _players.TryGetValue(user, out PlayerStatus? status) && status.WatcherCount > 0;

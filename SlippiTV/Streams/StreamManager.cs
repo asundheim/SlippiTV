@@ -1,33 +1,42 @@
-﻿using System.Collections.Concurrent;
-using System.Net.Sockets;
+﻿using SlippiTV.Status;
+using System.Collections.Concurrent;
+using System.Net.WebSockets;
 
 namespace SlippiTV.Streams;
 
 public static class StreamManager
 {
-    private static readonly ConcurrentDictionary<string, FileStream> _streams = new ConcurrentDictionary<string, FileStream>();
-    public static async Task SetStreamAndWait(string user, Stream stream)
-    {
-        string file = Path.GetTempFileName();
-        FileStream newStream = new FileStream(file, FileMode.Append, FileAccess.Write, FileShare.Read, 0, FileOptions.Asynchronous);
-        _streams.AddOrUpdate(key: user, newStream, updateValueFactory: (_, oldFileName) => 
-        {
-            oldFileName.Flush();
-            oldFileName.Dispose();
-            File.Delete(oldFileName.Name);
+    private static readonly ConcurrentDictionary<string, ActiveStream> _streams = new ConcurrentDictionary<string, ActiveStream>();
 
-            return newStream; 
+    public static ActiveStream CreateOrUpdateStream(string user)
+    {
+        ActiveStream activeStream = new ActiveStream(user);
+        _streams.AddOrUpdate(user, activeStream, (_, old) =>
+        {
+            old.Dispose();
+            return activeStream;
         });
 
-        stream.Seek(0, SeekOrigin.Begin);
-        await stream.CopyToAsync(newStream);
+        return activeStream;
     }
 
-    public static Stream? GetStreamForUser(string user)
+    public static bool EndStream(string user)
     {
-        if (_streams.TryGetValue(user, out FileStream? stream))
+        var activeStream = GetStreamForUser(user);
+        if (activeStream is not null)
         {
-            return new FileStream(stream.Name, FileMode.Open, FileAccess.Read, FileShare.Read, 0, FileOptions.Asynchronous);
+            activeStream.Dispose();
+            return _streams.TryRemove(user, out _);
+        }
+
+        return false;
+    }
+
+    public static ActiveStream? GetStreamForUser(string user)
+    {
+        if (_streams.TryGetValue(user, out ActiveStream? stream))
+        {
+            return stream;
         }
         else
         {

@@ -1,17 +1,55 @@
-﻿using Refit;
+﻿using System.Net;
+using System.Net.WebSockets;
 
 namespace SlippiTV.Shared.Service;
 
-public class SlippiTVServiceFactory
+internal class SlippiTVService : ISlippiTVService
 {
-    public static SlippiTVServiceFactory Instance = new SlippiTVServiceFactory();
+    private string _baseAddress;
+    private readonly HttpClient _client;
 
-    private SlippiTVServiceFactory()
+    public SlippiTVService(string baseAddress)
     {
+        _baseAddress = baseAddress;
+        _client = new HttpClient()
+        {
+            BaseAddress = new Uri($"http://{baseAddress}"),
+        };
     }
 
-    public ISlippiTVService GetService()
+    public async Task<bool> IsLive(string user)
     {
-        return RestService.For<ISlippiTVService>("https://localhost:7027");
+        string sanitized = user.Replace("#", string.Empty);
+        var result = await _client.GetAsync($"/status/activity/{SanitizeConnectCode(user)}", CancellationToken.None);
+        return result.StatusCode switch
+        {
+            HttpStatusCode.OK => true,
+            _ => false
+        };
+    }
+
+    public async Task<ClientWebSocket> Stream(string user)
+    {
+        ClientWebSocket clientSocket = new ClientWebSocket();
+        clientSocket.Options.KeepAliveInterval = Timeout.InfiniteTimeSpan;
+        await clientSocket.ConnectAsync(new Uri($"ws://{_baseAddress}/stream/{SanitizeConnectCode(user)}"), CancellationToken.None);
+
+        return clientSocket;
+    }
+
+    public async Task<ClientWebSocket> WatchStream(string user)
+    {
+        ClientWebSocket clientSocket = new ClientWebSocket();
+        clientSocket.Options.KeepAliveInterval = Timeout.InfiniteTimeSpan;
+        await clientSocket.ConnectAsync(new Uri($"ws://{_baseAddress}/stream/{SanitizeConnectCode(user)}/watch"), CancellationToken.None);
+
+        return clientSocket;
+    }
+
+    private static string SanitizeConnectCode(string code) => code.Replace("#", "-");
+
+    public void Dispose()
+    {
+        _client.Dispose();
     }
 }

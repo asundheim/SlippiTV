@@ -1,39 +1,125 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
+using SlippiTV.Shared.SocketUtils;
+using SlippiTV.Status;
 using SlippiTV.Streams;
-using SlippiTV.Utilities;
+using System.Buffers;
+using System.Collections.Concurrent;
+using System.Net.WebSockets;
 
 namespace SlippiTV.Controllers;
 
 [ApiController]
-[Route("/stream")]
 public class StreamController : ControllerBase
 {
-    public StreamController()
-    {
+    private readonly CancellationToken _shutdown;
 
+    public StreamController(IHostApplicationLifetime lifetime)
+    {
+        _shutdown = lifetime.ApplicationStopping;
     }
 
-    [HttpPost("/{user}")]
-    public async Task<IActionResult> Stream(string user)
+    [HttpGet("stream/{user}")]
+    public async Task Stream(string user, CancellationToken cancellation)
     {
-        Stream fileStream = HttpContext.Request.Body;
-        await StreamManager.SetStreamAndWait(user, fileStream);
-
-        return Ok();
-    }
-
-    [HttpGet("/{user}")]
-    public IActionResult WatchStream(string user)
-    {
-        Stream? fileStream = StreamManager.GetStreamForUser(user);
-        if (fileStream is not null)
+        if (HttpContext.WebSockets.IsWebSocketRequest)
         {
-            return new FileStreamResult(fileStream, contentType: "application/octet-stream");
+            try
+            {
+                using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+
+                var requestClosing = new CancellationTokenSource();
+                var anyCancel = CancellationTokenSource.CreateLinkedTokenSource(_shutdown, requestClosing.Token).Token;
+
+                var stream = StreamManager.CreateOrUpdateStream(user);
+                try
+                {
+                    await SocketUtils.ReceiveSocket(webSocket, x => stream.WriteData(x), anyCancel);
+                }
+                finally
+                {
+                    requestClosing.Cancel();
+                }
+
+                StreamManager.EndStream(user);
+                await webSocket.CloseAsync(WebSocketCloseStatus.EndpointUnavailable, "server is stopping", CancellationToken.None);
+            }
+            catch (WebSocketException ex)
+            {
+                switch (ex.WebSocketErrorCode)
+                {
+                    case WebSocketError.ConnectionClosedPrematurely:
+                        break;
+
+                    default:
+                        break;
+                }
+            }
         }
         else
         {
-            return NotFound();
+            HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+        }
+    }
+
+    [HttpGet("stream/{user}/watch")]
+    public async Task WatchStream(string user, CancellationToken cancellation)
+    {
+        ActiveStream? stream = StreamManager.GetStreamForUser(user);
+        if (stream != null)
+        {
+            if (HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                try
+                {
+                    using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+                    var requestClosing = new CancellationTokenSource();
+                    var anyCancel = CancellationTokenSource.CreateLinkedTokenSource(_shutdown, requestClosing.Token).Token;
+
+                    var sendTask = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await SocketUtils.SendSocket(webSocket, stream.GetDataStream(), anyCancel);
+                        }
+                        finally
+                        {
+                            requestClosing.Cancel();
+                        }
+                    });
+
+                    try
+                    {
+                        await SocketUtils.ReceiveSocket(webSocket, static x => { }, anyCancel);
+                    }
+                    finally
+                    {
+                        requestClosing.Cancel();
+                    }
+
+                    await sendTask;
+
+                    await webSocket.CloseAsync(WebSocketCloseStatus.EndpointUnavailable, "Server is stopping.", CancellationToken.None);
+                }
+                catch (WebSocketException ex)
+                {
+                    switch (ex.WebSocketErrorCode)
+                    {
+                        case WebSocketError.ConnectionClosedPrematurely:
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            }
+        }
+        else
+        {
+            HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
         }
     }
 }

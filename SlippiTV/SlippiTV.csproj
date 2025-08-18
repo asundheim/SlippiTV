@@ -1,13 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<LangVersion>13.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <!--<PackageReference Include="Slippi.NET" Version="0.4.2" />-->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />
+    <ProjectReference Include="..\SlippiTV.Shared\SlippiTV.Shared.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,8 @@
-﻿namespace SlippiTV.Client
+﻿using H.NotifyIcon;
+using H.NotifyIcon.Core;
+using SlippiTV.Client.ViewModels;
+
+namespace SlippiTV.Client
 {
     public partial class App : Application
     {
@@ -9,7 +13,14 @@
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            Window window = new Window(new AppShell() { BindingContext = new ShellViewModel() })
+            {
+                Height = 800,
+                Width = 1200,
+                Title = "SlippiTV"
+            };
+
+            return window;
         }
     }
 }
