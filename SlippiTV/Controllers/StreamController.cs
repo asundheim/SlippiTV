@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SlippiTV.Shared.SocketUtils;
-using SlippiTV.Status;
 using SlippiTV.Streams;
-using System.Buffers;
-using System.Collections.Concurrent;
-using System.Net.WebSockets;
 
 namespace SlippiTV.Controllers;
 
@@ -25,34 +21,15 @@ public class StreamController : ControllerBase
         {
             try
             {
+                ActiveStream stream = StreamManager.CreateOrUpdateStream(user);
+
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-
-                var requestClosing = new CancellationTokenSource();
-                var anyCancel = CancellationTokenSource.CreateLinkedTokenSource(_shutdown, requestClosing.Token).Token;
-
-                var stream = StreamManager.CreateOrUpdateStream(user);
-                try
-                {
-                    await SocketUtils.ReceiveSocket(webSocket, x => stream.WriteData(x), anyCancel);
-                }
-                finally
-                {
-                    requestClosing.Cancel();
-                }
-
-                StreamManager.EndStream(user);
-                await webSocket.CloseAsync(WebSocketCloseStatus.EndpointUnavailable, "server is stopping", CancellationToken.None);
+                await SocketUtils.HandleSocket(webSocket, x => stream.WriteData(x), null, _shutdown);
             }
-            catch (WebSocketException ex)
+            catch { }
+            finally
             {
-                switch (ex.WebSocketErrorCode)
-                {
-                    case WebSocketError.ConnectionClosedPrematurely:
-                        break;
-
-                    default:
-                        break;
-                }
+                StreamManager.EndStream(user);
             }
         }
         else
@@ -64,62 +41,26 @@ public class StreamController : ControllerBase
     [HttpGet("stream/{user}/watch")]
     public async Task WatchStream(string user, CancellationToken cancellation)
     {
-        ActiveStream? stream = StreamManager.GetStreamForUser(user);
-        if (stream != null)
+        if (HttpContext.WebSockets.IsWebSocketRequest)
         {
-            if (HttpContext.WebSockets.IsWebSocketRequest)
+            ActiveStream? stream = StreamManager.GetStreamForUser(user);
+            if (stream != null)
             {
                 try
                 {
                     using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-                    var requestClosing = new CancellationTokenSource();
-                    var anyCancel = CancellationTokenSource.CreateLinkedTokenSource(_shutdown, requestClosing.Token).Token;
-
-                    var sendTask = Task.Run(async () =>
-                    {
-                        try
-                        {
-                            await SocketUtils.SendSocket(webSocket, stream.GetDataStream(), anyCancel);
-                        }
-                        finally
-                        {
-                            requestClosing.Cancel();
-                        }
-                    });
-
-                    try
-                    {
-                        await SocketUtils.ReceiveSocket(webSocket, static x => { }, anyCancel);
-                    }
-                    finally
-                    {
-                        requestClosing.Cancel();
-                    }
-
-                    await sendTask;
-
-                    await webSocket.CloseAsync(WebSocketCloseStatus.EndpointUnavailable, "Server is stopping.", CancellationToken.None);
+                    await SocketUtils.HandleSocket(webSocket, null, stream.GetDataStream(), _shutdown);
                 }
-                catch (WebSocketException ex)
-                {
-                    switch (ex.WebSocketErrorCode)
-                    {
-                        case WebSocketError.ConnectionClosedPrematurely:
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
+                catch { }
             }
             else
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
             }
         }
         else
         {
-            HttpContext.Response.StatusCode = StatusCodes.Status404NotFound;
+            HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
         }
     }
 }

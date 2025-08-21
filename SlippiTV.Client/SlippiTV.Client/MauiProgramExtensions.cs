@@ -25,7 +25,10 @@ namespace SlippiTV.Client
                 {
                     x.SetDefaultIconSize(24.0);
                 })
-                .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkit(options =>
+                {
+                    options.SetShouldSuppressExceptionsInConverters(true);
+                })
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

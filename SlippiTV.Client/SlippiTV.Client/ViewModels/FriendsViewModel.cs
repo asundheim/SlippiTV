@@ -24,24 +24,33 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
     {
         this.ShellViewModel = shellViewModel;
         Settings.Friends.CollectionChanged += SettingsFriendsChanged;
+        Friends = new ObservableCollection<FriendViewModel>();
         CreateFriendsFromSettings();
 
         _ = Task.Run(async () =>
         {
             while (true)
             {
-                await Task.Delay(5000);
                 foreach (var friend in Friends)
                 {
                     await friend.Refresh();
                 }
+
+                await Task.Delay(5000);
             }
         });
     }
 
     private void SettingsFriendsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        CreateFriendsFromSettings();
+        if (e.Action == NotifyCollectionChangedAction.Add)
+        {
+            Friends.Add(new FriendViewModel(this, (string)e.NewItems![0]!));
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            Friends.RemoveAt(e.OldStartingIndex);
+        }
     }
 
     public ISlippiTVService SlippiTVService => ShellViewModel.SlippiTVService;
@@ -58,11 +67,8 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
 
     public SlippiTVSettings Settings => SettingsManager.Instance.Settings;
 
-    [MemberNotNull(nameof(Friends))]
     private void CreateFriendsFromSettings()
     {
-        Friends = new ObservableCollection<FriendViewModel>();
-
         foreach (var friend in Settings.Friends)
         {
             Friends.Add(new FriendViewModel(this, friend));

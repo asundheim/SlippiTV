@@ -1,5 +1,8 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Handlers;
+using SlippiTV.Client.PlatformUtils;
 using SlippiTV.Client.ViewModels;
 using System.Diagnostics.CodeAnalysis;
 
@@ -45,19 +48,29 @@ public partial class FriendsPage : ContentPage
         SettingsManager.Instance.AddFriend(result.Result);
     }
 
-    private void RemoveFriendButton_Clicked(object sender, EventArgs e)
-    {
-        if (sender is ImageButton button && button.BindingContext is FriendViewModel friend)
-        {
-            SettingsManager.Instance.RemoveFriend(friend.ConnectCode);
-        }
-    }
-
     private async void WatchFriendButton_Clicked(object sender, EventArgs e)
     {
         if (sender is ImageButton button && button.BindingContext is FriendViewModel friend)
         {
             await friend.Watch(CancellationToken.None);
         }
+    }
+
+    private void FriendsMore_Tapped(object sender, TappedEventArgs e)
+    {
+        var view = sender as View;
+
+        MenuFlyout mf = new MenuFlyout();
+        MenuFlyoutItem flyoutItem = new MenuFlyoutItem();
+        flyoutItem.Text = "Remove";
+        flyoutItem.Command = new RelayCommand(() =>
+        {
+            SettingsManager.Instance.RemoveFriend(((FriendViewModel)view!.BindingContext).ConnectCode);
+        });
+        mf.Add(flyoutItem);
+        FlyoutBase.SetContextFlyout(view, mf);
+
+        var point = e.GetPosition(view);
+        PlatformUtils.PlatformUtils.ShowContextMenu(view, point);
     }
 }

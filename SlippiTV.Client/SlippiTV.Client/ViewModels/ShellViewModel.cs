@@ -2,11 +2,8 @@
 using Slippi.NET.Console.Types;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
-using System.Buffers;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
-using System.Net.WebSockets;
-using System.Threading.Tasks;
 
 namespace SlippiTV.Client.ViewModels;
 
@@ -14,10 +11,10 @@ public class ShellViewModel : BaseNotifyPropertyChanged
 {
     public ShellViewModel() 
     {
+        SlippiTVService = SlippiTVServiceFactory.Instance.GetService();
+
         SettingsViewModel = new SettingsViewModel(this);
         FriendsViewModel = new FriendsViewModel(this);
-
-        SlippiTVService = SlippiTVServiceFactory.Instance.GetService();
 
         ConnectToDolphin();
     }
@@ -41,44 +38,9 @@ public class ShellViewModel : BaseNotifyPropertyChanged
                 try
                 {
                     using var socket = await SlippiTVService.Stream(Settings.StreamMeleeConnectCode);
-                    var requestClosing = new CancellationTokenSource();
-                    var anyCancel = CancellationTokenSource.CreateLinkedTokenSource(_disconnectSource.Token, requestClosing.Token).Token;
-                    var sendTask = Task.Run(async () =>
-                    {
-                        try
-                        {
-                            await SocketUtils.SendSocket(socket, _pendingData, anyCancel);
-                        }
-                        finally
-                        {
-                            requestClosing.Cancel();
-                        }
-                    });
-
-                    try
-                    {
-                        await SocketUtils.ReceiveSocket(socket, static x => { }, anyCancel);
-                    }
-                    finally
-                    {
-                        requestClosing.Cancel();
-                    }
-
-                    await sendTask;
-
-                    await socket.CloseAsync(WebSocketCloseStatus.EndpointUnavailable, "Disconnect from Dolphin", CancellationToken.None);
+                    await SocketUtils.HandleSocket(socket, null, _pendingData, _disconnectSource.Token);
                 }
-                catch (WebSocketException ex)
-                {
-                    switch (ex.WebSocketErrorCode)
-                    {
-                        case WebSocketError.ConnectionClosedPrematurely:
-                            break;
-
-                        default:
-                            break;
-                    }
-                }
+                catch { }
             });
         }
         else if (status == ConnectionStatus.Disconnected)
@@ -97,7 +59,7 @@ public class ShellViewModel : BaseNotifyPropertyChanged
         }
     }
 
-    private readonly BlockingCollection<byte[]> _pendingData = new BlockingCollection<byte[]>();
+    private BlockingCollection<byte[]> _pendingData = new BlockingCollection<byte[]>();
     private void DolphinConnection_OnData(object? sender, byte[] e)
     {
         _pendingData.Add(e);
@@ -117,6 +79,8 @@ public class ShellViewModel : BaseNotifyPropertyChanged
         DolphinConnection.OnStatusChange += DolphinConnection_OnStatusChange;
         DolphinConnection.OnData += DolphinConnection_OnData;
 
+        _pendingData?.Dispose();
+        _pendingData = new BlockingCollection<byte[]>();
         _ = Task.Run(async () =>
         {
             while (true)

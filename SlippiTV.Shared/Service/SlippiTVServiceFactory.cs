@@ -12,6 +12,6 @@ public class SlippiTVServiceFactory
 
     public ISlippiTVService GetService()
     {
-        return new SlippiTVService("localhost:5148");
+        return new SlippiTVService("localhost:7027");
     }
 }

@@ -25,7 +25,7 @@ public class FriendViewModel : BaseNotifyPropertyChanged
 
     public string ConnectCode { get; }
 
-    public bool IsLive
+    public LiveStatus LiveStatus
     {
         get;
         set
@@ -37,19 +37,20 @@ public class FriendViewModel : BaseNotifyPropertyChanged
 
     public async Task Refresh()
     {
-        IsLive = await SlippiTVService.IsLive(ConnectCode);
+        LiveStatus = await SlippiTVService.GetStatus(ConnectCode);
     }
 
     public async Task Watch(CancellationToken cancellation)
     {
-        if (!IsLive)
+        if (LiveStatus != LiveStatus.Active)
         {
             throw new InvalidOperationException();
         }
 
         if (!Path.Exists(Settings.WatchDolphinPath) || !Path.Exists(Settings.WatchMeleeISOPath))
         {
-            throw new InvalidOperationException();
+            // TODO show message box
+            return;
         }
 
         DolphinLauncher? launcher = null;
@@ -72,23 +73,12 @@ public class FriendViewModel : BaseNotifyPropertyChanged
                 });
             };
 
-            var socket = await SlippiTVService.WatchStream(ConnectCode);
             try
             {
-                await SocketUtils.ReceiveSocket(socket, x => fileWriter.Write(x), cancellation);
-                await socket.CloseAsync(WebSocketCloseStatus.EndpointUnavailable, "Closed", CancellationToken.None);
+                using var socket = await SlippiTVService.WatchStream(ConnectCode);
+                await SocketUtils.HandleSocket(socket, x => fileWriter.Write(x), null, cancellation);
             }
-            catch (WebSocketException ex)
-            {
-                switch (ex.WebSocketErrorCode)
-                {
-                    case WebSocketError.ConnectionClosedPrematurely:
-                        break;
-
-                    default:
-                        break;
-                }
-            }
+            catch { }
         }
         finally
         {

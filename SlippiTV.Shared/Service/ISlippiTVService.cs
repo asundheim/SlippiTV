@@ -9,5 +9,5 @@ public interface ISlippiTVService : IDisposable
 
     Task<ClientWebSocket> WatchStream(string user);
 
-    Task<bool> IsLive(string user);
+    Task<LiveStatus> GetStatus(string user);
 }

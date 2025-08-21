@@ -11,8 +11,16 @@ public class StatusController : ControllerBase
     }
 
     [HttpGet("status/activity/{user}")]
-    public IActionResult IsLive(string user)
+    public IActionResult LiveStatus(string user)
     {
-        return (StreamManager.GetStreamForUser(user)?.IsActive ?? false) ? Ok() : NotFound();
+        ActiveStream? stream = StreamManager.GetStreamForUser(user);
+        if (stream is not null)
+        {
+            return stream.IsActive ? Ok() : NoContent();
+        }
+        else
+        {
+            return NotFound();
+        }
     }
 }

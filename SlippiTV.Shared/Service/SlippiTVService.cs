@@ -13,18 +13,18 @@ internal class SlippiTVService : ISlippiTVService
         _baseAddress = baseAddress;
         _client = new HttpClient()
         {
-            BaseAddress = new Uri($"http://{baseAddress}"),
+            BaseAddress = new Uri($"https://{baseAddress}"),
         };
     }
 
-    public async Task<bool> IsLive(string user)
+    public async Task<LiveStatus> GetStatus(string user)
     {
-        string sanitized = user.Replace("#", string.Empty);
         var result = await _client.GetAsync($"/status/activity/{SanitizeConnectCode(user)}", CancellationToken.None);
         return result.StatusCode switch
         {
-            HttpStatusCode.OK => true,
-            _ => false
+            HttpStatusCode.OK => LiveStatus.Active,
+            HttpStatusCode.NoContent => LiveStatus.Idle,
+            _ => LiveStatus.Offline
         };
     }
 
@@ -32,7 +32,7 @@ internal class SlippiTVService : ISlippiTVService
     {
         ClientWebSocket clientSocket = new ClientWebSocket();
         clientSocket.Options.KeepAliveInterval = Timeout.InfiniteTimeSpan;
-        await clientSocket.ConnectAsync(new Uri($"ws://{_baseAddress}/stream/{SanitizeConnectCode(user)}"), CancellationToken.None);
+        await clientSocket.ConnectAsync(new Uri($"wss://{_baseAddress}/stream/{SanitizeConnectCode(user)}"), CancellationToken.None);
 
         return clientSocket;
     }
@@ -41,7 +41,7 @@ internal class SlippiTVService : ISlippiTVService
     {
         ClientWebSocket clientSocket = new ClientWebSocket();
         clientSocket.Options.KeepAliveInterval = Timeout.InfiniteTimeSpan;
-        await clientSocket.ConnectAsync(new Uri($"ws://{_baseAddress}/stream/{SanitizeConnectCode(user)}/watch"), CancellationToken.None);
+        await clientSocket.ConnectAsync(new Uri($"wss://{_baseAddress}/stream/{SanitizeConnectCode(user)}/watch"), CancellationToken.None);
 
         return clientSocket;
     }

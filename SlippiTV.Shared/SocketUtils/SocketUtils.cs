@@ -1,11 +1,60 @@
 ﻿using System.Collections.Concurrent;
+using System.IO;
 using System.Net.WebSockets;
 
 namespace SlippiTV.Shared.SocketUtils;
 
 public static class SocketUtils
 {
-    public static async Task ReceiveSocket(WebSocket socket, Action<byte[]> onData, CancellationToken cancellation)
+    public static async Task HandleSocket(WebSocket socket, Action<byte[]>? receiveData, BlockingCollection<byte[]>? sendData, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var requestClosing = new CancellationTokenSource();
+            var anyCancel = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, requestClosing.Token).Token;
+
+            var sendTask = Task.Run(async () =>
+            {
+                if (sendData is not null)
+                {
+                    try
+                    {
+                        await SendSocket(socket, sendData, anyCancel);
+                    }
+                    finally
+                    {
+                        requestClosing.Cancel();
+                    }
+                }
+            });
+
+            try
+            {
+                await ReceiveSocket(socket, receiveData, anyCancel);
+            }
+            finally
+            {
+                requestClosing.Cancel();
+            }
+
+            await sendTask;
+
+            await socket.CloseAsync(WebSocketCloseStatus.EndpointUnavailable, "Server is stopping.", CancellationToken.None);
+        }
+        catch (WebSocketException ex)
+        {
+            switch (ex.WebSocketErrorCode)
+            {
+                case WebSocketError.ConnectionClosedPrematurely:
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    }
+
+    public static async Task ReceiveSocket(WebSocket socket, Action<byte[]>? onData, CancellationToken cancellation)
     {
         const int maxMessageSize = 4096;
         var buffer = new byte[maxMessageSize];
@@ -21,7 +70,7 @@ public static class SocketUtils
                 }
                 else
                 {
-                    onData(buffer.AsSpan().Slice(0, response.Count).ToArray());
+                    onData?.Invoke(buffer.AsSpan().Slice(0, response.Count).ToArray());
                 }
             }
             catch (OperationCanceledException)
