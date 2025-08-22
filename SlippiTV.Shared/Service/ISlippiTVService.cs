@@ -1,5 +1,4 @@
-﻿using Refit;
-using System.Net.WebSockets;
+﻿using System.Net.WebSockets;
 
 namespace SlippiTV.Shared.Service;
 

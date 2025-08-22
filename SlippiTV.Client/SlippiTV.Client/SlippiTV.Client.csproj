@@ -39,7 +39,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj">
+		<!--<ProjectReference Include="..\..\..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 			<OutputItemType>Content</OutputItemType>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -47,7 +47,8 @@
 			<PackagePath>runtimes/win-x64/native</PackagePath>
 		</ProjectReference>
 	
-	  <ProjectReference Include="..\..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />
+	  <ProjectReference Include="..\..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
+	  <PackageReference Include="Slippi.NET" Version="0.5.0"/>
 	  <ProjectReference Include="..\..\SlippiTV.Shared\SlippiTV.Shared.csproj" />
 	</ItemGroup>
 
@@ -68,9 +69,4 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Utils\" />
-	</ItemGroup>
-
 </Project>

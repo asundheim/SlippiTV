@@ -1,6 +1,4 @@
-﻿using Refit;
-
-namespace SlippiTV.Shared.Service;
+﻿namespace SlippiTV.Shared.Service;
 
 public class SlippiTVServiceFactory
 {

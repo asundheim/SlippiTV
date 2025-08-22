@@ -16,7 +16,6 @@ namespace SlippiTV
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            builder.Services.AddSignalR();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -33,7 +32,6 @@ namespace SlippiTV
             //app.UseAuthorization();
 
             app.MapControllers();
-            app.MapHub<StreamHub>("/streams");
 
             app.Run();
         }
