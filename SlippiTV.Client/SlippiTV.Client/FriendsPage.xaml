@@ -104,7 +104,7 @@
     </VerticalStackLayout>
         
     <AbsoluteLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="0,0,0,6">
-        <Label Text="Closing this program will minimize it to the taskbar." FontSize="12" TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" VerticalTextAlignment="Center"/>
+        <Label Text="Closing this program will collapse it to the icon tray." FontSize="12" TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" VerticalTextAlignment="Center"/>
     </AbsoluteLayout>
     
    </StackLayout>
