@@ -48,7 +48,8 @@
 		</ProjectReference>
 	
 	  <ProjectReference Include="..\..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
-	  <PackageReference Include="Slippi.NET" Version="0.5.0" />
+	  
+	  <PackageReference Include="Slippi.NET" Version="0.6.0" />
 	  <ProjectReference Include="..\..\SlippiTV.Shared\SlippiTV.Shared.csproj" />
 	</ItemGroup>
 

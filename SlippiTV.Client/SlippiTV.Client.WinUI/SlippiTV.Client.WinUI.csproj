@@ -32,6 +32,15 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\SlippiTV.Client\SlippiTV.Client.csproj" />
+		<!--<ProjectReference Include="..\..\..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<OutputItemType>Content</OutputItemType>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<Pack>true</Pack>
+			<PackagePath>runtimes/win-x64/native</PackagePath>
+		</ProjectReference>
+
+		<ProjectReference Include="..\..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
 	</ItemGroup>
 	
 	<ItemGroup>
