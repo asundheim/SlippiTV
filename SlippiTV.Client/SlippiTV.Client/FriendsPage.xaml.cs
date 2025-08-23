@@ -1,8 +1,7 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.Maui.Handlers;
-using SlippiTV.Client.PlatformUtils;
+using Microsoft.Maui.Controls.Shapes;
 using SlippiTV.Client.ViewModels;
 using System.Diagnostics.CodeAnalysis;
 
@@ -36,10 +35,17 @@ public partial class FriendsPage : ContentPage
     {
         var result = await this.ShowPopupAsync<string>(
             new InputTextPopup(
-                placeholderText: "Enter Connect Code",
-                title: "Input Connect Code (ABC#123)"
-            ), 
-            PopupOptions.Empty);
+                placeholderText: "Enter Connect Code (ABC#123)",
+                title: "Input Your Friend's Connect Code"
+                ), 
+            new PopupOptions 
+            { 
+                Shape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(0),
+                    StrokeThickness = 0,
+                } 
+            });
         if (result.WasDismissedByTappingOutsideOfPopup || string.IsNullOrEmpty(result.Result))
         {
             return;

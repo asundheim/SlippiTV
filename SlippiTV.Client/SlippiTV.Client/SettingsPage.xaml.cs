@@ -69,8 +69,8 @@ public partial class SettingsPage : ContentPage
     {
         var result = await this.ShowPopupAsync<string>(
             new InputTextPopup(
-                placeholderText: "Enter your connect code",
-                title: "Input Connect Code (ABC#123)"
+                placeholderText: "Enter Connect Code (ABC#123)",
+                title: "Input Your Slippi Connect Code"
             ),
             PopupOptions.Empty);
         if (result.WasDismissedByTappingOutsideOfPopup || string.IsNullOrEmpty(result.Result))

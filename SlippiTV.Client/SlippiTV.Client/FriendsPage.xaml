@@ -12,7 +12,7 @@
              x:DataType="{x:Type vm:FriendsViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <mi:MauiIcon Icon="{mi:FluentFilled Icon=Add24Filled}" IconColor="Green" x:Key="AddIcon"/>
+            <mi:MauiIcon Icon="{mi:FluentFilled Icon=AddCircle24Filled}" IconColor="#10FA94" x:Key="AddIcon"/>
             <toolkit:EnumToBoolConverter x:Key="LiveStatusToVisibilityConverter">
                 <toolkit:EnumToBoolConverter.TrueValues>
                     <service:LiveStatus>Active</service:LiveStatus>
@@ -22,63 +22,118 @@
             <converters:LiveStatusToToolTipConverter x:Key="LiveStatusToToolTipConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <VerticalStackLayout Margin="10">
-        <HorizontalStackLayout>
-            <Label FontSize="24" Text="Add Friends by Connect Code" VerticalTextAlignment="Center"/>
-            <ImageButton x:Name="AddFriendsButton" Margin="10,0,0,0" Padding="0,0,4,0" Clicked="AddFriendsButton_Clicked">
+    
+    <VerticalStackLayout Padding="10" Spacing="10">
+
+        <HorizontalStackLayout Spacing="4" Padding="0,0,0,0" HeightRequest="40">
+            <ImageButton x:Name="AddFriendsButton" Margin="0,0,0,0" Padding="-6,0,0,0" Clicked="AddFriendsButton_Clicked" BackgroundColor="Transparent">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="1"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value=".7"/>
+                                    <Setter Property="Scale" Value=".95"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
                 <ImageButton.Source>
-                    <FontImageSource Glyph="{mi:FluentFilled Icon=Add24Filled, IconColor=Green}"/>
+                    <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="36"/>
                 </ImageButton.Source>
             </ImageButton>
+            <Label FontSize="18" Text="Add Friends by Connect Code" VerticalTextAlignment="Center" />
         </HorizontalStackLayout>
+
         <CollectionView ItemsSource="{Binding Friends}">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type vm:FriendViewModel}">
-                    <VerticalStackLayout>
-                        <HorizontalStackLayout>
-                            <Label Text="{Binding ConnectCode}" FontAttributes="Bold" FontSize="18" VerticalTextAlignment="Center" />
-                            <Image WidthRequest="14" ToolTipProperties.Text="{Binding LiveStatus, Converter={StaticResource LiveStatusToToolTipConverter}}">
-                                <Image.Source>
-                                    <FontImageSource Glyph="{mi:FluentFilled Icon=Circle20Filled}" Color="{Binding LiveStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
-                                </Image.Source>
-                            </Image>
-                            
-                            <ImageButton x:Name="FriendsMore" MinimumHeightRequest="10" MinimumWidthRequest="8" Padding="0,10,4,0">
-                                <ImageButton.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
-                                </ImageButton.GestureRecognizers>
+
+                    <VerticalStackLayout Spacing="4" Padding="0,0,0,6">
+                        <BoxView HeightRequest="1" Color="#333333"/>
+                        <HorizontalStackLayout Spacing="0" Padding="0,0,0,3">
+                            <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}" VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroupList>
                                         <VisualStateGroup Name="CommonStates">
+                                            <VisualState Name="Disabled">
+                                                <VisualState.Setters>
+                                                    <Setter Property="Opacity" Value=".2"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
                                             <VisualState Name="Normal">
                                                 <VisualState.Setters>
-                                                    <Setter Property="Background" Value="Transparent"/>
+                                                    <Setter Property="Opacity" Value="1"/>
                                                 </VisualState.Setters>
                                             </VisualState>
                                             <VisualState Name="PointerOver">
                                                 <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#11ACACAC"/>
+                                                    <Setter Property="Opacity" Value=".85"/>
+                                                    <Setter Property="Scale" Value=".95"/>
                                                 </VisualState.Setters>
                                             </VisualState>
                                         </VisualStateGroup>
                                     </VisualStateGroupList>
                                 </VisualStateManager.VisualStateGroups>
                                 <ImageButton.Source>
-                                    <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled}" />
-                                </ImageButton.Source>
-                            </ImageButton>
-                        </HorizontalStackLayout>
-                        <HorizontalStackLayout Margin="0,10,0,0">
-                            <ImageButton Clicked="WatchFriendButton_Clicked" IsVisible="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}">
-                                <ImageButton.Source>
                                     <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled}" />
                                 </ImageButton.Source>
                             </ImageButton>
+
+                            <Label Text="{Binding ConnectCode}" FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center"/>
+                            
+                            <FlexLayout JustifyContent="SpaceBetween" Padding="10, 2, 4, 0">
+                                
+                                <Image MaximumHeightRequest="18" VerticalOptions="Center" Margin="0" ToolTipProperties.Text="{Binding LiveStatus, Converter={StaticResource LiveStatusToToolTipConverter}}">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled}" Color="{Binding LiveStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
+                                    </Image.Source>
+                                </Image>
+
+                                <ImageButton x:Name="FriendsMore" VerticalOptions="Center" Margin="0" Padding="0,8,0,0">
+                                    <ImageButton.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
+                                    </ImageButton.GestureRecognizers>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroupList>
+                                            <VisualStateGroup Name="CommonStates">
+                                                <VisualState Name="Normal">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                                <VisualState Name="PointerOver">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                                                        <Setter Property="Opacity" Value=".85"/>
+                                                        <Setter Property="Scale" Value=".95"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateGroupList>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <ImageButton.Source>
+                                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled}"/>
+                                    </ImageButton.Source>
+                                </ImageButton>
+                            </FlexLayout>
+                            
                         </HorizontalStackLayout>
+                        
+                                                
                     </VerticalStackLayout>
+                    
                 </DataTemplate>
+                
             </CollectionView.ItemTemplate>
         </CollectionView>
+        
         <tb:TaskbarIcon
             IconSource="slippitv.ico"
             LeftClickCommand="{Binding ShowHideWindowCommand}"
@@ -92,5 +147,7 @@
                 </MenuFlyout>
             </FlyoutBase.ContextFlyout>
         </tb:TaskbarIcon>
+        
     </VerticalStackLayout>
+    
 </ContentPage>

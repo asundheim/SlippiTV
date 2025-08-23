@@ -25,9 +25,9 @@ public class LiveStatusToColorConverter : BaseConverter<LiveStatus, Color>
     {
         return value switch
         {
-            LiveStatus.Offline => Colors.Red,
-            LiveStatus.Active => Colors.Green,
-            LiveStatus.Idle => Colors.Yellow,
+            LiveStatus.Offline => Color.FromArgb("#DB5151"),
+            LiveStatus.Active => Color.FromArgb("#10FA94"),
+            LiveStatus.Idle => Color.FromArgb("#FABF10"),
             _ => Colors.Red
         };
     }
