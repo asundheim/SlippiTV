@@ -1,4 +1,5 @@
-﻿using Slippi.NET.Console;
+﻿using CommunityToolkit.Mvvm.Input;
+using Slippi.NET.Console;
 using Slippi.NET.Console.Types;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
@@ -7,7 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace SlippiTV.Client.ViewModels;
 
-public class ShellViewModel : BaseNotifyPropertyChanged
+public partial class ShellViewModel : BaseNotifyPropertyChanged
 {
     public ShellViewModel() 
     {
@@ -27,17 +28,55 @@ public class ShellViewModel : BaseNotifyPropertyChanged
     public DolphinConnection DolphinConnection { get; set; }
     public ISlippiTVService SlippiTVService { get; set; }
 
+    public LiveStatus DolphinStatus
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    } = LiveStatus.Offline;
+
+    public LiveStatus RelayStatus
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    } = LiveStatus.Offline;
+
+    // TODO extract this all out into some connection manager
+
     private CancellationTokenSource _disconnectSource = new CancellationTokenSource();
     private Task? _socketTask = null;
     private async void DolphinConnection_OnStatusChange(object? sender, ConnectionStatus status)
     {
+        DolphinStatus = status switch
+        {
+            ConnectionStatus.Connected => LiveStatus.Active,
+            ConnectionStatus.Disconnected => LiveStatus.Offline,
+            ConnectionStatus.Connecting => LiveStatus.Idle,
+            _ => LiveStatus.Offline
+        };
+
         if (status == ConnectionStatus.Connected)
         {
             _socketTask = Task.Run(async () =>
             {
                 try
                 {
+                    RelayStatus = LiveStatus.Idle;
                     using var socket = await SlippiTVService.Stream(Settings.StreamMeleeConnectCode);
+                    RelayStatus = LiveStatus.Active;
                     await SocketUtils.HandleSocket(socket, null, _pendingData, _disconnectSource.Token);
                 }
                 catch { }
@@ -50,6 +89,7 @@ public class ShellViewModel : BaseNotifyPropertyChanged
             {
                 await _socketTask;
                 _socketTask = null;
+                RelayStatus = LiveStatus.Offline;
             }
 
             _disconnectSource.Dispose();
@@ -96,5 +136,11 @@ public class ShellViewModel : BaseNotifyPropertyChanged
                 }
             }
         });
+    }
+
+    [RelayCommand]
+    public void Reconnect()
+    {
+        DolphinConnection.HandleDisconnect();
     }
 }

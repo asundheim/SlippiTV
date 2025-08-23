@@ -24,8 +24,7 @@
                    FontAttributes="Bold"
                    TextColor="{AppThemeBinding Light=#333333, Dark=#FAFAFA}"
                    VerticalTextAlignment="Center"
-                   HorizontalTextAlignment="Center"
-                   />
+                   HorizontalTextAlignment="Center"/>
                 <BoxView HeightRequest="1" Color="#333333"/>
             </VerticalStackLayout>
 

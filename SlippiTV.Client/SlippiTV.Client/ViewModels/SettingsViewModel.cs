@@ -19,16 +19,7 @@ public class SettingsViewModel : BaseNotifyPropertyChanged
         ShellViewModel = parent;
     }
 
-    public string MeleeISOPathLabelText => $"Melee .iso path: ";
-    public string WatchDolphinLabelText => $"Playback Dolphin path: ";
+    public string MeleeISOPathLabelText => "Playback Melee .iso path: ";
 
-    public void UpdateMeleeISOPath(string meleeISOPath)
-    {
-        Settings.WatchMeleeISOPath = meleeISOPath;
-    }
-
-    public void UpdateWatchDolphinPath(string watchDolphinPath)
-    {
-        Settings.WatchDolphinPath = watchDolphinPath;
-    }
+    public string WatchDolphinPathLabelText => "Playback Dolphin path: ";
 }

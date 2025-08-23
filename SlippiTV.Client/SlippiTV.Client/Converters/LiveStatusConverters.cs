@@ -64,3 +64,33 @@ public class LiveStatusToToolTipConverter : BaseConverter<LiveStatus, string>
     }
 }
 
+public class LiveStatusToStatusBarToolTipConverter : BaseConverter<LiveStatus, string>
+{
+    private const string _offline = "Disconnected";
+    private const string _connecting = "Connecting";
+    private const string _connected = "Connected";
+
+    public override string DefaultConvertReturnValue
+    {
+        get => _offline;
+        set { }
+    }
+    public override LiveStatus DefaultConvertBackReturnValue
+    {
+        get;
+        set;
+    }
+
+    public override LiveStatus ConvertBackTo(string value, CultureInfo? culture) => throw new NotImplementedException();
+
+    public override string ConvertFrom(LiveStatus value, CultureInfo? culture)
+    {
+        return value switch
+        {
+            LiveStatus.Offline => _offline,
+            LiveStatus.Idle => _connecting,
+            LiveStatus.Active => _connected,
+            _ => _offline
+        };
+    }
+}

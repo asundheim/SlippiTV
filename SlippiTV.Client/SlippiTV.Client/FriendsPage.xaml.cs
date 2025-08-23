@@ -79,4 +79,28 @@ public partial class FriendsPage : ContentPage
         var point = e.GetPosition(view);
         PlatformUtils.PlatformUtils.ShowContextMenu(view, point);
     }
+
+    private async void AddFromRecentButton_Clicked(object sender, EventArgs e)
+    {
+        var result = await this.ShowPopupAsync<string>(
+            new SelectableListViewPopup(SettingsManager.Instance.AddFromRecentCandidates),
+            new PopupOptions
+            {
+                Shape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(0),
+                    StrokeThickness = 0,
+                }
+            });
+        if (result.WasDismissedByTappingOutsideOfPopup || string.IsNullOrEmpty(result.Result))
+        {
+            return;
+        }
+
+        var codes = result.Result.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        foreach (var code in codes)
+        {
+            SettingsManager.Instance.AddFriend(code);
+        }
+    }
 }

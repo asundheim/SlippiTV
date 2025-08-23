@@ -44,7 +44,7 @@ public partial class SettingsPage : ContentPage
         var result = await FilePicker.PickAsync(options);
         if (result is not null)
         {
-            SettingsViewModel.UpdateMeleeISOPath(result.FullPath);
+            SettingsViewModel.Settings.WatchMeleeISOPath = result.FullPath;
         }
     }
 
@@ -62,7 +62,7 @@ public partial class SettingsPage : ContentPage
         var result = await FilePicker.PickAsync(options);
         if (result is not null)
         {
-            SettingsViewModel.UpdateMeleeISOPath(result.FullPath);
+            SettingsViewModel.Settings.WatchDolphinPath = result.FullPath;
         }
     }
 

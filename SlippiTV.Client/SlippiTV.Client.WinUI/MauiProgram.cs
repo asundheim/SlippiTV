@@ -7,7 +7,7 @@ namespace SlippiTV.Client.WinUI
 {
     public static class MauiProgram
     {
-        public static Window? SlippiTVWindow = null;
+        public static Window? SlippiTVWindow { get; private set; } = null;
 
         public static MauiApp CreateMauiApp()
         {

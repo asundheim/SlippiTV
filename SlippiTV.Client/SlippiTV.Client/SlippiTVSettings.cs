@@ -12,9 +12,12 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
         get; 
         set
         {
-            field = value;
-            SaveSettings();
-            OnPropertyChanged();
+            if (field != value)
+            {
+                field = value;
+                SaveSettings();
+                OnPropertyChanged();
+            }
         }
     } = [];
 
@@ -23,9 +26,27 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
         get; 
         set
         {
-            field = value;
-            SaveSettings();
-            OnPropertyChanged();
+            if (field != value)
+            {
+                field = value;
+                SaveSettings();
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowConnectCodeEdit));
+            }
+        }
+    } = string.Empty;
+
+    public string StreamMeleeDisplayName
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                SaveSettings();
+                OnPropertyChanged();
+            }
         }
     } = string.Empty;
 
@@ -34,9 +55,12 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
         get;
         set
         {
-            field = value;
-            SaveSettings();
-            OnPropertyChanged();
+            if (field != value)
+            {
+                field = value;
+                SaveSettings();
+                OnPropertyChanged();
+            }
         }
     } = string.Empty;
 
@@ -45,13 +69,39 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
         get;
         set
         {
-            field = value;
-            SaveSettings();
-            OnPropertyChanged();
+            if (field != value)
+            {
+                field = value;
+                SaveSettings();
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowWatchDolphinEdit));
+            }
         }
     } = string.Empty;
 
-    public int Version { get; set; } = 2;
+    public string SlippiLauncherFolder 
+    { 
+        get; 
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                SaveSettings();
+                OnPropertyChanged(nameof(ShowConnectCodeEdit));
+                OnPropertyChanged(nameof(ShowWatchDolphinEdit));
+            }
+        }
+    } = string.Empty;
+
+    
+    public bool ShowConnectCodeEdit => string.IsNullOrEmpty(SlippiLauncherFolder) || string.IsNullOrEmpty(StreamMeleeConnectCode);
+
+    // TODO it seems fine to allow playback with a different dolphin, at that point you're on your own
+    // string.IsNullOrEmpty(SlippiLauncherFolder) || string.IsNullOrEmpty(WatchDolphinPath)
+    public bool ShowWatchDolphinEdit => true;
+
+    public int Version { get; set; } = 3;
 
     private void SaveSettings()
     {

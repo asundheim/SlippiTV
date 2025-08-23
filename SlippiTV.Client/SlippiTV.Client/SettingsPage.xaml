@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:SlippiTV.Client"
              x:Class="SlippiTV.Client.SettingsPage"
              Title="Settings"
              x:DataType="{x:Type vm:SettingsViewModel}">
@@ -23,13 +25,18 @@
                 <Setter Property="HeightRequest" Value="36"/>
                 <Setter Property="Spacing" Value="12"/>
             </Style>
+            <toolkit:IsStringNotNullOrEmptyConverter x:Key="StringToVisibilityConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-    <StackLayout>
-        <VerticalStackLayout Spacing="24" Padding="10">
-
+        <VerticalStackLayout Spacing="24" Padding="10" Grid.Row="0">
             <VerticalStackLayout Spacing="6">
                 <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation">
                     <Label.FormattedText>
@@ -49,19 +56,18 @@
                         </Label>
                     </Border>
                     <Button x:Name="MeleeIsoBrowseButton" 
-                    Text="Browse"
-                    Clicked="MeleeIsoBrowseButton_Clicked" 
-                    VerticalOptions="Center"
-                    Padding="16,4,16,8"/>
+                            Text="Browse"
+                            Clicked="MeleeIsoBrowseButton_Clicked" 
+                            VerticalOptions="Center"
+                            Padding="16,4,16,8"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
-
 
             <VerticalStackLayout Spacing="6">
                 <Label VerticalTextAlignment="Center" LineBreakMode="WordWrap">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding WatchDolphinLabelText}" FontSize="20" FontAttributes="Bold"/>
+                            <Span Text="{Binding WatchDolphinPathLabelText}" FontSize="20" FontAttributes="Bold"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
@@ -76,10 +82,11 @@
                         </Label>
                     </Border>
                     <Button x:Name="WatchDolphinBrowseButton" 
-                        Text="Browse" 
-                        Clicked="WatchDolphinBrowseButton_Clicked"
-                        VerticalOptions="Center"
-                        Padding="16,4,16,8"/>
+                            IsVisible="{Binding Settings.ShowWatchDolphinEdit}"
+                            Text="Browse"
+                            Clicked="WatchDolphinBrowseButton_Clicked"
+                            VerticalOptions="Center"
+                            Padding="16,4,16,8"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
@@ -102,7 +109,22 @@
                             </Label.FormattedText>
                         </Label>
                     </Border>
-                    <ImageButton x:Name="EditConnectCodeButton" Clicked="EditConnectCodeButton_Clicked" BackgroundColor="Transparent" Aspect="AspectFit" HeightRequest="2" WidthRequest="2">
+                    <Border IsVisible="{Binding Settings.StreamMeleeDisplayName, Converter={StaticResource StringToVisibilityConverter}}">
+                        <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Padding="18,0,18,0">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Settings.StreamMeleeDisplayName}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Border>
+                    <ImageButton x:Name="EditConnectCodeButton" 
+                                 IsVisible="{Binding Settings.ShowConnectCodeEdit}"
+                                 Clicked="EditConnectCodeButton_Clicked" 
+                                 BackgroundColor="Transparent" 
+                                 Aspect="AspectFit" 
+                                 HeightRequest="2" 
+                                 WidthRequest="2">
                         <ImageButton.Source>
                             <FontImageSource Glyph="{mi:FluentFilled Icon=Edit24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}"/>
                         </ImageButton.Source>
@@ -110,11 +132,7 @@
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>
-        
-        <AbsoluteLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="0,0,0,6">
-            <Label Text="Closing this program will collapse it to the icon tray." FontSize="12" TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" VerticalTextAlignment="Center"/>
-        </AbsoluteLayout>
 
-    </StackLayout>
-
+        <local:BottomBar Grid.Row="2" BindingContext="{Binding ShellViewModel}" HeightRequest="20"/>
+    </Grid>
 </ContentPage>

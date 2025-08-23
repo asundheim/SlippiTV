@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:converters="clr-namespace:SlippiTV.Client.Converters"
+             xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:shared="clr-namespace:SlippiTV.Shared.Service;assembly=SlippiTV.Shared"
+             x:Class="SlippiTV.Client.BottomBar"
+             x:DataType="{x:Type vm:ShellViewModel}">
+    <ContentView.Resources>
+        <ResourceDictionary>
+            <converters:LiveStatusToStatusBarToolTipConverter x:Key="LiveStatusToStatusBarToolTipConverter"/>
+            <converters:LiveStatusToColorConverter x:Key="LiveStatusToColorConverter"/>
+            <toolkit:EnumToBoolConverter x:Key="LiveStatusToBoolConverter">
+                <toolkit:EnumToBoolConverter.TrueValues>
+                    <shared:LiveStatus>Active</shared:LiveStatus>
+                    <shared:LiveStatus>Idle</shared:LiveStatus>
+                </toolkit:EnumToBoolConverter.TrueValues>
+            </toolkit:EnumToBoolConverter>
+        </ResourceDictionary>
+    </ContentView.Resources>
+    
+    <Grid Margin="10,0,10,2">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <HorizontalStackLayout Grid.Column="0" Spacing="0">
+            <Label Text="Dolphin"
+                   FontSize="12" 
+                   TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" 
+                   VerticalTextAlignment="Center"
+                   ToolTipProperties.Text="{Binding DolphinStatus, Converter={StaticResource LiveStatusToStatusBarToolTipConverter}}"/>
+            <!--the way these margins are set messes with the whole vertical alignment if everything isn't perfect :/ -->
+            <Image WidthRequest="12" VerticalOptions="Center" Margin="0,4,0,0">
+                <Image.Source>
+                    <FontImageSource Glyph="{mi:FluentFilled Icon=Circle16Filled}" Color="{Binding DolphinStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
+                </Image.Source>
+            </Image>
+        </HorizontalStackLayout>
+        
+
+        <HorizontalStackLayout Grid.Column="1" Margin="8,0,0,0" Spacing="1" IsVisible="{Binding DolphinStatus, Converter={StaticResource LiveStatusToBoolConverter}}">
+            <Label Text="Relay"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}"
+                   VerticalTextAlignment="Center"
+                   ToolTipProperties.Text="{Binding DolphinStatus, Converter={StaticResource LiveStatusToStatusBarToolTipConverter}}"/>
+            <Image WidthRequest="12" VerticalOptions="Center" Margin="0,4,0,0">
+                <Image.Source>
+                    <FontImageSource Glyph="{mi:FluentFilled Icon=Circle16Filled}" Color="{Binding RelayStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
+                </Image.Source>
+            </Image>
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout Grid.Column="2" Margin="8,2,0,0">
+            <ImageButton x:Name="RefreshButton" MinimumWidthRequest="0" MinimumHeightRequest="0" Padding="0" Margin="0" Command="{Binding ReconnectCommand}" >
+                <ImageButton.Source>
+                    <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowCounterclockwise12Filled}" Color="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" Size="14"/>
+                </ImageButton.Source>
+            </ImageButton>
+        </HorizontalStackLayout>
+
+
+        <Label Text="Closing this program will collapse it to the icon tray." 
+               Grid.Column="4"
+               FontSize="12" 
+               TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" 
+               VerticalTextAlignment="Center"/>
+    </Grid>
+</ContentView>

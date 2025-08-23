@@ -54,13 +54,13 @@ public class FriendViewModel : BaseNotifyPropertyChanged
         }
 
         DolphinLauncher? launcher = null;
+        SlpFileWriter fileWriter = new SlpFileWriter(new SlpFileWriterSettings
+        {
+            FolderPath = Path.GetTempPath()
+        });
+        string? currentFile = null;
         try
         {
-            using SlpFileWriter fileWriter = new SlpFileWriter(new SlpFileWriterSettings
-            {
-                FolderPath = Path.GetTempPath()
-            });
-
             fileWriter.OnNewFile += (object? sender, string newFile) =>
             {
                 launcher ??= new DolphinLauncher(Settings.WatchMeleeISOPath, Settings.WatchDolphinPath);
@@ -68,9 +68,20 @@ public class FriendViewModel : BaseNotifyPropertyChanged
                 {
                     Mode = DolphinLaunchModes.Mirror,
                     Replay = newFile,
-                    IsRealTimeMode = true,
+                    IsRealTimeMode = false,
                     GameStation = "SlippiTV"
                 });
+
+                try
+                {
+                    if (currentFile is not null && File.Exists(currentFile))
+                    {
+                        File.Delete(currentFile);
+                    }
+                }
+                catch { }
+
+                currentFile = newFile;
             };
 
             try
@@ -82,7 +93,17 @@ public class FriendViewModel : BaseNotifyPropertyChanged
         }
         finally
         {
+            fileWriter.Dispose();
             launcher?.Dispose();
+
+            try
+            {
+                if (currentFile is not null && File.Exists(currentFile))
+                {
+                    File.Delete(currentFile);
+                }
+            }
+            catch { } // best effort
         }
     }
 }

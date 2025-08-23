@@ -23,44 +23,64 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-    <StackLayout>
-        <VerticalStackLayout Padding="10" Spacing="10">
-            <HorizontalStackLayout Spacing="4" Padding="0,0,0,0" HeightRequest="40">
-            <ImageButton x:Name="AddFriendsButton" Margin="0,0,0,0" Padding="-6,0,0,0" Clicked="AddFriendsButton_Clicked" BackgroundColor="Transparent">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroupList>
-                        <VisualStateGroup Name="CommonStates">
-                            <VisualState Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="Opacity" Value="1"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="Opacity" Value=".7"/>
-                                    <Setter Property="Scale" Value=".95"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateGroupList>
-                </VisualStateManager.VisualStateGroups>
-                <ImageButton.Source>
-                    <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="36"/>
-                </ImageButton.Source>
-            </ImageButton>
-            <Label FontSize="18" Text="Add Friends by Connect Code" VerticalTextAlignment="Center" />
-        </HorizontalStackLayout>
+        <VerticalStackLayout Padding="10" Spacing="10" Grid.Row="0">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-        <CollectionView ItemsSource="{Binding Friends}">
-            <CollectionView.ItemTemplate>
+                <HorizontalStackLayout Grid.Column="0" Spacing="4" Padding="0,0,0,0" HeightRequest="40">
+                    <ImageButton x:Name="AddFriendsButton" Margin="0,0,0,0" Padding="-6,0,0,0" Clicked="AddFriendsButton_Clicked" BackgroundColor="Transparent">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroupList>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="Opacity" Value="1"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Property="Opacity" Value=".7"/>
+                                            <Setter Property="Scale" Value=".95"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateGroupList>
+                        </VisualStateManager.VisualStateGroups>
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="36"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <Label FontSize="18" Text="Add Friends by Connect Code" VerticalTextAlignment="Center" />
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout Grid.Column="2" Spacing="3">
+                    <ImageButton x:Name="AddFromRecentButton" Clicked="AddFromRecentButton_Clicked" MinimumHeightRequest="0" MinimumWidthRequest="0" >
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="18"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                    <Label FontSize="12" Text="Add from recent" VerticalTextAlignment="Center"/>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <CollectionView ItemsSource="{Binding Friends}">
+                <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="{x:Type vm:FriendViewModel}">
-
                         <VerticalStackLayout Spacing="4" Padding="0,0,0,6">
                             <BoxView HeightRequest="1" Color="#333333"/>
                             <HorizontalStackLayout Spacing="0" Padding="0,0,0,3">
                                 <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}" VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent">
-
                                     <ImageButton.Source>
                                         <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}" />
                                     </ImageButton.Source>
@@ -85,28 +105,23 @@
                         </VerticalStackLayout>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
-        </CollectionView>
+            </CollectionView>
 
-        <tb:TaskbarIcon
-            IconSource="slippitv.ico"
-            LeftClickCommand="{Binding ShowHideWindowCommand}"
-            NoLeftClickDelay="True"
-            x:Name="TaskbarIcon">
-            <FlyoutBase.ContextFlyout>
-                <MenuFlyout>
-                    <MenuFlyoutItem Command="{Binding ShowHideWindowCommand}" Text="Show/Hide Window" />
-                    <MenuFlyoutSeparator />
-                    <MenuFlyoutItem Command="{Binding ExitApplicationCommand}" Text="Quit" />
-                </MenuFlyout>
-            </FlyoutBase.ContextFlyout>
-        </tb:TaskbarIcon>
-        
-    </VerticalStackLayout>
-        
-    <AbsoluteLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="0,0,0,6">
-        <Label Text="Closing this program will collapse it to the icon tray." FontSize="12" TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" VerticalTextAlignment="Center"/>
-    </AbsoluteLayout>
-    
-   </StackLayout>
+            <tb:TaskbarIcon
+                IconSource="slippitv.ico"
+                LeftClickCommand="{Binding ShowHideWindowCommand}"
+                NoLeftClickDelay="True"
+                x:Name="TaskbarIcon">
+                <FlyoutBase.ContextFlyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Command="{Binding ShowHideWindowCommand}" Text="Show/Hide Window" />
+                        <MenuFlyoutSeparator />
+                        <MenuFlyoutItem Command="{Binding ExitApplicationCommand}" Text="Quit" />
+                    </MenuFlyout>
+                </FlyoutBase.ContextFlyout>
+            </tb:TaskbarIcon>
+        </VerticalStackLayout>
 
+        <local:BottomBar Grid.Row="2" BindingContext="{Binding ShellViewModel}" HeightRequest="20"/>
+    </Grid>
 </ContentPage>
