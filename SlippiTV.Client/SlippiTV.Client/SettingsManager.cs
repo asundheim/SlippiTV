@@ -20,7 +20,7 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
         string settingsFolder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SlippiTV");
         Directory.CreateDirectory(settingsFolder);
 
-        _settingsPath = Path.Join(settingsFolder, "SlippiTV.settings.v3.json");
+        _settingsPath = Path.Join(settingsFolder, "SlippiTV.settings.v4.json");
         if (File.Exists(_settingsPath) &&
             File.ReadAllText(_settingsPath) is string settingsData &&
             JsonConvert.DeserializeObject<SlippiTVSettings>(settingsData) is SlippiTVSettings existingSettings)
@@ -172,7 +172,7 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
 
         string directCodesPath = Path.Combine(launcherPath, @"netplay\User\Slippi\direct-codes.json");
         List<string>? addFromRecentCandidates = null;
-        if (File.Exists(directCodesPath))
+        if (IsFirstLaunch && File.Exists(directCodesPath))
         {
             var directCodesType = new { connectCode = "" };
             var result = JsonConvert.DeserializeAnonymousType(File.ReadAllText(directCodesPath), Enumerable.Range(0, 0).Select(x => directCodesType).ToList());
@@ -219,7 +219,11 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
             // set these if we found them
             if (addFromRecentCandidates is not null)
             {
-                this.AddFromRecentCandidates = addFromRecentCandidates;
+                // this.AddFromRecentCandidates = addFromRecentCandidates;
+                foreach (var recentFriend in addFromRecentCandidates.Take(10))
+                {
+                    AddFriend(recentFriend);
+                }
             }
 
             // set this if it's empty
