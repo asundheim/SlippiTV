@@ -9,14 +9,14 @@ public class LiveStatusToColorConverter : BaseConverter<LiveStatus, Color>
 {
     public override Color DefaultConvertReturnValue
     {
-        get => Colors.Red;
+        get => Color.FromArgb("#DB5151");
         set { }
     }
 
     public override LiveStatus DefaultConvertBackReturnValue
     {
-        get => throw new NotImplementedException();
-        set => throw new NotImplementedException();
+        get;
+        set;
     }
 
     public override LiveStatus ConvertBackTo(Color value, CultureInfo? culture) => throw new NotImplementedException();
@@ -28,7 +28,7 @@ public class LiveStatusToColorConverter : BaseConverter<LiveStatus, Color>
             LiveStatus.Offline => Color.FromArgb("#DB5151"),
             LiveStatus.Active => Color.FromArgb("#10FA94"),
             LiveStatus.Idle => Color.FromArgb("#FABF10"),
-            _ => Colors.Red
+            _ => Color.FromArgb("#DB5151")
         };
     }
 }
@@ -45,9 +45,9 @@ public class LiveStatusToToolTipConverter : BaseConverter<LiveStatus, string>
         set { } 
     }
     public override LiveStatus DefaultConvertBackReturnValue 
-    { 
-        get => throw new NotImplementedException(); 
-        set => throw new NotImplementedException(); 
+    {
+        get;
+        set;
     }
 
     public override LiveStatus ConvertBackTo(string value, CultureInfo? culture) => throw new NotImplementedException();

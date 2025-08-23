@@ -16,7 +16,7 @@
                 <Setter Property="HeightRequest" Value="36"/>
             </Style>
             <Style TargetType="Border">
-                <Setter Property="BackgroundColor" Value="#30333333"/>
+                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FaFaFa, Dark=#333333}"/>
                 <Setter Property="StrokeShape" Value="RoundRectangle 8"/>
             </Style>
             <Style TargetType="HorizontalStackLayout">
@@ -26,106 +26,95 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <VerticalStackLayout Spacing="24" Padding="10">
 
-        <VerticalStackLayout Spacing="6">
-            <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="{Binding MeleeISOPathLabelText}" FontAttributes="Bold" FontSize="20"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <HorizontalStackLayout>
-                <Border>
-                    <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation" Padding="18,0,18,0" WidthRequest="360">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding Settings.WatchMeleeISOPath}" />
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                </Border>
-                <Button x:Name="MeleeIsoBrowseButton" 
+    <StackLayout>
+        <VerticalStackLayout Spacing="24" Padding="10">
+
+            <VerticalStackLayout Spacing="6">
+                <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding MeleeISOPathLabelText}" FontAttributes="Bold" FontSize="20"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <HorizontalStackLayout>
+                    <Border>
+                        <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation" Padding="18,0,18,0" WidthRequest="360">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Settings.WatchMeleeISOPath}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Border>
+                    <Button x:Name="MeleeIsoBrowseButton" 
                     Text="Browse"
                     Clicked="MeleeIsoBrowseButton_Clicked" 
                     VerticalOptions="Center"
                     Padding="16,4,16,8"/>
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
 
 
-        <VerticalStackLayout Spacing="6">
-            <Label VerticalTextAlignment="Center" LineBreakMode="WordWrap">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="{Binding WatchDolphinLabelText}" FontSize="20" FontAttributes="Bold"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <HorizontalStackLayout>
-                <Border>
-                    <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation"  Padding="18,0,18,0" WidthRequest="360">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding Settings.WatchDolphinPath}"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                </Border>
-                <Button x:Name="WatchDolphinBrowseButton" 
+            <VerticalStackLayout Spacing="6">
+                <Label VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="{Binding WatchDolphinLabelText}" FontSize="20" FontAttributes="Bold"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <HorizontalStackLayout>
+                    <Border>
+                        <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation"  Padding="18,0,18,0" WidthRequest="360">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Settings.WatchDolphinPath}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Border>
+                    <Button x:Name="WatchDolphinBrowseButton" 
                         Text="Browse" 
                         Clicked="WatchDolphinBrowseButton_Clicked"
                         VerticalOptions="Center"
                         Padding="16,4,16,8"/>
-            </HorizontalStackLayout>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="6">
+                <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Your Connect Code: " FontAttributes="Bold" FontSize="20"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+                <HorizontalStackLayout Spacing="5">
+                    <Border>
+                        <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Padding="18,0,18,0">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{Binding Settings.StreamMeleeConnectCode}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Border>
+                    <ImageButton x:Name="EditConnectCodeButton" Clicked="EditConnectCodeButton_Clicked" BackgroundColor="Transparent" Aspect="AspectFit" HeightRequest="2" WidthRequest="2">
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=Edit24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
         </VerticalStackLayout>
+        
+        <AbsoluteLayout HorizontalOptions="Center" VerticalOptions="EndAndExpand" Margin="0,0,0,6">
+            <Label Text="Closing this program will minimize it to the taskbar." FontSize="12" TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" VerticalTextAlignment="Center"/>
+        </AbsoluteLayout>
 
-        <VerticalStackLayout Spacing="6">
-            <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap">
-                <Label.FormattedText>
-                    <FormattedString>
-                        <Span Text="Your Connect Code: " FontAttributes="Bold" FontSize="20"/>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            
-            <HorizontalStackLayout Spacing="5">
-                <Border>
-                    <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Padding="18,0,18,0">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="{Binding Settings.StreamMeleeConnectCode}"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                </Border>
-                <ImageButton x:Name="EditConnectCodeButton" Clicked="EditConnectCodeButton_Clicked" BackgroundColor="Transparent" Aspect="AspectFit" HeightRequest="2" WidthRequest="2">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroupList>
-                            <VisualStateGroup Name="CommonStates">
-                                <VisualState Name="Normal">
-                                    <VisualState.Setters>
-                                        <Setter Property="Opacity" Value="1"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="Opacity" Value=".7"/>
-                                        <Setter Property="Scale" Value=".95"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateGroupList>
-                    </VisualStateManager.VisualStateGroups>
-                    <ImageButton.Source>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon=Edit24Filled}"/>
-                    </ImageButton.Source>
-                </ImageButton>
-            </HorizontalStackLayout>
-        </VerticalStackLayout>
+    </StackLayout>
 
-
-    </VerticalStackLayout>
-	
 </ContentPage>
