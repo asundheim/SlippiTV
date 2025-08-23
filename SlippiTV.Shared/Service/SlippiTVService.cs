@@ -5,7 +5,7 @@ namespace SlippiTV.Shared.Service;
 
 internal class SlippiTVService : ISlippiTVService
 {
-    private string _baseAddress;
+    private readonly string _baseAddress;
     private readonly HttpClient _client;
 
     public SlippiTVService(string baseAddress)

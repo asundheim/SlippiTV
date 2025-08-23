@@ -11,8 +11,8 @@
   <mp:PhoneIdentity PhoneProductId="8F2FC661-A36C-4B5C-BA80-F936ABCE8BB8" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>SlippiTV.Client</DisplayName>
-    <PublisherDisplayName>User Name</PublisherDisplayName>
+    <DisplayName>SlippiTV</DisplayName>
+    <PublisherDisplayName>ders</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -28,8 +28,8 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="SlippiTV.Client"
-        Description="SlippiTV.Client"
+        DisplayName="SlippiTV"
+        Description="SlippiTV"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">

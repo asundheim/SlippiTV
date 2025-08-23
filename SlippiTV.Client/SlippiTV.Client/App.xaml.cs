@@ -1,6 +1,4 @@
-﻿using H.NotifyIcon;
-using H.NotifyIcon.Core;
-using SlippiTV.Client.ViewModels;
+﻿using SlippiTV.Client.ViewModels;
 
 namespace SlippiTV.Client
 {

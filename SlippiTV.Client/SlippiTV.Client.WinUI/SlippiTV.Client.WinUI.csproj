@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+		<!--TODO summon the courage to rename the server project to disambiguate-->
+		<AssemblyName>SlippiTV</AssemblyName>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
 		<TargetPlatformMinVersion>10.0.26100.0</TargetPlatformMinVersion>
@@ -12,12 +14,13 @@
 		<UseWinUI>true</UseWinUI>
 		<EnableMsixTooling>true</EnableMsixTooling>
 		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
 		<UseMaui>true</UseMaui>
 		<!-- We do not want XAML files to be processed as .NET MAUI XAML, but rather WinUI XAML. -->
 		<EnableDefaultMauiItems>false</EnableDefaultMauiItems>
 		<!-- To develop, package, and publish an app to the Microsoft Store, see: https://aka.ms/MauiTemplateUnpackaged -->
 		<WindowsPackageType>None</WindowsPackageType>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<DefineConstants>$(DefineConstants);DISABLE_XAML_GENERATED_MAIN</DefineConstants>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -30,12 +33,12 @@
 	<ItemGroup>
 		<ProjectReference Include="..\SlippiTV.Client\SlippiTV.Client.csproj" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<!-- Make sure all image assets to be in the root of the package to match the other platforms -->
 		<Content Update="Assets\Images\*" TargetPath="%(Filename)%(Extension)" />
 	</ItemGroup>
-
+	
 	<ItemGroup>
 		<Manifest Include="$(ApplicationManifest)" />
 	</ItemGroup>

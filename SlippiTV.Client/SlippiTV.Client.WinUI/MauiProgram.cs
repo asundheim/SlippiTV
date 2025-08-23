@@ -1,10 +1,14 @@
 ﻿using H.NotifyIcon;
+using Microsoft.Maui.Hosting;
 using Microsoft.Maui.LifecycleEvents;
+using Microsoft.UI.Xaml;
 
 namespace SlippiTV.Client.WinUI
 {
     public static class MauiProgram
     {
+        public static Window? SlippiTVWindow = null;
+
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
@@ -23,6 +27,8 @@ namespace SlippiTV.Client.WinUI
                                     e.Cancel = true;
                                     window.Hide(enableEfficiencyMode: true);
                                 };
+
+                                SlippiTVWindow = window;
                             }
                         });
                     });

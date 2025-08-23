@@ -10,6 +10,6 @@ public class SlippiTVServiceFactory
 
     public ISlippiTVService GetService()
     {
-        return new SlippiTVService("localhost:7027");
+        return new SlippiTVService("slippi-tv.azurewebsites.net:443");
     }
 }
