@@ -15,7 +15,7 @@ public class SettingsManager
         string settingsFolder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SlippiTV");
         Directory.CreateDirectory(settingsFolder);
 
-        _settingsPath = Path.Join(settingsFolder, "settings.json");
+        _settingsPath = Path.Join(settingsFolder, "SlippiTV.settings.json");
         if (File.Exists(_settingsPath) &&
             File.ReadAllText(_settingsPath) is string settingsData &&
             JsonConvert.DeserializeObject<SlippiTVSettings>(settingsData) is SlippiTVSettings existingSettings)
