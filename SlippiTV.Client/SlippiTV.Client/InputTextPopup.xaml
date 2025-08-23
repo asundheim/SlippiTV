@@ -10,6 +10,11 @@
              Padding="0"
              Margin="0"
              BackgroundColor="Transparent">
+    <toolkit:Popup.Resources>
+        <ResourceDictionary>
+            <toolkit:IsStringNotNullOrEmptyConverter x:Key="StringToVisibilityConverter"/>
+        </ResourceDictionary>
+    </toolkit:Popup.Resources>
     
     <Border BackgroundColor="{AppThemeBinding Light=#DCDCDC, Dark=#333333}" StrokeShape="RoundRectangle 24" Margin="0" Padding="0" StrokeThickness="0" WidthRequest="360">
         <VerticalStackLayout Spacing="16" Padding="24,24,24,12">
@@ -25,7 +30,10 @@
             </VerticalStackLayout>
 
             <Border StrokeShape="RoundRectangle 12" StrokeThickness="0">
-                <Entry x:Name="ConnectCodeEntry" Placeholder="{Binding PlaceholderText}" TextColor="Black" BackgroundColor="{AppThemeBinding Light=#f1f1f1, Dark=#444444}"/>
+                <Entry x:Name="ConnectCodeEntry" 
+                       Placeholder="{Binding PlaceholderText}" 
+                       TextColor="{AppThemeBinding Light=#333333, Dark=#FAFAFA}" 
+                       BackgroundColor="{AppThemeBinding Light=#f1f1f1, Dark=#444444}"/>
             </Border>
 
             <FlexLayout AlignContent="Center" VerticalOptions="Center" HorizontalOptions="Center">
@@ -34,7 +42,8 @@
                     <Button x:Name="CancelButton" Text="Cancel" Clicked="CancelButton_Clicked"/>
                 </HorizontalStackLayout>
             </FlexLayout>
-            <Label Text="{Binding ErrorText}" TextColor="{AppThemeBinding Light=#DB5151, Dark=#DB5151}" HorizontalOptions="Center" FontAttributes="Italic"/>
+            <Label Text="{Binding ErrorText}" TextColor="{AppThemeBinding Light=#DB5151, Dark=#DB5151}" HorizontalOptions="Center" FontAttributes="Italic"
+                   IsVisible="{Binding ErrorText, Converter={StaticResource StringToVisibilityConverter}}"/>
         </VerticalStackLayout>
     </Border>
     
