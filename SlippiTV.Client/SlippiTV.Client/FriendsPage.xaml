@@ -38,40 +38,38 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <HorizontalStackLayout Grid.Column="0" Spacing="4" Padding="0,0,0,0" HeightRequest="40">
-                    <ImageButton x:Name="AddFriendsButton" Margin="0,0,0,0" Padding="-6,0,0,0" Clicked="AddFriendsButton_Clicked" BackgroundColor="Transparent">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroupList>
-                                <VisualStateGroup Name="CommonStates">
-                                    <VisualState Name="Normal">
-                                        <VisualState.Setters>
-                                            <Setter Property="Opacity" Value="1"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                    <VisualState Name="PointerOver">
-                                        <VisualState.Setters>
-                                            <Setter Property="Opacity" Value=".7"/>
-                                            <Setter Property="Scale" Value=".95"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateGroupList>
-                        </VisualStateManager.VisualStateGroups>
-                        <ImageButton.Source>
-                            <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="36"/>
-                        </ImageButton.Source>
-                    </ImageButton>
-                    <Label FontSize="18" Text="Add Friends by Connect Code" VerticalTextAlignment="Center" />
-                </HorizontalStackLayout>
+                <Button x:Name="AddFriendsButton"
+                            FontSize="18" Text="Add Friends by Connect Code" Grid.Column="0" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#222222, Dark=#FAFAFA}" CornerRadius="12"
+                            Margin="0,0,0,0" Padding="6,0,12,0" Clicked="AddFriendsButton_Clicked" BackgroundColor="{AppThemeBinding Light=#FaFaFa, Dark=#333333}">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value=".7"/>
+                                        <Setter Property="Scale" Value=".95"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                    <Button.ImageSource>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="32"/>
+                    </Button.ImageSource>
+                </Button>
 
-                <HorizontalStackLayout Grid.Column="2" Spacing="3">
-                    <ImageButton x:Name="AddFromRecentButton" Clicked="AddFromRecentButton_Clicked" MinimumHeightRequest="0" MinimumWidthRequest="0" >
-                        <ImageButton.Source>
-                            <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="18"/>
-                        </ImageButton.Source>
-                    </ImageButton>
-                    <Label FontSize="12" Text="Add from recent" VerticalTextAlignment="Center"/>
-                </HorizontalStackLayout>
+                <Button x:Name="AddFromRecentButton" Clicked="AddFromRecentButton_Clicked"
+                        Text="Add from recent" FontSize="12" TextColor="{AppThemeBinding Light=#222222, Dark=#FAFAFA}"
+                        MinimumHeightRequest="0" MinimumWidthRequest="0" BackgroundColor="{AppThemeBinding Light=#FaFaFa, Dark=#333333}" Padding="8,0,12,0" Grid.Column="2" CornerRadius="12">
+                    <Button.ImageSource>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="20"/>
+                    </Button.ImageSource>
+                </Button>
             </Grid>
 
             <CollectionView ItemsSource="{Binding Friends}">
@@ -114,7 +112,7 @@
                 x:Name="TaskbarIcon">
                 <FlyoutBase.ContextFlyout>
                     <MenuFlyout>
-                        <MenuFlyoutItem Command="{Binding ShowHideWindowCommand}" Text="Show/Hide Window" />
+                        <MenuFlyoutItem Command="{Binding ShowHideWindowCommand}" Text="Reveal Window" />
                         <MenuFlyoutSeparator />
                         <MenuFlyoutItem Command="{Binding ExitApplicationCommand}" Text="Quit" />
                     </MenuFlyout>

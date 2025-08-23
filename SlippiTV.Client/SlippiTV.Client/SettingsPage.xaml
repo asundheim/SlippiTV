@@ -63,15 +63,21 @@
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
-            <VerticalStackLayout Spacing="6">
-                <Label VerticalTextAlignment="Center" LineBreakMode="WordWrap">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Label VerticalTextAlignment="Center" LineBreakMode="WordWrap" Grid.Column="0" Grid.Row="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="{Binding WatchDolphinPathLabelText}" FontSize="20" FontAttributes="Bold"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <HorizontalStackLayout>
+                <HorizontalStackLayout Grid.Column="2" Grid.Row="1">
                     <Border>
                         <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation"  Padding="18,0,18,0" WidthRequest="360">
                             <Label.FormattedText>
@@ -88,18 +94,34 @@
                             VerticalOptions="Center"
                             Padding="16,4,16,8"/>
                 </HorizontalStackLayout>
-            </VerticalStackLayout>
+            </Grid>
 
-            <VerticalStackLayout Spacing="6">
-                <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Your Connect Code: " FontAttributes="Bold" FontSize="20"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <HorizontalStackLayout Spacing="5">
+                <BoxView HeightRequest="1" Color="#333333" Margin="0,0,0,6" Grid.Row="0"/>
+                <VerticalStackLayout Grid.Row="1">
+                    <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Your Connection Info: " FontAttributes="Bold" FontSize="20"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Margin="4,-4,0,0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="Fills Automatically From Local Files" FontSize="12" TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </VerticalStackLayout>
+
+                <HorizontalStackLayout Spacing="5" HorizontalOptions="End" Grid.Row="1">
                     <Border>
                         <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Padding="18,0,18,0">
                             <Label.FormattedText>
@@ -130,7 +152,7 @@
                         </ImageButton.Source>
                     </ImageButton>
                 </HorizontalStackLayout>
-            </VerticalStackLayout>
+            </Grid>
         </VerticalStackLayout>
 
         <local:BottomBar Grid.Row="2" BindingContext="{Binding ShellViewModel}" HeightRequest="20"/>

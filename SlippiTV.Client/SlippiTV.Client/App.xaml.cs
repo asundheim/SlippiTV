@@ -14,6 +14,8 @@ namespace SlippiTV.Client
             Window window = new Window(new AppShell() { BindingContext = new ShellViewModel() })
             {
                 Height = 800,
+                MinimumHeight = 300,
+                MinimumWidth = 500,
                 Width = 500,
                 Title = "SlippiTV"
             };

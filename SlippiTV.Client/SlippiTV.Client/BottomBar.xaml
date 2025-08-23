@@ -21,7 +21,7 @@
         </ResourceDictionary>
     </ContentView.Resources>
     
-    <Grid Margin="10,0,10,2">
+    <Grid Margin="10,0,10,6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -29,47 +29,47 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <HorizontalStackLayout Grid.Column="0" Spacing="0">
+
+        <HorizontalStackLayout Grid.Column="0" Margin="0,0,4,0" Spacing="4" HorizontalOptions="Start">
             <Label Text="Dolphin"
                    FontSize="12" 
                    TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" 
                    VerticalTextAlignment="Center"
                    ToolTipProperties.Text="{Binding DolphinStatus, Converter={StaticResource LiveStatusToStatusBarToolTipConverter}}"/>
             <!--the way these margins are set messes with the whole vertical alignment if everything isn't perfect :/ -->
-            <Image WidthRequest="12" VerticalOptions="Center" Margin="0,4,0,0">
+            <Image WidthRequest="12" VerticalOptions="Center" Margin="0,2,0,0">
                 <Image.Source>
                     <FontImageSource Glyph="{mi:FluentFilled Icon=Circle16Filled}" Color="{Binding DolphinStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
                 </Image.Source>
             </Image>
         </HorizontalStackLayout>
-        
 
-        <HorizontalStackLayout Grid.Column="1" Margin="8,0,0,0" Spacing="1" IsVisible="{Binding DolphinStatus, Converter={StaticResource LiveStatusToBoolConverter}}">
+        <HorizontalStackLayout Grid.Column="1" Margin="4,0,4,0" Spacing="1" IsVisible="{Binding DolphinStatus, Converter={StaticResource LiveStatusToBoolConverter}}">
             <Label Text="Relay"
                    FontSize="12"
                    TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}"
                    VerticalTextAlignment="Center"
                    ToolTipProperties.Text="{Binding DolphinStatus, Converter={StaticResource LiveStatusToStatusBarToolTipConverter}}"/>
-            <Image WidthRequest="12" VerticalOptions="Center" Margin="0,4,0,0">
+            <Image WidthRequest="12" VerticalOptions="Center" Margin="4,2,0,0">
                 <Image.Source>
                     <FontImageSource Glyph="{mi:FluentFilled Icon=Circle16Filled}" Color="{Binding RelayStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
                 </Image.Source>
             </Image>
         </HorizontalStackLayout>
 
-        <HorizontalStackLayout Grid.Column="2" Margin="8,2,0,0">
-            <ImageButton x:Name="RefreshButton" MinimumWidthRequest="0" MinimumHeightRequest="0" Padding="0" Margin="0" Command="{Binding ReconnectCommand}" >
-                <ImageButton.Source>
-                    <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowCounterclockwise12Filled}" Color="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" Size="14"/>
-                </ImageButton.Source>
-            </ImageButton>
-        </HorizontalStackLayout>
-
+        <ImageButton x:Name="RefreshButton" MinimumWidthRequest="0" MinimumHeightRequest="0" Padding="0" Margin="4,0,0,0" Command="{Binding ReconnectCommand}" Grid.Column="2">
+            <ImageButton.Source>
+                <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowCounterclockwise12Filled}" Color="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" Size="14"/>
+            </ImageButton.Source>
+        </ImageButton>
 
         <Label Text="Closing this program will collapse it to the icon tray." 
-               Grid.Column="4"
+               Grid.Column="3"
+               MinimumHeightRequest="18"
                FontSize="12" 
-               TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" 
-               VerticalTextAlignment="Center"/>
+               TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}"
+               LineBreakMode="TailTruncation"
+               VerticalTextAlignment="Center"
+               HorizontalOptions="End"/>
     </Grid>
 </ContentView>
