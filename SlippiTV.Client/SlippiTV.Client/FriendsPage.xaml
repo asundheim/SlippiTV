@@ -26,100 +26,97 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <VerticalStackLayout Padding="10" Spacing="10" Grid.Row="0">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+        <Grid Padding="10" RowSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
 
-                <Button x:Name="AddFriendsButton"
-                            FontSize="18" Text="Add Friends by Connect Code" Grid.Column="0" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#222222, Dark=#FAFAFA}" CornerRadius="12"
-                            Margin="0,0,0,0" Padding="6,0,12,0" Clicked="AddFriendsButton_Clicked" BackgroundColor="{AppThemeBinding Light=#FaFaFa, Dark=#333333}">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroupList>
-                            <VisualStateGroup Name="CommonStates">
-                                <VisualState Name="Normal">
-                                    <VisualState.Setters>
-                                        <Setter Property="Opacity" Value="1"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="Opacity" Value=".7"/>
-                                        <Setter Property="Scale" Value=".95"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateGroupList>
-                    </VisualStateManager.VisualStateGroups>
-                    <Button.ImageSource>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="32"/>
-                    </Button.ImageSource>
-                </Button>
-
-                <Button x:Name="AddFromRecentButton" Clicked="AddFromRecentButton_Clicked"
+            <Button x:Name="AddFriendsButton"
+                    FontSize="18" Text="Add Friends by Connect Code" Grid.Column="0" FontAttributes="Bold" TextColor="{AppThemeBinding Light=#222222, Dark=#FAFAFA}" CornerRadius="12"
+                    Margin="0,0,0,0" Padding="6,0,12,0" Clicked="AddFriendsButton_Clicked" BackgroundColor="{AppThemeBinding Light=#FaFaFa, Dark=#333333}">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup Name="CommonStates">
+                            <VisualState Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value="1"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="Opacity" Value=".85"/>
+                                    <Setter Property="Scale" Value=".98"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+                <Button.ImageSource>
+                    <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="32"/>
+                </Button.ImageSource>
+            </Button>
+            <!--<Button x:Name="AddFromRecentButton" Clicked="AddFromRecentButton_Clicked"
                         Text="Add from recent" FontSize="12" TextColor="{AppThemeBinding Light=#222222, Dark=#FAFAFA}"
                         MinimumHeightRequest="0" MinimumWidthRequest="0" BackgroundColor="{AppThemeBinding Light=#FaFaFa, Dark=#333333}" Padding="8,0,12,0" Grid.Column="2" CornerRadius="12">
-                    <Button.ImageSource>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="20"/>
-                    </Button.ImageSource>
-                </Button>
-            </Grid>
-
-            <CollectionView ItemsSource="{Binding Friends}">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate x:DataType="{x:Type vm:FriendViewModel}">
-                        <VerticalStackLayout Spacing="4" Padding="0,0,0,6">
-                            <BoxView HeightRequest="1" Color="#333333"/>
-                            <HorizontalStackLayout Spacing="0" Padding="0,0,0,3">
-                                <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}" VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent">
+                <Button.ImageSource>
+                    <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor=#10FA94}" Size="20"/>
+                </Button.ImageSource>
+            </Button>-->
+        </Grid>
+        <CollectionView ItemsSource="{Binding Friends}" Grid.Row="1">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="{x:Type vm:FriendViewModel}">
+                    <VerticalStackLayout Spacing="4" Padding="0,0,0,6">
+                        <BoxView HeightRequest="1" Color="#333333"/>
+                        <HorizontalStackLayout Spacing="0" Padding="0,0,0,3">
+                            <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}" VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent">
+                                <ImageButton.Source>
+                                    <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}" />
+                                </ImageButton.Source>
+                            </ImageButton>
+                            <Label Text="{Binding ConnectCode}" FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center"/>
+                            <FlexLayout JustifyContent="SpaceBetween" Padding="10, 2, 4, 0">
+                                <Image MaximumHeightRequest="18" VerticalOptions="Center" Margin="0" ToolTipProperties.Text="{Binding LiveStatus, Converter={StaticResource LiveStatusToToolTipConverter}}">
+                                    <Image.Source>
+                                        <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled}" Color="{Binding LiveStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
+                                    </Image.Source>
+                                </Image>
+                                <ImageButton x:Name="FriendsMore" VerticalOptions="Center" Margin="0" Padding="0,8,0,0">
+                                    <ImageButton.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
+                                    </ImageButton.GestureRecognizers>
                                     <ImageButton.Source>
-                                        <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}" />
+                                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}"/>
                                     </ImageButton.Source>
                                 </ImageButton>
-                                <Label Text="{Binding ConnectCode}" FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center"/>
-                                <FlexLayout JustifyContent="SpaceBetween" Padding="10, 2, 4, 0">
-                                    <Image MaximumHeightRequest="18" VerticalOptions="Center" Margin="0" ToolTipProperties.Text="{Binding LiveStatus, Converter={StaticResource LiveStatusToToolTipConverter}}">
-                                        <Image.Source>
-                                            <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled}" Color="{Binding LiveStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
-                                        </Image.Source>
-                                    </Image>
-                                    <ImageButton x:Name="FriendsMore" VerticalOptions="Center" Margin="0" Padding="0,8,0,0">
-                                        <ImageButton.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
-                                        </ImageButton.GestureRecognizers>
-                                        <ImageButton.Source>
-                                            <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}"/>
-                                        </ImageButton.Source>
-                                    </ImageButton>
-                                </FlexLayout>
-                            </HorizontalStackLayout>
-                        </VerticalStackLayout>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-
-            <tb:TaskbarIcon
-                IconSource="slippitv.ico"
-                LeftClickCommand="{Binding ShowHideWindowCommand}"
-                NoLeftClickDelay="True"
-                x:Name="TaskbarIcon">
-                <FlyoutBase.ContextFlyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem Command="{Binding ShowHideWindowCommand}" Text="Reveal Window" />
-                        <MenuFlyoutSeparator />
-                        <MenuFlyoutItem Command="{Binding ExitApplicationCommand}" Text="Quit" />
-                    </MenuFlyout>
-                </FlyoutBase.ContextFlyout>
-            </tb:TaskbarIcon>
-        </VerticalStackLayout>
-
-        <local:BottomBar Grid.Row="2" BindingContext="{Binding ShellViewModel}" HeightRequest="20"/>
+                            </FlexLayout>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+        
+        <local:BottomBar Grid.Row="3" BindingContext="{Binding ShellViewModel}" HeightRequest="20"/>
+        
+        <tb:TaskbarIcon
+            IconSource="slippitv.ico"
+            LeftClickCommand="{Binding ShowHideWindowCommand}"
+            NoLeftClickDelay="True"
+            x:Name="TaskbarIcon">
+            <FlyoutBase.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Command="{Binding ShowHideWindowCommand}" Text="Reveal Window" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem Command="{Binding ExitApplicationCommand}" Text="Quit" />
+                </MenuFlyout>
+            </FlyoutBase.ContextFlyout>
+        </tb:TaskbarIcon>
     </Grid>
 </ContentPage>

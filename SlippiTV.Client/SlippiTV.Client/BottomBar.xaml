@@ -44,7 +44,7 @@
             </Image>
         </HorizontalStackLayout>
 
-        <HorizontalStackLayout Grid.Column="1" Margin="4,0,4,0" Spacing="1" IsVisible="{Binding DolphinStatus, Converter={StaticResource LiveStatusToBoolConverter}}">
+        <HorizontalStackLayout Grid.Column="1" Margin="4,0,4,0" Spacing="1">
             <Label Text="Relay"
                    FontSize="12"
                    TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}"
