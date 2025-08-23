@@ -1,3 +1,5 @@
+using SlippiTV.Shared;
+
 namespace SlippiTV.Client;
 
 public partial class InputTextPopup
@@ -20,6 +22,20 @@ public partial class InputTextPopup
 
     public string PlaceholderText { get; set; }
     public string Title { get; set; }
+    public string ErrorText 
+    { 
+        get;
+        set 
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(ErrorText));
+            }
+        }
+    } = string.Empty;
+
+    private const string _invalidConnectCodeErrorText = "Invalid connect code format";
 
     private async void CancelButton_Clicked(object sender, EventArgs e)
     {
@@ -28,6 +44,14 @@ public partial class InputTextPopup
 
     private async void SubmitButton_Clicked(object sender, EventArgs e)
     {
-        await CloseAsync(ConnectCodeEntry.Text);
+        string rawCode = ConnectCodeEntry.Text;
+        if (ConnectCodeUtils.IsValidConnectCode(rawCode))
+        {
+            await CloseAsync(ConnectCodeUtils.NormalizeConnectCode(rawCode));
+        }
+        else
+        {
+            ErrorText = _invalidConnectCodeErrorText;
+        }
     }
 }

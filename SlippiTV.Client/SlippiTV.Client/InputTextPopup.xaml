@@ -11,7 +11,7 @@
              Margin="0"
              >
     <Border BackgroundColor="#FAFAFA" StrokeShape="RoundRectangle 24" Margin="0" Padding="0" StrokeThickness="0">
-    <VerticalStackLayout Spacing="16" Padding="24">
+        <VerticalStackLayout Spacing="16" Padding="24">
             <VerticalStackLayout Spacing="8">
                 <Label Text="{Binding Title}"
                    FontSize="24"
@@ -32,6 +32,7 @@
                     <Button x:Name="SubmitButton" Text="Submit" Clicked="SubmitButton_Clicked"/>
                     <Button x:Name="CancelButton" Text="Cancel" Clicked="CancelButton_Clicked"/>
                 </HorizontalStackLayout>
+                <Label Text="{Binding ErrorText}" TextColor="Red"/>
             </FlexLayout>
 
         </VerticalStackLayout>

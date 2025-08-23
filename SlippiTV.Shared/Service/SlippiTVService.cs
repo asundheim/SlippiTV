@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.WebSockets;
+using static SlippiTV.Shared.ConnectCodeUtils;
 
 namespace SlippiTV.Shared.Service;
 
@@ -45,8 +46,6 @@ internal class SlippiTVService : ISlippiTVService
 
         return clientSocket;
     }
-
-    private static string SanitizeConnectCode(string code) => code.Replace("#", "-");
 
     public void Dispose()
     {
