@@ -36,7 +36,7 @@ public partial class FriendsPage : ContentPage
         var result = await this.ShowPopupAsync<string>(
             new InputTextPopup(
                 placeholderText: "Enter Connect Code (ABC#123)",
-                title: "Input Your Friend's Connect Code"
+                title: "Input Connect Code"
                 ), 
             new PopupOptions 
             { 

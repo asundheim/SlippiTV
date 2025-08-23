@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
+using Microsoft.Maui.Controls.Shapes;
 using SlippiTV.Client.ViewModels;
 using System.Diagnostics.CodeAnalysis;
 
@@ -70,9 +71,16 @@ public partial class SettingsPage : ContentPage
         var result = await this.ShowPopupAsync<string>(
             new InputTextPopup(
                 placeholderText: "Enter Connect Code (ABC#123)",
-                title: "Input Your Slippi Connect Code"
+                title: "Input Your Connect Code"
             ),
-            PopupOptions.Empty);
+            new PopupOptions
+            {
+                Shape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(0),
+                    StrokeThickness = 0,
+                }
+            });
         if (result.WasDismissedByTappingOutsideOfPopup || string.IsNullOrEmpty(result.Result))
         {
             return;

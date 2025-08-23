@@ -12,6 +12,8 @@
                 <!-- Other merged dictionaries here -->
             </ResourceDictionary.MergedDictionaries>
             <!-- Other app resources here -->
+            <Thickness x:Key="TextControlBorderThemeThickness">0</Thickness>
+            <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
         </ResourceDictionary>
     </maui:MauiWinUIApplication.Resources>
 </maui:MauiWinUIApplication>
