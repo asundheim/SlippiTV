@@ -37,7 +37,15 @@ public class FriendViewModel : BaseNotifyPropertyChanged
 
     public async Task Refresh()
     {
-        LiveStatus = await SlippiTVService.GetStatus(ConnectCode);
+        try
+        {
+            LiveStatus = await SlippiTVService.GetStatus(ConnectCode);
+            Parent.ShellViewModel.RelayStatus = LiveStatus.Active;
+        }
+        catch
+        {
+            Parent.ShellViewModel.RelayStatus = LiveStatus.Offline;
+        }
     }
 
     public async Task Watch(CancellationToken cancellation)

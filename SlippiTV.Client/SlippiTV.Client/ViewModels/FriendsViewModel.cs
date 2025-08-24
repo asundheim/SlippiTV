@@ -36,6 +36,21 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
                     await friend.Refresh();
                 }
 
+                // Check on ourselves
+                try
+                {
+                    var myStatus = await SlippiTVService.GetStatus(Settings.StreamMeleeConnectCode);
+                    if (myStatus == LiveStatus.Active)
+                    {
+                        ShellViewModel.AnimateRelayStatus = true;
+                    }
+                    else
+                    {
+                        ShellViewModel.AnimateRelayStatus = false;
+                    }
+                }
+                catch { }
+
                 await Task.Delay(5000);
             }
         });

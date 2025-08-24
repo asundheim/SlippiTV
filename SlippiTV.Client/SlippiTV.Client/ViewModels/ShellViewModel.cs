@@ -54,6 +54,16 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
         }
     } = LiveStatus.Offline;
 
+    public bool AnimateRelayStatus
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
+
     // TODO extract this all out into some connection manager
 
     private CancellationTokenSource _disconnectSource = new CancellationTokenSource();

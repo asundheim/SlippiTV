@@ -60,6 +60,9 @@
 	  <Compile Update="FriendsPage.xaml.cs">
 	    <DependentUpon>FriendsPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="ErrorPopup.xaml.cs">
+	    <DependentUpon>ErrorPopup.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -67,6 +70,9 @@
 		 <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="BottomBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ErrorPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SelectableListViewPopup.xaml">

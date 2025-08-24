@@ -58,7 +58,21 @@ public partial class FriendsPage : ContentPage
     {
         if (sender is ImageButton button && button.BindingContext is FriendViewModel friend)
         {
-            await friend.Watch(CancellationToken.None);
+            if (string.IsNullOrEmpty(FriendsViewModel.Settings.WatchDolphinPath) || string.IsNullOrEmpty(FriendsViewModel.Settings.WatchMeleeISOPath))
+            {
+                await this.ShowPopupAsync(new ErrorPopup("Invalid replay Dolphin path or SSBM .iso path"), new PopupOptions
+                {
+                    Shape = new RoundRectangle
+                    {
+                        CornerRadius = new CornerRadius(0),
+                        StrokeThickness = 0,
+                    }
+                });
+            }
+            else
+            {
+                await friend.Watch(CancellationToken.None);
+            }
         }
     }
 
