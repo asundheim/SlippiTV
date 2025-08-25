@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36025.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlippiTV", "SlippiTV\SlippiTV.csproj", "{70E9556A-CE74-4069-8913-921B20F9B1E4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlippiTV.Server", "SlippiTV.Server\SlippiTV.Server.csproj", "{70E9556A-CE74-4069-8913-921B20F9B1E4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlippiTV.Shared", "SlippiTV.Shared\SlippiTV.Shared.csproj", "{16B5E957-3253-4602-AC9E-A286875D0642}"
 EndProject
