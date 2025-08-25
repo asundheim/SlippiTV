@@ -24,14 +24,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid>
+    <Grid Margin="0,8,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid Padding="10" RowSpacing="10">
+        <Grid RowSpacing="10" Margin="0,0,0,10" Padding="10">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -73,41 +73,71 @@
         <CollectionView ItemsSource="{Binding Friends}" Grid.Row="1">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="{x:Type vm:FriendViewModel}">
-                    <VerticalStackLayout Spacing="4" Padding="0,0,0,6">
+                    <VerticalStackLayout Spacing="4" Padding="10,0,10,6">
                         <BoxView HeightRequest="1" Color="#333333"/>
-                        <HorizontalStackLayout Spacing="0" Padding="0,0,0,3">
-                            <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}" VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent">
-                                <ImageButton.Source>
-                                    <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}" />
-                                </ImageButton.Source>
-                            </ImageButton>
-                            <Label Text="{Binding ConnectCode}" FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center"/>
-                            <FlexLayout JustifyContent="SpaceBetween" Padding="10, 2, 4, 0">
-                                <Image MaximumHeightRequest="18" VerticalOptions="Center" Margin="0" ToolTipProperties.Text="{Binding LiveStatus, Converter={StaticResource LiveStatusToToolTipConverter}}">
+                        <Grid Padding="0,0,0,3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+
+                            <AbsoluteLayout>
+                                <Label AbsoluteLayout.LayoutBounds=".5,.5,1,10" AbsoluteLayout.LayoutFlags="SizeProportional" BackgroundColor="red">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="23"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+                                <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}"
+                                             VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent" Grid.Column="0" Grid.Row="0">
+                                    <ImageButton.Source>
+                                        <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}" />
+                                    </ImageButton.Source>
+                                </ImageButton>
+                            </AbsoluteLayout>
+
+
+                            <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Start">
+                                <Label Text="{Binding ConnectCode}" FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center"/>
+                                <Image MaximumHeightRequest="18" VerticalOptions="Center" Margin="6,0,0,0" ToolTipProperties.Text="{Binding LiveStatus, Converter={StaticResource LiveStatusToToolTipConverter}}">
                                     <Image.Source>
                                         <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled}" Color="{Binding LiveStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
                                     </Image.Source>
                                 </Image>
-                                <Label IsVisible="{Binding ActiveGameInfo, Converter={StaticResource IsNotNullConverter}}">
+
+                                <Label IsVisible="{Binding ActiveGameInfo, Converter={StaticResource IsNotNullConverter}}" 
+                                       FontSize="10" VerticalTextAlignment="Center" Padding="12,0,0,2" Grid.Column="2" Grid.ColumnSpan="1" Margin="0" HorizontalOptions="Start">
                                     <Label.FormattedText>
                                         <FormattedString>
-                                            <Span Text="vs. "/>
-                                            <Span Text="{Binding ActiveGameInfo.OpponentDisplayName}"/>
-                                            <Span Text=", Game "/>
+                                            <Span Text="Playing Game "/>
                                             <Span Text="{Binding ActiveGameInfo.GameNumber}"/>
+                                            <Span Text=" vs. "/>
+                                            <Span Text="{Binding ActiveGameInfo.OpponentDisplayName}"/>
                                         </FormattedString>
                                     </Label.FormattedText>
                                 </Label>
-                                <ImageButton x:Name="FriendsMore" VerticalOptions="Center" Margin="0" Padding="0,8,0,0">
-                                    <ImageButton.GestureRecognizers>
-                                        <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
-                                    </ImageButton.GestureRecognizers>
-                                    <ImageButton.Source>
-                                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}"/>
-                                    </ImageButton.Source>
-                                </ImageButton>
-                            </FlexLayout>
-                        </HorizontalStackLayout>
+                            </HorizontalStackLayout>
+                                
+
+
+                            <ImageButton x:Name="FriendsMore" VerticalOptions="Center" Margin="0" Padding="0,8,0,0" Grid.Column="3" HorizontalOptions="End">
+                                <ImageButton.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
+                                </ImageButton.GestureRecognizers>
+                                <ImageButton.Source>
+                                    <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}"/>
+                                </ImageButton.Source>
+                            </ImageButton>
+
+                        </Grid>
                     </VerticalStackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

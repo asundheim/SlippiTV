@@ -91,4 +91,13 @@ public partial class SettingsPage : ContentPage
 
         SettingsManager.Instance.Settings.StreamMeleeConnectCode = result.Result;
     }
+
+    private void UpdateSlippiTV_Clicked(object sender, EventArgs e)
+    {
+        //PickOptions options = new PickOptions()
+        //{
+        //    FileTypes = new FilePickerFileType()
+        //}
+        return;
+    }
 }
