@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using Newtonsoft.Json;
+using System.Net;
 using System.Net.WebSockets;
 using static SlippiTV.Shared.ConnectCodeUtils;
 
@@ -26,6 +27,16 @@ internal class SlippiTVService : ISlippiTVService
             HttpStatusCode.OK => LiveStatus.Active,
             HttpStatusCode.NoContent => LiveStatus.Idle,
             _ => LiveStatus.Offline
+        };
+    }
+
+    public async Task<ActiveGameInfo?> GetActiveGameInfo(string user)
+    {
+        var result = await _client.GetAsync($"/status/activity/{SanitizeConnectCode(user)}/game", CancellationToken.None);
+        return result.StatusCode switch
+        {
+            HttpStatusCode.OK => JsonConvert.DeserializeObject<ActiveGameInfo>(await result.Content.ReadAsStringAsync()),
+            _ => null
         };
     }
 

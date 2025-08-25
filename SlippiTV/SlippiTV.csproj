@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="Slippi.NET" Version="0.4.2" />-->
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-	<PackageReference Include="Slippi.NET" Version="0.6.0"/>
+	<PackageReference Include="Slippi.NET" Version="0.7.0"/>
+	<!--<ProjectReference Include="..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,7 @@
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
 using Microsoft.Maui.Controls.Shapes;
+using SlippiTV.Client.Platforms.Windows;
 using SlippiTV.Client.ViewModels;
 using System.Diagnostics.CodeAnalysis;
 
@@ -32,6 +33,8 @@ public partial class SettingsPage : ContentPage
 
     private async void MeleeIsoBrowseButton_Clicked(object sender, EventArgs e)
     {
+        //using DolphinRustInvoker invoker = await DolphinRustInvoker.CreateAsync(SettingsViewModel.Settings.WatchMeleeISOPath, System.IO.Path.Join(SettingsViewModel.Settings.SlippiLauncherFolder, "netplay", "User", "Slippi"), "3.5.1");
+
         PickOptions options = new PickOptions()
         {
             FileTypes = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>

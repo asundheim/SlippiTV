@@ -9,4 +9,6 @@ public interface ISlippiTVService : IDisposable
     Task<ClientWebSocket> WatchStream(string user);
 
     Task<LiveStatus> GetStatus(string user);
+
+    Task<ActiveGameInfo?> GetActiveGameInfo(string user);
 }

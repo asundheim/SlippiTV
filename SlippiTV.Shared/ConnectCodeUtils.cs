@@ -13,4 +13,5 @@ public static partial class ConnectCodeUtils
 
     public static string NormalizeConnectCode(string code) => code.ToUpper();
     public static string SanitizeConnectCode(string code) => code.Replace("#", "-");
+    public static string UnsanitizeConnectCode(string code) => code.Replace("-", "#");
 }

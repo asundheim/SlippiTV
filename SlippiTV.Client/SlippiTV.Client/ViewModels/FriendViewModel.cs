@@ -24,6 +24,15 @@ public class FriendViewModel : BaseNotifyPropertyChanged
     public SlippiTVSettings Settings => SettingsManager.Instance.Settings;
 
     public string ConnectCode { get; }
+    public ActiveGameInfo? ActiveGameInfo 
+    { 
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
 
     public LiveStatus LiveStatus
     {
@@ -41,6 +50,16 @@ public class FriendViewModel : BaseNotifyPropertyChanged
         {
             LiveStatus = await SlippiTVService.GetStatus(ConnectCode);
             Parent.ShellViewModel.RelayStatus = LiveStatus.Active;
+
+            if (LiveStatus == LiveStatus.Active)
+            {
+                var gameInfo = await SlippiTVService.GetActiveGameInfo(ConnectCode);
+                ActiveGameInfo = gameInfo;
+            }
+            else
+            {
+                ActiveGameInfo = null;
+            }
         }
         catch
         {

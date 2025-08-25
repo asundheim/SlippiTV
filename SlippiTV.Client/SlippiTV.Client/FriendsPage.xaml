@@ -18,6 +18,7 @@
                     <service:LiveStatus>Active</service:LiveStatus>
                 </toolkit:EnumToBoolConverter.TrueValues>
             </toolkit:EnumToBoolConverter>
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter"/>
             <converters:LiveStatusToColorConverter x:Key="LiveStatusToColorConverter"/>
             <converters:LiveStatusToToolTipConverter x:Key="LiveStatusToToolTipConverter"/>
         </ResourceDictionary>
@@ -87,6 +88,16 @@
                                         <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled}" Color="{Binding LiveStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
                                     </Image.Source>
                                 </Image>
+                                <Label IsVisible="{Binding ActiveGameInfo, Converter={StaticResource IsNotNullConverter}}">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="vs. "/>
+                                            <Span Text="{Binding ActiveGameInfo.OpponentDisplayName}"/>
+                                            <Span Text=", Game "/>
+                                            <Span Text="{Binding ActiveGameInfo.GameNumber}"/>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
                                 <ImageButton x:Name="FriendsMore" VerticalOptions="Center" Margin="0" Padding="0,8,0,0">
                                     <ImageButton.GestureRecognizers>
                                         <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
