@@ -14,4 +14,6 @@ public class ActiveGameInfo
     public string OpponentDisplayName { get; set; } = string.Empty;
 
     public int GameNumber { get; set; } = 1;
+
+    public int CurrentViewerCount { get; set; } = 1;
 }

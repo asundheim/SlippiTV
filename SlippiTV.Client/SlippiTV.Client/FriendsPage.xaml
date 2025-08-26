@@ -88,22 +88,34 @@
                             </Grid.RowDefinitions>
 
 
-                            <AbsoluteLayout>
-                                <Label AbsoluteLayout.LayoutBounds=".5,.5,1,10" AbsoluteLayout.LayoutFlags="SizeProportional" BackgroundColor="red">
-                                    <Label.FormattedText>
-                                        <FormattedString>
-                                            <Span Text="23"/>
-                                        </FormattedString>
-                                    </Label.FormattedText>
-                                </Label>
+                            <HorizontalStackLayout Grid.Column="0" Grid.Row="0" HorizontalOptions="Start">
                                 <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}"
-                                             VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent" Grid.Column="0" Grid.Row="0">
+                                            VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent" >
                                     <ImageButton.Source>
                                         <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}" />
                                     </ImageButton.Source>
                                 </ImageButton>
-                            </AbsoluteLayout>
 
+  
+                                
+                                <HorizontalStackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="End" Margin="-8,0,0,0">
+                                    <Image MaximumHeightRequest="14" VerticalOptions="Center" Margin="0,4,0,0" ToolTipProperties.Text="Active Viewers">
+                                        <Image.Source>
+                                            <FontImageSource Glyph="{mi:FluentFilled Icon=Person24Filled, IconColor={StaticResource StatusGreen}}"/>
+                                        </Image.Source>
+                                    </Image>
+
+                                    <Label IsVisible="True" 
+                                       FontSize="10" VerticalTextAlignment="Center" Padding="2,4,12,2" Grid.Column="2" Grid.ColumnSpan="1" Margin="0" HorizontalOptions="Start">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <!--Span Text="{Binding ActiveGameInfo.CurrentViewerCount}" TextColor="{StaticResource StatusGreen}"/>-->
+                                                    <Span Text="23" TextColor="{StaticResource StatusGreen}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </HorizontalStackLayout>
+                            </HorizontalStackLayout>
 
                             <HorizontalStackLayout Grid.Column="1" HorizontalOptions="Start">
                                 <Label Text="{Binding ConnectCode}" FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center"/>
