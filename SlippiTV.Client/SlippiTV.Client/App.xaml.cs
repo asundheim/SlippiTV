@@ -11,7 +11,7 @@ namespace SlippiTV.Client
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            Window window = new Window(new AppShell() { BindingContext = new ShellViewModel() })
+            Window window = new Window()
             {
                 Height = 800,
                 MinimumHeight = 400,
@@ -19,6 +19,7 @@ namespace SlippiTV.Client
                 Width = 500,
                 Title = "SlippiTV"
             };
+            window.Page = new SplashScreenShell(window);
 
             return window;
         }

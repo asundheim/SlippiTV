@@ -33,7 +33,7 @@ public partial class SettingsPage : ContentPage
 
     private async void MeleeIsoBrowseButton_Clicked(object sender, EventArgs e)
     {
-        //using DolphinRustInvoker invoker = await DolphinRustInvoker.CreateAsync(SettingsViewModel.Settings.WatchMeleeISOPath, System.IO.Path.Join(SettingsViewModel.Settings.SlippiLauncherFolder, "netplay", "User", "Slippi"), "3.5.1");
+        //using DolphinRustInvoker invoker = await DolphinRustInvoker.CreateAsync();
 
         PickOptions options = new PickOptions()
         {

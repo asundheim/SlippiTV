@@ -103,6 +103,8 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
 
     public int Version { get; set; } = 3;
 
+    public string SlippiVersion { get; set; } = string.Empty;
+
     private void SaveSettings()
     {
         SettingsManager.Instance?.SaveSettings();

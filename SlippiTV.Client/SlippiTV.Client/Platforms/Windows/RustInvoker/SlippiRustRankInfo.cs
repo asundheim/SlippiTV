@@ -3,7 +3,7 @@
 namespace SlippiTV.Client.Platforms.Windows.RustInvoker;
 
 [StructLayout(LayoutKind.Sequential)]
-internal struct SlippiRustRankInfo
+public struct SlippiRustRankInfo
 {
     public int FetchStatus;
     public SlippiRustRank Rank;
