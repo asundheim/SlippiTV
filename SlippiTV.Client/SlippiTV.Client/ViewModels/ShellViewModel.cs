@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Slippi.NET.Console;
 using Slippi.NET.Console.Types;
+using SlippiTV.Client.Platforms.Windows;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
 using System.Collections.Concurrent;
@@ -10,7 +11,7 @@ namespace SlippiTV.Client.ViewModels;
 
 public partial class ShellViewModel : BaseNotifyPropertyChanged
 {
-    public ShellViewModel() 
+    private ShellViewModel() 
     {
         SlippiTVService = SlippiTVServiceFactory.Instance.GetService();
 
@@ -20,6 +21,23 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
         ConnectToDolphin();
     }
 
+    public static async Task<ShellViewModel> CreateAsync()
+    {
+        var viewModel = new ShellViewModel();
+
+        if (!string.IsNullOrEmpty(viewModel.Settings.SlippiLauncherFolder) && 
+            !string.IsNullOrEmpty(viewModel.Settings.WatchMeleeISOPath) &&
+            !string.IsNullOrEmpty(viewModel.Settings.SlippiVersion))
+        {
+            viewModel.DolphinRustInvoker = await DolphinRustInvoker.CreateAsync(
+                viewModel.Settings.WatchMeleeISOPath,
+                Path.Join(viewModel.Settings.SlippiLauncherFolder, "netplay", "User", "Slippi"),
+                viewModel.Settings.SlippiVersion);
+        }
+
+        return viewModel;
+    }
+
     public FriendsViewModel FriendsViewModel { get; set; }
     public SettingsViewModel SettingsViewModel { get; set; }
 
@@ -27,6 +45,8 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
 
     public DolphinConnection DolphinConnection { get; set; }
     public ISlippiTVService SlippiTVService { get; set; }
+
+    public DolphinRustInvoker? DolphinRustInvoker { get; private set; }
 
     public LiveStatus DolphinStatus
     {
