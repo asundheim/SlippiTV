@@ -4,6 +4,7 @@ using Slippi.NET.Console.Types;
 using SlippiTV.Client.Platforms.Windows;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
+using SlippiTV.Shared.Types;
 using System.Collections.Concurrent;
 using System.Diagnostics.CodeAnalysis;
 

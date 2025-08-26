@@ -1,6 +1,6 @@
 ﻿using __XamlGeneratedCode__;
 using CommunityToolkit.Maui.Converters;
-using SlippiTV.Shared.Service;
+using SlippiTV.Shared.Types;
 using System.Globalization;
 
 namespace SlippiTV.Client.Converters;

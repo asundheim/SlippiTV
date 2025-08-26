@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SlippiTV.Server.Streams;
 using SlippiTV.Shared.SocketUtils;
-using SlippiTV.Streams;
 
-namespace SlippiTV.Controllers;
+namespace SlippiTV.Server.Controllers;
 
 [ApiController]
 public class StreamController : ControllerBase
@@ -48,10 +48,15 @@ public class StreamController : ControllerBase
             {
                 try
                 {
+                    stream.AddWatcher();
                     using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
                     await SocketUtils.HandleSocket(webSocket, null, stream.GetDataStream(), _shutdown);
                 }
                 catch { }
+                finally
+                {
+                    stream.RemoveWatcher();
+                }
             }
             else
             {

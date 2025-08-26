@@ -151,18 +151,21 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
         string userJsonPath = Path.Combine(launcherPath, @"netplay\User\Slippi\user.json");
         string? connectCodeTemp = null;
         string? displayNameTemp = null;
+        string? latestVersionTemp = null;
         if (File.Exists(userJsonPath))
         {
             var userJsonType = new 
             {
                 connectCode = "", 
-                displayName = "" 
+                displayName = "",
+                latestVersion = ""
             };
             var result = JsonConvert.DeserializeAnonymousType(File.ReadAllText(userJsonPath), userJsonType, new JsonSerializerSettings() { MissingMemberHandling = MissingMemberHandling.Ignore });
             if (result is not null)
             {
                 connectCodeTemp = result.connectCode;
                 displayNameTemp = result.displayName;
+                latestVersionTemp = result.latestVersion;
             }
             else
             {
@@ -201,8 +204,9 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
 
         if (playbackPathTemp is not null && connectCodeTemp is not null)
         {
-            // always set this - the file should be the source of truth
+            // always set these - the file should be the source of truth
             _settings.StreamMeleeConnectCode = connectCodeTemp;
+            _settings.SlippiVersion = latestVersionTemp ?? string.Empty;
 
             // set this if it's empty
             if (string.IsNullOrEmpty(_settings.WatchDolphinPath))

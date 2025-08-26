@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using SlippiTV.Shared.Types;
 
 namespace SlippiTV.Client.ViewModels;
 
@@ -40,7 +41,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
                 try
                 {
                     var myStatus = await SlippiTVService.GetStatus(Settings.StreamMeleeConnectCode);
-                    if (myStatus == LiveStatus.Active)
+                    if (myStatus.LiveStatus == LiveStatus.Active)
                     {
                         ShellViewModel.AnimateRelayStatus = true;
                     }

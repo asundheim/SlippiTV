@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace SlippiTV.Shared.Service;
+namespace SlippiTV.Shared.Types;
 
 [JsonObject]
 public class ActiveGameInfo

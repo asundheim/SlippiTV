@@ -1,8 +1,6 @@
-﻿using SlippiTV.Status;
-using System.Collections.Concurrent;
-using System.Net.WebSockets;
+﻿using System.Collections.Concurrent;
 
-namespace SlippiTV.Streams;
+namespace SlippiTV.Server.Streams;
 
 public static class StreamManager
 {

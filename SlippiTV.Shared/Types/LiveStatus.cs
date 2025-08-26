@@ -1,4 +1,4 @@
-﻿namespace SlippiTV.Shared.Service;
+﻿namespace SlippiTV.Shared.Types;
 
 public enum LiveStatus
 {

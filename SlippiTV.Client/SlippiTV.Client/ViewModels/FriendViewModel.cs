@@ -4,9 +4,7 @@ using Slippi.NET.Slp.Reader.File;
 using Slippi.NET.Slp.Writer;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
-using System.Buffers;
-using System.Collections.Concurrent;
-using System.Net.WebSockets;
+using SlippiTV.Shared.Types;
 
 namespace SlippiTV.Client.ViewModels;
 
@@ -29,8 +27,11 @@ public class FriendViewModel : BaseNotifyPropertyChanged
         get;
         set
         {
-            field = value;
-            OnPropertyChanged();
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
         }
     }
 
@@ -39,8 +40,24 @@ public class FriendViewModel : BaseNotifyPropertyChanged
         get;
         set
         {
-            field = value;
-            OnPropertyChanged();
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public int ViewerCount
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
         }
     }
 
@@ -48,18 +65,12 @@ public class FriendViewModel : BaseNotifyPropertyChanged
     {
         try
         {
-            LiveStatus = await SlippiTVService.GetStatus(ConnectCode);
+            var userInfo = await SlippiTVService.GetStatus(ConnectCode);
             Parent.ShellViewModel.RelayStatus = LiveStatus.Active;
 
-            if (LiveStatus == LiveStatus.Active)
-            {
-                var gameInfo = await SlippiTVService.GetActiveGameInfo(ConnectCode);
-                ActiveGameInfo = gameInfo;
-            }
-            else
-            {
-                ActiveGameInfo = null;
-            }
+            LiveStatus = userInfo.LiveStatus;
+            ActiveGameInfo = userInfo.ActiveGameInfo;
+            ViewerCount = userInfo.ActiveViewerInfo?.ActiveViewerCount ?? 0;
         }
         catch
         {

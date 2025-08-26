@@ -2,10 +2,10 @@
 using Slippi.NET.Slp.EventStream.Types;
 using Slippi.NET.Types;
 using SlippiTV.Shared;
-using SlippiTV.Shared.Service;
+using SlippiTV.Shared.Types;
 using System.Collections.Concurrent;
 
-namespace SlippiTV.Streams;
+namespace SlippiTV.Server.Streams;
 
 public class ActiveStream : IDisposable
 {
@@ -68,6 +68,9 @@ public class ActiveStream : IDisposable
     public bool IsActive { get; private set; } = false;
     public ActiveGameInfo? ActiveGameInfo { get; private set; } = null;
 
+    private int _watcherCount = 0;
+    public int WatcherCount => _watcherCount;
+
     public bool Disposed { get; set; } = false;
 
     private readonly Lock _consumersLock = new Lock();
@@ -115,6 +118,16 @@ public class ActiveStream : IDisposable
 
         // Finally, write to the event stream
         SlpEventStream.Write(data);
+    }
+
+    public void AddWatcher()
+    {
+        Interlocked.Increment(ref _watcherCount);
+    }
+
+    public void RemoveWatcher()
+    {
+        Interlocked.Decrement(ref _watcherCount);
     }
 
     private void EndGame()

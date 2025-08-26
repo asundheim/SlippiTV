@@ -7,7 +7,7 @@
              xmlns:converters="clr-namespace:SlippiTV.Client.Converters"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:service="clr-namespace:SlippiTV.Shared.Service;assembly=SlippiTV.Shared"
+             xmlns:service="clr-namespace:SlippiTV.Shared.Types;assembly=SlippiTV.Shared"
              x:Class="SlippiTV.Client.FriendsPage"
              x:DataType="{x:Type vm:FriendsViewModel}">
     <ContentPage.Resources>
@@ -95,22 +95,20 @@
                                         <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}" />
                                     </ImageButton.Source>
                                 </ImageButton>
-
-  
                                 
-                                <HorizontalStackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="End" Margin="-8,0,0,0">
+                                <HorizontalStackLayout Grid.Column="1" Grid.Row="0" HorizontalOptions="End" Margin="-8,0,0,0" IsVisible="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}">
                                     <Image MaximumHeightRequest="14" VerticalOptions="Center" Margin="0,4,0,0" ToolTipProperties.Text="Active Viewers">
                                         <Image.Source>
                                             <FontImageSource Glyph="{mi:FluentFilled Icon=Person24Filled, IconColor={StaticResource StatusGreen}}"/>
                                         </Image.Source>
                                     </Image>
 
-                                    <Label IsVisible="True" 
-                                       FontSize="10" VerticalTextAlignment="Center" Padding="2,4,12,2" Grid.Column="2" Grid.ColumnSpan="1" Margin="0" HorizontalOptions="Start">
+                                    <Label Grid.Column="2" 
+                                           FontSize="10" VerticalTextAlignment="Center"
+                                           Padding="2,4,12,2" Grid.ColumnSpan="1" Margin="0" HorizontalOptions="Start">
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <!--Span Text="{Binding ActiveGameInfo.CurrentViewerCount}" TextColor="{StaticResource StatusGreen}"/>-->
-                                                    <Span Text="23" TextColor="{StaticResource StatusGreen}"/>
+                                                <Span Text="{Binding ViewerCount}" TextColor="{StaticResource StatusGreen}"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>

@@ -6,6 +6,5 @@
     xmlns:local="clr-namespace:SlippiTV.Client"
     xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
     Shell.FlyoutBehavior="Disabled">
-    <ShellContent ContentTemplate="{DataTemplate local:SplashScreenPage}"
-                  Route="SplashScreen"/>
+    <ShellContent ContentTemplate="{DataTemplate local:SplashScreenPage}" Route="SplashScreen"/>
 </Shell>
