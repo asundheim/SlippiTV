@@ -256,12 +256,12 @@
 
         <tb:TaskbarIcon
         IconSource="slippitv.ico"
-        LeftClickCommand="{Binding ShowHideWindowCommand}"
+        LeftClickCommand="{Binding ShowWindowCommand}"
         NoLeftClickDelay="True"
         x:Name="TaskbarIcon">
             <FlyoutBase.ContextFlyout>
                 <MenuFlyout>
-                    <MenuFlyoutItem Command="{Binding ShowHideWindowCommand}" Text="Reveal Window" />
+                    <MenuFlyoutItem Command="{Binding ShowWindowCommand}" Text="Show Window" />
                     <MenuFlyoutSeparator />
                     <MenuFlyoutItem Command="{Binding ExitApplicationCommand}" Text="Quit" />
                 </MenuFlyout>

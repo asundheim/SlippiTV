@@ -42,7 +42,10 @@ public partial class Program
 
         AppActivationArguments activationArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
         ExtendedActivationKind kind = activationArgs.Kind;
-        if (kind != ExtendedActivationKind.StartupTask)
+
+        // You would think we would get launched with ExtendedActivationKind.Startup, but it's just Launch if we're set from the registry.
+        // Unless someone puts our binary into System32 this should be an adequate workaround.
+        if (Environment.CurrentDirectory != Environment.GetFolderPath(Environment.SpecialFolder.System))
         {
             UpdateLaunchOnStartup();
         }

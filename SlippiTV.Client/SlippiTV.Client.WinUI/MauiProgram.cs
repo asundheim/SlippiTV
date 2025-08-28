@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System;
 
 namespace SlippiTV.Client.WinUI
 {
@@ -55,7 +56,7 @@ namespace SlippiTV.Client.WinUI
 
                                 if (OpenHidden)
                                 {
-                                    SlippiTVWindow.Hide(enableEfficiencyMode: true);
+                                    SlippiTVWindow.VisibilityChanged += WindowVisibilityChanged;
                                 }
                             }
                         });
@@ -64,6 +65,18 @@ namespace SlippiTV.Client.WinUI
                 .UseSharedMauiApp();
 
             return builder.Build();
+        }
+
+        /// <summary>
+        /// Hook the visibility changed to ensure we can hide it on startup if necessary.
+        /// </summary>
+        private static void WindowVisibilityChanged(object? sender, WindowVisibilityChangedEventArgs e)
+        {
+            if (e.Visible && SlippiTVWindow is not null)
+            {
+                SlippiTVWindow.Hide(enableEfficiencyMode: true);
+                SlippiTVWindow.VisibilityChanged -= WindowVisibilityChanged;
+            }
         }
     }
 }

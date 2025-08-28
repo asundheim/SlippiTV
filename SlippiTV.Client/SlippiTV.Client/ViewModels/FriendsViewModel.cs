@@ -93,7 +93,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
     }
 
     [RelayCommand]
-    public async Task ShowHideWindow()
+    public async Task ShowWindow()
     {
         // as good a place to check as any unless we dedicate some polling thread to it
         this.ShellViewModel.RequiresUpdate = await ClientVersion.RequiresUpdateAsync(SlippiTVService);
@@ -104,14 +104,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
             return;
         }
 
-        if (window.IsActivated())
-        {
-            window.Hide(enableEfficiencyMode: true);
-        }
-        else
-        {
-            window.Show(disableEfficiencyMode: true);
-        }
+        window.Show(disableEfficiencyMode: true);
     }
 
     [RelayCommand]
