@@ -147,6 +147,7 @@ public partial class FriendsPage : ContentPage
 
     private void NotificationBell_Tapped(object sender, TappedEventArgs e)
     {
-        return;
+        FriendViewModel friend = (FriendViewModel)((VisualElement)sender).BindingContext;
+        TaskbarIcon.ShowNotification($"{friend.ConnectCode} went live", "Click to open", H.NotifyIcon.Core.NotificationIcon.Info, respectQuietTime: false);
     }
 }
