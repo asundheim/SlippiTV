@@ -13,6 +13,7 @@
     <Color x:Key="SecondaryText">#CACACA</Color>
     <Color x:Key="PrimaryDarkText">#2B0B98</Color>
     <Color x:Key="Secondary">#0D004E</Color>
+    <Color x:Key="AccentButtons">#0D004E</Color>
     <Color x:Key="SecondaryDark">#3F3FFF</Color>
     <Color x:Key="Tertiary">#2F2FFF</Color>
     <Color x:Key="Quatriary">#0D0125</Color>
@@ -25,21 +26,23 @@
     <Color x:Key="DarkSecondaryText">#CACACA</Color>
     <Color x:Key="DarkPrimaryDarkText">#171717</Color>
     <Color x:Key="DarkSecondary">#212023</Color>
+    <Color x:Key="DarkAccentButtons">#FF0000</Color>
     <Color x:Key="DarkSecondaryDark">#A2A1A2</Color>
     <Color x:Key="DarkTertiary">#353437</Color>
     <Color x:Key="DarkQuatriary">#0F0F0F</Color>
 
     <!-- Light Theme Colors -->
     <Color x:Key="LightPrimary">#F3F0F2</Color>
-    <Color x:Key="LightPrimaryDark">#FAFAFA</Color>
+    <Color x:Key="LightPrimaryDark">#000000</Color>
     <Color x:Key="LightPrimaryLight">#C3C1C2</Color>
     <Color x:Key="LightPrimaryText">#0F0F0F</Color>
     <Color x:Key="LightSecondaryText">#1F1F1F</Color>
-    <Color x:Key="LightPrimaryDarkText">#D1CED0</Color>
-    <Color x:Key="LightSecondary">#CFC9CD</Color>
-    <Color x:Key="LightSecondaryDark">#7D7C7D</Color>
+    <Color x:Key="LightPrimaryDarkText">#333333</Color>
+    <Color x:Key="LightSecondary">#FAFAFA</Color>
+    <Color x:Key="LightAccentButtons">#FF0000</Color>
+    <Color x:Key="LightSecondaryDark">#D2D2D3</Color>
     <Color x:Key="LightTertiary">#D2D2D3</Color>
-    <Color x:Key="LightQuatriary">#F3F3F3</Color>
+    <Color x:Key="LightQuatriary">#f1f1f1</Color>
 
     <!-- GCPurple Theme Colors -->
     <Color x:Key="GCPurplePrimary">#140E4C</Color>
@@ -49,6 +52,7 @@
     <Color x:Key="GCPurpleSecondaryText">#CACACA</Color>
     <Color x:Key="GCPurplePrimaryDarkText">#2B0B98</Color>
     <Color x:Key="GCPurpleSecondary">#0D004E</Color>
+    <Color x:Key="GCPurpleAccentButtons">#0D004E</Color>
     <Color x:Key="GCPurpleSecondaryDark">#3F3FFF</Color>
     <Color x:Key="GCPurpleTertiary">#2F2FFF</Color> 
     <Color x:Key="GCPurpleQuatriary">#0D0125</Color>

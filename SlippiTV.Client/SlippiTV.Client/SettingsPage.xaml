@@ -12,8 +12,10 @@
              x:DataType="{x:Type vm:SettingsViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-            <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
             <!--<Style TargetType="Span">
                 <Setter Property="FontSize" Value="13"/>
             </Style>-->
@@ -316,16 +318,23 @@
                     </ImageButton>
                 </Grid>
 
-                <!--<ImageButton x:Name="ButtonLightTheme"
-                        Clicked="UpdateThemeLight"
-                        VerticalOptions="Center"
-                        BackgroundColor="Transparent" 
-                        Aspect="AspectFit"
-                        ToolTipProperties.Text="Light">
-                    <ImageButton.Source>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource White}}" Size="24"/>
-                    </ImageButton.Source>
-                </ImageButton>-->
+                <!--<Grid>
+                    <Path Fill="{StaticResource LightPrimaryLight}" Margin="0,0,0,0" VerticalOptions="Center">
+                        <Path.Data>
+                            <EllipseGeometry Center="22.875,18.875" RadiusX="12" RadiusY="12"/>
+                        </Path.Data>
+                    </Path>
+                    <ImageButton x:Name="ButtonLightTheme"
+                            Clicked="UpdateThemeLight"
+                            VerticalOptions="Center"
+                            BackgroundColor="Transparent" 
+                            Aspect="AspectFit"
+                            ToolTipProperties.Text="Light">
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource White}}" Size="24"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </Grid>-->
 
                 <Grid>
                     <Path Fill="{StaticResource GCPurplePrimaryLight}" Margin="0,0,0,0" VerticalOptions="Center">

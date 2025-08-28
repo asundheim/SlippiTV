@@ -4,7 +4,9 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SlippiTV.Client">
-
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml" />
+    </ResourceDictionary.MergedDictionaries>
 
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{StaticResource White}" />
@@ -157,7 +159,6 @@
                     </VisualState>
                     <VisualState x:Name="PointerOver">
                         <VisualState.Setters>
-                            <Setter Property="BackgroundColor" Value="Transparent"/>
                             <Setter Property="Opacity" Value=".75"/>
                             <Setter Property="Scale" Value=".95"/>
                         </VisualState.Setters>

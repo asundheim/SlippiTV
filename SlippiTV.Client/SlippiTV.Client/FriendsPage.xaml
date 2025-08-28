@@ -13,9 +13,10 @@
              x:DataType="{x:Type vm:FriendsViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-            <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-            <mi:MauiIcon Icon="{mi:FluentFilled Icon=AddCircle24Filled}" IconColor="#10FA94" x:Key="AddIcon"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
             <toolkit:EnumToBoolConverter x:Key="LiveStatusToVisibilityConverter">
                 <toolkit:EnumToBoolConverter.TrueValues>
                     <service:LiveStatus>Active</service:LiveStatus>
@@ -34,6 +35,10 @@
             <converters:StageToImageConverter x:Key="StageToImageConverter" />
             <converters:CharacterToImageSourceConverter x:Key="PlayerCharacterToImageSourceConverter"/>
             <converters:CharacterToImageSourceConverter IsOpponent="True" x:Key="OpponentCharacterToImageSourceConverter"/>
+
+            <DataTemplate x:Key="FriendTemplate" x:DataType="{x:Type vm:FriendViewModel}">
+                
+            </DataTemplate>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -68,9 +73,9 @@
                 <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor={StaticResource StatusGreen}}" Size="32" />
             </Button.ImageSource>
         </Button>
-        
+
         <CollectionView ItemsSource="{Binding Friends}" Grid.Row="1">
-        <CollectionView.ItemTemplate>
+            <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="{x:Type vm:FriendViewModel}">
                 <VerticalStackLayout Spacing="4" Padding="0">
                     <BoxView HeightRequest="1"/>
@@ -84,10 +89,10 @@
                         </Grid.ColumnDefinitions>
                             
                         <HorizontalStackLayout Grid.Column="0" HorizontalOptions="Start">
-                            <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}"
+                                <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}"
                                         VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent" >
-                                <ImageButton.Source>
-                                    <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={DynamicResource Secondary}}"/>
+                                    <ImageButton.Source>
+                                        <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={DynamicResource AccentButtons}}"/>
                                 </ImageButton.Source>
                             </ImageButton>
                                
@@ -244,7 +249,7 @@
                                         <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
                                     </ImageButton.GestureRecognizers>
                                     <ImageButton.Source>
-                                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={DynamicResource Secondary}}"/>
+                                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={DynamicResource AccentButtons}}"/>
                                     </ImageButton.Source>
                                 </ImageButton>
                             </HorizontalStackLayout>

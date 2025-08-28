@@ -32,6 +32,9 @@ public partial class FriendsPage : ContentPage
     private void FriendsPage_Loaded(object? sender, EventArgs e)
     {
         FriendsViewModel = (FriendsViewModel)this.BindingContext;
+
+        // no clue why we have to do it twice
+        Application.Current?.SetTheme(SettingsManager.Instance.Settings.Theme);
     }
 
     private async void AddFriendsButton_Clicked(object sender, EventArgs e)

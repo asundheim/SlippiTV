@@ -16,6 +16,7 @@ public static class ThemeUtils
         "SecondaryText",
         "PrimaryDarkText",
         "Secondary",
+        "AccentButtons",
         "SecondaryDark",
         "SecondaryDarkText",
         "Tertiary",
