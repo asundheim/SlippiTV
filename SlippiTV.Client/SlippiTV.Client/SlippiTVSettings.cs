@@ -111,6 +111,20 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
 
     public string SlippiVersion { get; set; } = string.Empty;
 
+    public string Theme
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                SaveSettings();
+                OnPropertyChanged();
+            }
+        }
+    } = Themes.GCPurple;
+
     private void SaveSettings()
     {
         SettingsManager.Instance?.SaveSettings();

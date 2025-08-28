@@ -7,6 +7,7 @@ namespace SlippiTV.Client
         public App()
         {
             InitializeComponent();
+            this.SetTheme(SettingsManager.Instance.Settings.Theme);
         }
 
         protected override Window CreateWindow(IActivationState? activationState)

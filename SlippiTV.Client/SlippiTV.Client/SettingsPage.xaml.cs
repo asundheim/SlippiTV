@@ -109,16 +109,25 @@ public partial class SettingsPage : ContentPage
 
     private void UpdateThemeDark(object sender, EventArgs e)
     {
-        return;
+        UpdateThemeButtonPressed(Themes.Dark);
     }
 
     private void UpdateThemeLight(object sender, EventArgs e)
     {
-        return;
+        UpdateThemeButtonPressed(Themes.Light);
     }
 
     private void UpdateThemeGCPurple(object sender, EventArgs e)
     {
-        return;
+        UpdateThemeButtonPressed(Themes.GCPurple);
+    }
+
+    public void UpdateThemeButtonPressed(string themeName)
+    {
+        if (Application.Current is not null)
+        {
+            SettingsViewModel.Settings.Theme = themeName;
+            Application.Current.SetTheme(themeName);
+        }
     }
 }

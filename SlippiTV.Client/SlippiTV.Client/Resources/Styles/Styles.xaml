@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SlippiTV.Client">
 
+
     <Style TargetType="ActivityIndicator">
         <Setter Property="Color" Value="{StaticResource White}" />
     </Style>
@@ -15,18 +16,18 @@
     </Style>
 
     <Style TargetType="Border">
-        <Setter Property="BackgroundColor" Value="{StaticResource Secondary}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}" />
         <Setter Property="StrokeThickness" Value="0"/>
     </Style>
 
     <Style TargetType="BoxView">
-        <Setter Property="BackgroundColor" Value="{StaticResource SecondaryDark}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource SecondaryDark}" />
     </Style>
 
     <Style TargetType="Button">
         <Setter Property="local:CursorProperties.Cursor" Value="Hand"/>
-        <Setter Property="TextColor" Value="{StaticResource SecondaryDark}" />
-        <Setter Property="BackgroundColor" Value="{StaticResource SecondaryDark}" />
+        <Setter Property="TextColor" Value="{DynamicResource SecondaryDark}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource SecondaryDark}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="BorderWidth" Value="0"/>
@@ -167,7 +168,7 @@
     </Style>
 
     <Style TargetType="Label">
-        <Setter Property="TextColor" Value="{StaticResource White}" />
+        <Setter Property="TextColor" Value="{DynamicResource PrimaryText}" />
         <Setter Property="BackgroundColor" Value="Transparent" />
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize" Value="14" />
@@ -186,11 +187,11 @@
     </Style>
 
     <Style TargetType="Span">
-        <Setter Property="TextColor" Value="{StaticResource White}" />
+        <Setter Property="TextColor" Value="{DynamicResource PrimaryText}" />
     </Style>
 
     <Style TargetType="Label" x:Key="Headline">
-        <Setter Property="TextColor" Value="{StaticResource White}" />
+        <Setter Property="TextColor" Value="{DynamicResource PrimaryText}" />
         <Setter Property="FontSize" Value="32" />
         <Setter Property="HorizontalOptions" Value="Center" />
         <Setter Property="HorizontalTextAlignment" Value="Center" />
@@ -406,14 +407,14 @@
                 <VisualStateGroup x:Name="TitleActiveStates">
                      <VisualState x:Name="TitleBarTitleActive">
                          <VisualState.Setters>
-                             <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                            <Setter Property="BackgroundColor" Value="{DynamicResource Primary}" />
                              <Setter Property="ForegroundColor" Value="{StaticResource White}" />
                          </VisualState.Setters>
                      </VisualState>
                      <VisualState x:Name="TitleBarTitleInactive">
                          <VisualState.Setters>
-                             <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
-                             <Setter Property="ForegroundColor" Value="{StaticResource Primary}" />
+                            <Setter Property="BackgroundColor" Value="{DynamicResource Primary}" />
+                            <Setter Property="ForegroundColor" Value="{DynamicResource Primary}" />
                          </VisualState.Setters>
                      </VisualState>
                 </VisualStateGroup>
@@ -423,32 +424,33 @@
 
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
-        <Setter Property="BackgroundColor" Value="{StaticResource Quatriary}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource Quatriary}" />
     </Style>
 
     <Style TargetType="Shell" ApplyToDerivedTypes="True">
-        <Setter Property="Shell.BackgroundColor" Value="{StaticResource Primary}" />
-        <Setter Property="Shell.ForegroundColor" Value="{StaticResource SecondaryDark}" />
-        <Setter Property="Shell.TitleColor" Value="{StaticResource SecondaryDark}" />
-        <Setter Property="Shell.DisabledColor" Value="{StaticResource Gray950}" />
+        <Setter Property="Shell.BackgroundColor" Value="{DynamicResource Primary}" />
+        <Setter Property="Shell.ForegroundColor" Value="{DynamicResource SecondaryDark}" />
+        <Setter Property="Shell.TitleColor" Value="{DynamicResource SecondaryDark}" />
+        <Setter Property="Shell.DisabledColor" Value="{StaticResource White}" />
         <Setter Property="Shell.UnselectedColor" Value="{StaticResource Gray200}" />
         <Setter Property="Shell.NavBarIsVisible" Value="False"/>
         <Setter Property="Shell.NavBarHasShadow" Value="False" />
         <Setter Property="Shell.Background" Value="White" />
-        <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource Primary}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource White}" />
-        <Setter Property="Shell.TabBarTitleColor" Value="{StaticResource White}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource Gray200}" />
+        <Setter Property="Shell.TabBarTitleColor" Value="{DynamicResource PrimaryText}" />
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource SecondaryText}"/>
     </Style>
+   
 
     <Style TargetType="NavigationPage">
-        <Setter Property="BarBackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="BarBackgroundColor" Value="{DynamicResource Primary}" />
         <Setter Property="BarTextColor" Value="{StaticResource White}" />
         <Setter Property="IconColor" Value="{StaticResource White}" />
     </Style>
 
     <Style TargetType="TabbedPage">
-        <Setter Property="BarBackgroundColor" Value="{StaticResource Primary}" />
+        <Setter Property="BarBackgroundColor" Value="{DynamicResource Primary}" />
         <Setter Property="BarTextColor" Value="{StaticResource White}" />
         <Setter Property="UnselectedTabColor" Value="{StaticResource Gray950}" />
         <Setter Property="SelectedTabColor" Value="{StaticResource Gray200}" />

@@ -13,6 +13,8 @@
              x:DataType="{x:Type vm:FriendsViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+            <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             <mi:MauiIcon Icon="{mi:FluentFilled Icon=AddCircle24Filled}" IconColor="#10FA94" x:Key="AddIcon"/>
             <toolkit:EnumToBoolConverter x:Key="LiveStatusToVisibilityConverter">
                 <toolkit:EnumToBoolConverter.TrueValues>
@@ -43,8 +45,8 @@
         </Grid.RowDefinitions>
         
         <Button x:Name="AddFriendsButton" HorizontalOptions="Start" HeightRequest="48" 
-                FontSize="18" Text="Add Friends by Connect Code" Grid.Row="0" FontAttributes="Bold" TextColor="{StaticResource PrimaryText}" CornerRadius="12"
-                Margin="0,12,0,24" Clicked="AddFriendsButton_Clicked" BackgroundColor="{StaticResource Tertiary}">
+                FontSize="18" Text="Add Friends by Connect Code" Grid.Row="0" FontAttributes="Bold" TextColor="{DynamicResource PrimaryText}" CornerRadius="12"
+                Margin="0,12,0,24" Clicked="AddFriendsButton_Clicked" BackgroundColor="{DynamicResource Tertiary}">
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroupList>
                     <VisualStateGroup Name="CommonStates">
@@ -85,7 +87,7 @@
                             <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource LiveStatusToVisibilityConverter}}"
                                         VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent" >
                                 <ImageButton.Source>
-                                    <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor=#FAFAFA}" />
+                                    <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={DynamicResource Secondary}}"/>
                                 </ImageButton.Source>
                             </ImageButton>
                                
@@ -139,7 +141,7 @@
                                             VerticalOptions="Center"
                                             HorizontalOptions="Center"
                                             FontSize="14"
-                                            TextColor="{StaticResource White}"
+                                            TextColor="{DynamicResource PrimaryText}"
                                             BackgroundColor="Transparent" 
                                             Text="{Binding ActiveGameInfo.PlayerDisplayName}"
                                             ToolTipProperties.Text="{Binding ActiveGameInfo.PlayerConnectCode}"
@@ -183,7 +185,7 @@
                                             IsVisible="{Binding ActiveGameInfo.PlayerDisplayName, Converter={StaticResource StringToVisibilityConverter}}"
                                             VerticalOptions="Center"
                                             FontSize="14"
-                                            TextColor="{StaticResource White}"
+                                            TextColor="{DynamicResource PrimaryText}"
                                             BackgroundColor="Transparent"
                                             Text="{Binding ActiveGameInfo.OpponentDisplayName}" 
                                             ToolTipProperties.Text="{Binding ActiveGameInfo.OpponentConnectCode}"
@@ -242,7 +244,7 @@
                                         <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
                                     </ImageButton.GestureRecognizers>
                                     <ImageButton.Source>
-                                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={StaticResource PrimaryLight}}"/>
+                                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={DynamicResource Secondary}}"/>
                                     </ImageButton.Source>
                                 </ImageButton>
                             </HorizontalStackLayout>
