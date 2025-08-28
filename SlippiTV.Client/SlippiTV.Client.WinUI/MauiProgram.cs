@@ -13,6 +13,7 @@ namespace SlippiTV.Client.WinUI
 {
     public static class MauiProgram
     {
+        public static bool OpenHidden { get; set; } = false;
         public static Window? SlippiTVWindow { get; private set; } = null;
 
         public static MauiApp CreateMauiApp()
@@ -51,6 +52,11 @@ namespace SlippiTV.Client.WinUI
                                 windowTitleBar.ButtonPressedBackgroundColor = secColor;
                                 windowTitleBar.ButtonHoverBackgroundColor = secColor;
                                 SlippiTVWindow = window;
+
+                                if (OpenHidden)
+                                {
+                                    SlippiTVWindow.Hide(enableEfficiencyMode: true);
+                                }
                             }
                         });
                     });

@@ -2,6 +2,7 @@
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
+using Microsoft.Win32;
 using Microsoft.Windows.AppLifecycle;
 using System;
 using System.Diagnostics;
@@ -41,8 +42,16 @@ public partial class Program
 
         AppActivationArguments activationArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
         ExtendedActivationKind kind = activationArgs.Kind;
-        AppInstance keyInstance = AppInstance.FindOrRegisterForKey("SlippiTV");
+        if (kind != ExtendedActivationKind.StartupTask)
+        {
+            UpdateLaunchOnStartup();
+        }
+        else
+        {
+            MauiProgram.OpenHidden = true;
+        }
 
+        AppInstance keyInstance = AppInstance.FindOrRegisterForKey("SlippiTV");
         if (!keyInstance.IsCurrent)
         {
             RedirectActivationTo(activationArgs, keyInstance);
@@ -61,6 +70,16 @@ public partial class Program
         }
 
         return 0;
+    }
+
+    private static void UpdateLaunchOnStartup()
+    {
+        var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", writable: true);
+        if (runKey is not null)
+        {
+            runKey.DeleteValue("SlippiTV", throwOnMissingValue: false);
+            runKey.SetValue("SlippiTV", Environment.ProcessPath!, RegistryValueKind.String);
+        }
     }
 
     private static void OnActivated(object? sender, AppActivationArguments e)
