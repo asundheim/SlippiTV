@@ -5,6 +5,8 @@ using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.Input;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
+using SlippiTV.Shared.Types;
+using SlippiTV.Shared.Versions;
 
 namespace SlippiTV.Client.ViewModels;
 
@@ -40,7 +42,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
                 try
                 {
                     var myStatus = await SlippiTVService.GetStatus(Settings.StreamMeleeConnectCode);
-                    if (myStatus == LiveStatus.Active)
+                    if (myStatus.LiveStatus == LiveStatus.Active)
                     {
                         ShellViewModel.AnimateRelayStatus = true;
                     }
@@ -91,8 +93,11 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
     }
 
     [RelayCommand]
-    public void ShowHideWindow()
+    public async Task ShowHideWindow()
     {
+        // as good a place to check as any unless we dedicate some polling thread to it
+        this.ShellViewModel.RequiresUpdate = await ClientVersion.RequiresUpdateAsync(SlippiTVService);
+
         var window = Application.Current?.Windows[0];
         if (window == null)
         {

@@ -22,5 +22,4 @@ namespace SlippiTV.Client.WinUI
 
         protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
     }
-
 }

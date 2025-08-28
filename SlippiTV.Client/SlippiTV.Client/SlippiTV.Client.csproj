@@ -8,7 +8,7 @@
 		<LangVersion>preview</LangVersion>
 		<UseMaui>true</UseMaui>
 		<Nullable>enable</Nullable>
-		<NoWarn>$(NoWarn);XC0103</NoWarn>
+		<NoWarn>$(NoWarn);XC0103;XC0025</NoWarn>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
@@ -26,6 +26,7 @@
 
 	<ItemGroup>
 	  <MauiImage Include="Resources\Raw\slippitv.ico" />
+	  <MauiImage Include="Resources\Raw\slippitv_splash.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -80,6 +81,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="SplashScreenPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="SplashScreenShell.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

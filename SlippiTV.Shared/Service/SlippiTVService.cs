@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using SlippiTV.Shared.Types;
 using System.Net;
 using System.Net.WebSockets;
 using static SlippiTV.Shared.ConnectCodeUtils;
@@ -17,26 +18,19 @@ internal class SlippiTVService : ISlippiTVService
         {
             BaseAddress = new Uri($"https://{baseAddress}"),
         };
+
+        SlippiTVServerHost = baseAddress.Substring(0, baseAddress.IndexOf(':'));
     }
 
-    public async Task<LiveStatus> GetStatus(string user)
-    {
-        var result = await _client.GetAsync($"/status/activity/{SanitizeConnectCode(user)}", CancellationToken.None);
-        return result.StatusCode switch
-        {
-            HttpStatusCode.OK => LiveStatus.Active,
-            HttpStatusCode.NoContent => LiveStatus.Idle,
-            _ => LiveStatus.Offline
-        };
-    }
+    public string SlippiTVServerHost { get; }
 
-    public async Task<ActiveGameInfo?> GetActiveGameInfo(string user)
+    public async Task<UserStatusInfo> GetStatus(string user)
     {
-        var result = await _client.GetAsync($"/status/activity/{SanitizeConnectCode(user)}/game", CancellationToken.None);
+        var result = await _client.GetAsync($"/status/activity/{SanitizeConnectCode(user)}/all", CancellationToken.None);
         return result.StatusCode switch
         {
-            HttpStatusCode.OK => JsonConvert.DeserializeObject<ActiveGameInfo>(await result.Content.ReadAsStringAsync()),
-            _ => null
+            HttpStatusCode.OK => JsonConvert.DeserializeObject<UserStatusInfo>(await result.Content.ReadAsStringAsync()) ?? new UserStatusInfo() { LiveStatus = LiveStatus.Offline },
+            _ => new UserStatusInfo() { LiveStatus = LiveStatus.Offline }
         };
     }
 
@@ -56,6 +50,22 @@ internal class SlippiTVService : ISlippiTVService
         await clientSocket.ConnectAsync(new Uri($"wss://{_baseAddress}/stream/{SanitizeConnectCode(user)}/watch"), CancellationToken.None);
 
         return clientSocket;
+    }
+
+    public async Task<string> GetCurrentClientVersion()
+    {
+        var result = await _client.GetAsync($"/update/currentversion");
+        result.EnsureSuccessStatusCode();
+
+        return await result.Content.ReadAsStringAsync();
+    }
+
+    public async Task<string> GetUpdateScript()
+    {
+        var result = await _client.GetAsync($"/update/updatescript");
+        result.EnsureSuccessStatusCode();
+
+        return await result.Content.ReadAsStringAsync();
     }
 
     public void Dispose()

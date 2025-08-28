@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SlippiTV.Client.SplashScreenPage"
+             Title="SplashScreenPage">
+    <VerticalStackLayout x:Name="SplashScreenGroup" HorizontalOptions="Center" VerticalOptions="Center" Spacing="0">
+        <Image x:Name="SplashScreenImage" Source="slippitv_splash.png" WidthRequest="400" HeightRequest="320"  IsVisible="True" Aspect="AspectFit" Margin="0"/>
+        <Label x:Name="SplashScreenText" HorizontalOptions="Center">
+            <Label.FormattedText>
+                <FormattedString>
+                    <Span Text="Tuning in..." FontAttributes="Bold" FontSize="18"/>
+                    <!--<Span Text="SlippiTV"/>-->
+                </FormattedString>
+            </Label.FormattedText>
+        </Label>
+    </VerticalStackLayout>
+</ContentPage>

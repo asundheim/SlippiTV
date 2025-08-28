@@ -7,7 +7,7 @@
     xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
     Shell.FlyoutBehavior="Disabled"
     x:DataType="{x:Type vm:ShellViewModel}"
-    Title="SlippiTV.Client" Padding="10">
+    Title="SlippiTV.Client" Padding="0">
     <TabBar>
         <Tab Title="Friends">
             <ShellContent

@@ -9,6 +9,11 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <!--<DataTemplate x:Key="MauiAppTitleBar">
+                <Grid Background="Transparent" ZIndex="1" VerticalOptions="Fill" HorizontalOptions="Fill">
+
+                </Grid>
+            </DataTemplate>-->
         </ResourceDictionary>
     </Application.Resources>
 </Application>

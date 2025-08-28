@@ -4,6 +4,7 @@ using Microsoft.Maui.Controls.Shapes;
 using SlippiTV.Client.Platforms.Windows;
 using SlippiTV.Client.ViewModels;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace SlippiTV.Client;
 
@@ -33,7 +34,7 @@ public partial class SettingsPage : ContentPage
 
     private async void MeleeIsoBrowseButton_Clicked(object sender, EventArgs e)
     {
-        //using DolphinRustInvoker invoker = await DolphinRustInvoker.CreateAsync(SettingsViewModel.Settings.WatchMeleeISOPath, System.IO.Path.Join(SettingsViewModel.Settings.SlippiLauncherFolder, "netplay", "User", "Slippi"), "3.5.1");
+        //using DolphinRustInvoker invoker = await DolphinRustInvoker.CreateAsync();
 
         PickOptions options = new PickOptions()
         {
@@ -90,5 +91,34 @@ public partial class SettingsPage : ContentPage
         }
 
         SettingsManager.Instance.Settings.StreamMeleeConnectCode = result.Result;
+    }
+
+    private async void UpdateSlippiTV_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            await SettingsViewModel.BeginUpdate();
+        }
+        catch
+        {
+            await this.ShowPopupAsync(new ErrorPopup("Failed to update"));
+        }
+        
+        return;
+    }
+
+    private void UpdateThemeDark(object sender, EventArgs e)
+    {
+        return;
+    }
+
+    private void UpdateThemeLight(object sender, EventArgs e)
+    {
+        return;
+    }
+
+    private void UpdateThemeGCPurple(object sender, EventArgs e)
+    {
+        return;
     }
 }

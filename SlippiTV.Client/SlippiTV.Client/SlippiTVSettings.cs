@@ -103,6 +103,14 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
 
     public int Version { get; set; } = 3;
 
+    //public enum StageImagePath
+    //{
+    //    "map-df.png"
+
+    //}
+
+    public string SlippiVersion { get; set; } = string.Empty;
+
     private void SaveSettings()
     {
         SettingsManager.Instance?.SaveSettings();

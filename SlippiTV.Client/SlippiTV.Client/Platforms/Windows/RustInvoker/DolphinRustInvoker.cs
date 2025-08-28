@@ -4,7 +4,7 @@ using static SlippiTV.Client.Platforms.Windows.RustInvoker.RustInvokes;
 
 namespace SlippiTV.Client.Platforms.Windows;
 
-internal partial class DolphinRustInvoker : IDisposable
+public partial class DolphinRustInvoker : IDisposable
 {
     [LibraryImport("kernel32.dll", SetLastError = true, StringMarshalling = StringMarshalling.Utf16)]
     [return: MarshalAs(UnmanagedType.Bool)]

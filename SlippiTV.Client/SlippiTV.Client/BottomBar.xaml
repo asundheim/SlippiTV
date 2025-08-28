@@ -2,15 +2,17 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:local="clr-namespace:SlippiTV.Client"
              xmlns:converters="clr-namespace:SlippiTV.Client.Converters"
              xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:shared="clr-namespace:SlippiTV.Shared.Service;assembly=SlippiTV.Shared"
+             xmlns:shared="clr-namespace:SlippiTV.Shared.Types;assembly=SlippiTV.Shared"
              x:Class="SlippiTV.Client.BottomBar"
              x:DataType="{x:Type vm:ShellViewModel}">
     <ContentView.Resources>
         <ResourceDictionary>
-            <converters:LiveStatusToStatusBarToolTipConverter x:Key="LiveStatusToStatusBarToolTipConverter"/>
+            <converters:LiveStatusToRelayStatusBarToolTipConverter x:Key="LiveStatusToRelayStatusBarToolTipConverter"/>
+            <converters:LiveStatusToDolphinStatusBarToolTipConverter x:Key="LiveStatusToDolphinStatusBarToolTipConverter"/>
             <converters:LiveStatusToColorConverter x:Key="LiveStatusToColorConverter"/>
             <toolkit:EnumToBoolConverter x:Key="LiveStatusToBoolConverter">
                 <toolkit:EnumToBoolConverter.TrueValues>
@@ -21,7 +23,7 @@
         </ResourceDictionary>
     </ContentView.Resources>
     
-    <Grid Margin="10,0,10,6">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -33,11 +35,14 @@
         <HorizontalStackLayout Grid.Column="0" Margin="0,0,4,0" Spacing="4" HorizontalOptions="Start">
             <Label Text="Dolphin"
                    FontSize="12" 
-                   TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" 
+                   local:CursorProperties.Cursor="Help"
+                   TextColor="{StaticResource SecondaryDark}" 
                    VerticalTextAlignment="Center"
-                   ToolTipProperties.Text="{Binding DolphinStatus, Converter={StaticResource LiveStatusToStatusBarToolTipConverter}}"/>
+                   ToolTipProperties.Text="{Binding Converter={StaticResource LiveStatusToDolphinStatusBarToolTipConverter}}"/>
             <!--the way these margins are set messes with the whole vertical alignment if everything isn't perfect :/ -->
-            <Image WidthRequest="12" VerticalOptions="Center" Margin="0,2,0,0">
+            <Image x:Name="DolphinStatusIcon" WidthRequest="12" VerticalOptions="Center" Margin="0,2,0,0" 
+                   local:CursorProperties.Cursor="Help"
+                   ToolTipProperties.Text="{Binding Converter={StaticResource LiveStatusToDolphinStatusBarToolTipConverter}}">
                 <Image.Source>
                     <FontImageSource Glyph="{mi:FluentFilled Icon=Circle16Filled}" Color="{Binding DolphinStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
                 </Image.Source>
@@ -45,12 +50,15 @@
         </HorizontalStackLayout>
 
         <HorizontalStackLayout Grid.Column="1" Margin="4,0,4,0" Spacing="1">
-            <Label Text="Relay"
+            <Label Text="Slippi.TV"
+                   local:CursorProperties.Cursor="Help"
                    FontSize="12"
-                   TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}"
+                   TextColor="{StaticResource SecondaryDark}"
                    VerticalTextAlignment="Center"
-                   ToolTipProperties.Text="{Binding DolphinStatus, Converter={StaticResource LiveStatusToStatusBarToolTipConverter}}"/>
-            <Image x:Name="RelayImage" WidthRequest="12" VerticalOptions="Center" Margin="4,2,0,0">
+                   ToolTipProperties.Text="{Binding Converter={StaticResource LiveStatusToRelayStatusBarToolTipConverter}}"/>
+            <Image x:Name="RelayImage" WidthRequest="12" VerticalOptions="Center" Margin="4,2,0,0" 
+                   local:CursorProperties.Cursor="Help" 
+                   ToolTipProperties.Text="{Binding Converter={StaticResource LiveStatusToRelayStatusBarToolTipConverter}}">
                 <Image.Source>
                     <FontImageSource Glyph="{mi:FluentFilled Icon=Circle16Filled}" Color="{Binding RelayStatus, Converter={StaticResource LiveStatusToColorConverter}}"/>
                 </Image.Source>
@@ -59,7 +67,7 @@
 
         <ImageButton x:Name="RefreshButton" MinimumWidthRequest="0" MinimumHeightRequest="0" Padding="0" Margin="4,0,0,0" Command="{Binding ReconnectCommand}" Grid.Column="2">
             <ImageButton.Source>
-                <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowCounterclockwise12Filled}" Color="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}" Size="14"/>
+                <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowCounterclockwise12Filled}" Color="{StaticResource Tertiary}" Size="14"/>
             </ImageButton.Source>
         </ImageButton>
 
@@ -67,7 +75,7 @@
                Grid.Column="3"
                MinimumHeightRequest="18"
                FontSize="12" 
-               TextColor="{AppThemeBinding Light=#50000000, Dark=#50FFFFFF}"
+               TextColor="{StaticResource SecondaryDark}"
                LineBreakMode="TailTruncation"
                VerticalTextAlignment="Center"
                HorizontalOptions="End"/>

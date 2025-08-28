@@ -5,20 +5,23 @@
              xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:local="clr-namespace:SlippiTV.Client"
+             xmlns:shared="clr-namespace:SlippiTV.Shared.Types;assembly=SlippiTV.Shared"
+             xmlns:versions="clr-namespace:SlippiTV.Shared.Versions;assembly=SlippiTV.Shared"
              x:Class="SlippiTV.Client.SettingsPage"
              Title="Settings"
              x:DataType="{x:Type vm:SettingsViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <Style TargetType="Span">
-                <Setter Property="FontSize" Value="12"/>
+                <Setter Property="FontSize" Value="13"/>
             </Style>
             <Style TargetType="Button">
+                <Setter Property="local:CursorProperties.Cursor" Value="Hand"/>
                 <Setter Property="FontSize" Value="16"/>
                 <Setter Property="HeightRequest" Value="36"/>
             </Style>
             <Style TargetType="Border">
-                <Setter Property="BackgroundColor" Value="{AppThemeBinding Light=#FaFaFa, Dark=#333333}"/>
+                <Setter Property="BackgroundColor" Value="{StaticResource Secondary}"/>
                 <Setter Property="StrokeShape" Value="RoundRectangle 8"/>
             </Style>
             <Style TargetType="HorizontalStackLayout">
@@ -29,92 +32,40 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid>
+    <Grid Padding="12">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <VerticalStackLayout Spacing="24" Padding="10" Grid.Row="0">
-            <VerticalStackLayout Spacing="6">
-                <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation">
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Grid Margin="0,12,0,24" Grid.Row="0" HeightRequest="48">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" VerticalOptions="Center" Grid.Column="0" HorizontalOptions="Start">
                     <Label.FormattedText>
                         <FormattedString>
-                            <Span Text="{Binding MeleeISOPathLabelText}" FontAttributes="Bold" FontSize="20"/>
+                            <Span Text="Your Connection Info: " FontAttributes="Bold" FontSize="20"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <HorizontalStackLayout>
-                    <Border>
-                        <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation" Padding="18,0,18,0" WidthRequest="360">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding Settings.WatchMeleeISOPath}" />
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Border>
-                    <Button x:Name="MeleeIsoBrowseButton" 
-                            Text="Browse"
-                            Clicked="MeleeIsoBrowseButton_Clicked" 
-                            VerticalOptions="Center"
-                            Padding="16,4,16,8"/>
-                </HorizontalStackLayout>
-            </VerticalStackLayout>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <Label VerticalTextAlignment="Center" LineBreakMode="WordWrap" Grid.Column="0" Grid.Row="0">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="{Binding WatchDolphinPathLabelText}" FontSize="20" FontAttributes="Bold"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <HorizontalStackLayout Grid.Column="2" Grid.Row="1">
-                    <Border>
-                        <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation"  Padding="18,0,18,0" WidthRequest="360">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{Binding Settings.WatchDolphinPath}"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Border>
-                    <Button x:Name="WatchDolphinBrowseButton" 
-                            IsVisible="{Binding Settings.ShowWatchDolphinEdit}"
-                            Text="Browse"
-                            Clicked="WatchDolphinBrowseButton_Clicked"
-                            VerticalOptions="Center"
-                            Padding="16,4,16,8"/>
-                </HorizontalStackLayout>
-            </Grid>
-
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <BoxView HeightRequest="1" Color="#333333" Margin="0,0,0,6" Grid.Row="0"/>
-                <VerticalStackLayout Grid.Row="1" VerticalOptions="Center">
-                    <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap">
-                        <Label.FormattedText>
-                            <FormattedString>
-                                <Span Text="Your Connection Info: " FontAttributes="Bold" FontSize="20"/>
-                            </FormattedString>
-                        </Label.FormattedText>
-                    </Label>
-                </VerticalStackLayout>
-
-                <HorizontalStackLayout Spacing="5" HorizontalOptions="End" Grid.Row="1">
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End" Spacing="12" VerticalOptions="Center" HeightRequest="48">
                     <Border>
                         <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Padding="18,0,18,0">
                             <Label.FormattedText>
@@ -133,22 +84,244 @@
                             </Label.FormattedText>
                         </Label>
                     </Border>
-                    <ImageButton x:Name="EditConnectCodeButton" 
-                                 Clicked="EditConnectCodeButton_Clicked"
-                                 IsVisible="{Binding Settings.ShowConnectCodeEdit}" 
-                                 BackgroundColor="Transparent" 
-                                 Aspect="AspectFit" 
-                                 HeightRequest="2" 
-                                 WidthRequest="2"
-                                 Margin="-4,-4,0,0">
-                        <ImageButton.Source>
-                            <FontImageSource Glyph="{mi:FluentFilled Icon=Edit24Filled, IconColor={AppThemeBinding Light=#AAAAAA, Dark=#CCCCCC}}"/>
-                        </ImageButton.Source>
-                    </ImageButton>
                 </HorizontalStackLayout>
+                <ImageButton x:Name="EditConnectCodeButton" 
+                                Clicked="EditConnectCodeButton_Clicked"
+                                IsVisible="{Binding Settings.ShowConnectCodeEdit}" 
+                                BackgroundColor="Transparent" 
+                                Aspect="AspectFit" 
+                                HeightRequest="4" 
+                                WidthRequest="4"
+                                Margin="-4,-4,0,0"
+                                Grid.Row="0"
+                                Grid.Column="3">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=Edit24Filled, IconColor={StaticResource Tertiary}}"/>
+                    </ImageButton.Source>
+                </ImageButton>
             </Grid>
-        </VerticalStackLayout>
+            <BoxView HeightRequest="1" Grid.Row="1" VerticalOptions="End"/>
+        </Grid>
 
-        <local:BottomBar Grid.Row="2" BindingContext="{Binding ShellViewModel}" HeightRequest="20"/>
+        
+        <Grid Margin="0,18,0,6" Grid.Row="1" RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Label VerticalTextAlignment="Center" LineBreakMode="WordWrap" Grid.Column="0" Grid.Row="0" Padding="0,0,0,0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding MeleeISOPathLabelText}" FontAttributes="Bold" FontSize="20"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Grid Grid.Column="0" Grid.Row="1" Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border Grid.Column="0">
+                    <Label VerticalTextAlignment="Center" HorizontalOptions="Start" LineBreakMode="TailTruncation"  Padding="18,0,18,0" WidthRequest="360">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Settings.WatchMeleeISOPath}" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Border>
+                <Button x:Name="MeleeIsoBrowseButton" 
+                        Text="Browse"
+                        Clicked="MeleeIsoBrowseButton_Clicked" 
+                        VerticalOptions="Center"
+                        HorizontalOptions="End"
+                        Grid.Column="1"
+                        Padding="16,4,16,8"
+                        CornerRadius="8"
+                        BackgroundColor="{StaticResource Tertiary}">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value=".85"/>
+                                        <Setter Property="Scale" Value=".98"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
+            </Grid>
+            <BoxView HeightRequest="1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,6"/>
+        </Grid>
+
+        
+        <Grid Margin="0,6,0,6" Grid.Row="2" RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Label VerticalTextAlignment="Center" LineBreakMode="WordWrap" Grid.Row="0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="{Binding WatchDolphinPathLabelText}" FontSize="20" FontAttributes="Bold"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Grid Grid.Row="1" Margin="0,6,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Border VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="360" HeightRequest="36" Grid.Column="0">
+                    <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation"  Padding="18,0,18,0">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding Settings.WatchDolphinPath}"/>
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                </Border>
+                <Button x:Name="WatchDolphinBrowseButton" 
+                    IsVisible="{Binding Settings.ShowWatchDolphinEdit}"
+                    Text="Browse"
+                    Clicked="WatchDolphinBrowseButton_Clicked"
+                    VerticalOptions="Center"
+                    HorizontalOptions="End"
+                    Grid.Column="1" 
+                    Padding="16,4,16,8"
+                    CornerRadius="8"
+                    BackgroundColor="{StaticResource Tertiary}">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value="1"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value=".85"/>
+                                        <Setter Property="Scale" Value=".98"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                </Button>
+            </Grid>
+            <BoxView HeightRequest="1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,6"/>
+        </Grid>
+
+
+        <Grid Margin="0,6,0,6" Grid.Row="3" RowSpacing="12">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,6">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label VerticalTextAlignment="Center" HorizontalOptions="Start" LineBreakMode="CharacterWrap" Grid.Column="0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Current SlippiTV Version: " FontAttributes="Bold" FontSize="20"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
+                    <Border>
+                        <Label VerticalTextAlignment="Center" LineBreakMode="NoWrap" Padding="18,0,18,0">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="{x:Static versions:ClientVersion.SlippiClientVersion}"/>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Border>
+                    <Button x:Name="UpdateSlippiTVButton" 
+                        IsVisible="{Binding ShellViewModel.RequiresUpdate}"
+                        Text="Update"
+                        Clicked="UpdateSlippiTV_Clicked"
+                        VerticalOptions="Center"
+                        Padding="16,4,16,8"
+                        CornerRadius="8"
+                        BackgroundColor="{StaticResource Tertiary}"/>
+                </HorizontalStackLayout>
+
+            </Grid>
+            <BoxView HeightRequest="1" Margin="0,0,0,6" Grid.ColumnSpan="2" Grid.Row="1"/>
+        </Grid>
+
+
+        <Grid Margin="0,0,0,0" VerticalOptions="End" Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Theme" FontAttributes="Bold" FontSize="20"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <HorizontalStackLayout Spacing="0" HorizontalOptions="End" Grid.Column="1">
+                <!--Click on the button to select your theme, icon shows color preview of theme, popup text shows name of theme-->
+                <ImageButton x:Name="SelectThemeDark"
+                        Clicked="UpdateThemeDark"
+                        VerticalOptions="Center"
+                        BackgroundColor="Transparent" 
+                        Aspect="AspectFit"
+                        ToolTipProperties.Text="Dark">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource OffBlack}}" Size="24"/>
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <ImageButton x:Name="SelectThemeLight"
+                        Clicked="UpdateThemeLight"
+                        VerticalOptions="Center"
+                        BackgroundColor="Transparent" 
+                        Aspect="AspectFit"
+                        ToolTipProperties.Text="Light">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource PrimaryText}}" Size="24"/>
+                    </ImageButton.Source>
+                </ImageButton>
+
+                <ImageButton x:Name="SelectThemeGCPurple"
+                                Clicked="UpdateThemeGCPurple"
+                                VerticalOptions="Center"
+                                BackgroundColor="{StaticResource Tertiary}"
+                                Aspect="AspectFit"
+                                ToolTipProperties.Text="GC Purple">
+                    <ImageButton.Source>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource Tertiary}}"/>
+                    </ImageButton.Source>
+                </ImageButton>
+            </HorizontalStackLayout>
+        </Grid>
+
+        <local:BottomBar Grid.Row="5" BindingContext="{Binding ShellViewModel}" HeightRequest="20" VerticalOptions="End"/>
     </Grid>
 </ContentPage>

@@ -1,25 +1,18 @@
 ﻿using __XamlGeneratedCode__;
 using CommunityToolkit.Maui.Converters;
-using SlippiTV.Shared.Service;
+using SlippiTV.Client.ViewModels;
+using SlippiTV.Shared.Types;
 using System.Globalization;
 
 namespace SlippiTV.Client.Converters;
 
-public class LiveStatusToColorConverter : BaseConverter<LiveStatus, Color>
+public class LiveStatusToColorConverter : BaseConverterOneWay<LiveStatus, Color>
 {
     public override Color DefaultConvertReturnValue
     {
         get => Color.FromArgb("#DB5151");
         set { }
     }
-
-    public override LiveStatus DefaultConvertBackReturnValue
-    {
-        get;
-        set;
-    }
-
-    public override LiveStatus ConvertBackTo(Color value, CultureInfo? culture) => throw new NotImplementedException();
 
     public override Color ConvertFrom(LiveStatus value, CultureInfo? culture)
     {
@@ -33,7 +26,7 @@ public class LiveStatusToColorConverter : BaseConverter<LiveStatus, Color>
     }
 }
 
-public class LiveStatusToToolTipConverter : BaseConverter<LiveStatus, string>
+public class LiveStatusToToolTipConverter : BaseConverterOneWay<LiveStatus, string>
 {
     private const string _offline = "Offline";
     private const string _idle = "Idle";
@@ -44,13 +37,6 @@ public class LiveStatusToToolTipConverter : BaseConverter<LiveStatus, string>
         get => _offline; 
         set { } 
     }
-    public override LiveStatus DefaultConvertBackReturnValue 
-    {
-        get;
-        set;
-    }
-
-    public override LiveStatus ConvertBackTo(string value, CultureInfo? culture) => throw new NotImplementedException();
 
     public override string ConvertFrom(LiveStatus value, CultureInfo? culture)
     {
@@ -64,7 +50,7 @@ public class LiveStatusToToolTipConverter : BaseConverter<LiveStatus, string>
     }
 }
 
-public class LiveStatusToStatusBarToolTipConverter : BaseConverter<LiveStatus, string>
+public class LiveStatusToRelayStatusBarToolTipConverter : BaseConverterOneWay<ShellViewModel, string>
 {
     private const string _offline = "Disconnected";
     private const string _connecting = "Connecting";
@@ -75,22 +61,39 @@ public class LiveStatusToStatusBarToolTipConverter : BaseConverter<LiveStatus, s
         get => _offline;
         set { }
     }
-    public override LiveStatus DefaultConvertBackReturnValue
+
+    public override string ConvertFrom(ShellViewModel value, CultureInfo? culture)
     {
-        get;
-        set;
+        return value?.RelayStatus switch
+        {
+            LiveStatus.Offline => _offline,
+            LiveStatus.Idle => _connecting,
+            LiveStatus.Active => $"{_connected} to {value.SlippiTVService.SlippiTVServerHost}",
+            _ => _offline
+        } ?? _offline;
+    }
+}
+
+public class LiveStatusToDolphinStatusBarToolTipConverter : BaseConverterOneWay<ShellViewModel, string>
+{
+    private const string _offline = "Disconnected";
+    private const string _connecting = "Connecting";
+    private const string _connected = "Connected";
+
+    public override string DefaultConvertReturnValue
+    {
+        get => _offline;
+        set { }
     }
 
-    public override LiveStatus ConvertBackTo(string value, CultureInfo? culture) => throw new NotImplementedException();
-
-    public override string ConvertFrom(LiveStatus value, CultureInfo? culture)
+    public override string ConvertFrom(ShellViewModel value, CultureInfo? culture)
     {
-        return value switch
+        return value?.RelayStatus switch
         {
             LiveStatus.Offline => _offline,
             LiveStatus.Idle => _connecting,
             LiveStatus.Active => _connected,
             _ => _offline
-        };
+        } ?? _offline;
     }
 }

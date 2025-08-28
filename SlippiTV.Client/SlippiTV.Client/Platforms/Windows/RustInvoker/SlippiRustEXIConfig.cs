@@ -5,7 +5,7 @@ namespace SlippiTV.Client.Platforms.Windows.RustInvoker;
 
 [StructLayout(LayoutKind.Sequential)]
 [NativeMarshalling(typeof(SlippiRustEXIConfigMarshaller))]
-internal struct SlippiRustEXIConfig
+public struct SlippiRustEXIConfig
 {
     public string IsoPath;
     public string UserConfigFolder;
@@ -13,13 +13,13 @@ internal struct SlippiRustEXIConfig
     public OsdAddMessageFunction OsdAddMessageFunction;
 }
 
-delegate void OsdAddMessageFunction(string msg, uint a, uint b);
+public delegate void OsdAddMessageFunction(string msg, uint a, uint b);
 
 [CustomMarshaller(typeof(SlippiRustEXIConfig), MarshalMode.Default, typeof(SlippiRustEXIConfigMarshaller))]
-internal unsafe static class SlippiRustEXIConfigMarshaller
+public unsafe static class SlippiRustEXIConfigMarshaller
 {
     [StructLayout(LayoutKind.Sequential)]
-    internal unsafe struct Native
+    public unsafe struct Native
     {
         public byte* pIsoPath;
         public byte* pUserConfigFolder;

@@ -14,6 +14,22 @@
             <!-- Other app resources here -->
             <Thickness x:Key="TextControlBorderThemeThickness">0</Thickness>
             <Thickness x:Key="TextControlBorderThemeThicknessFocused">0</Thickness>
+            <DataTemplate x:Key="MauiAppTitleBarTemplate">
+                <Grid>
+                    <Rectangle Fill="#512BD4" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Canvas.ZIndex="1"/>
+                    <Border Canvas.ZIndex="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="0,0,0,0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Source="slippitv.ico" Width="24" Height="24" Margin="8,2,0,0"/>
+                            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" Text="SlippiTV" Margin="8,0,0,0" FontFamily="Calibri" Foreground="White"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </DataTemplate>
         </ResourceDictionary>
     </maui:MauiWinUIApplication.Resources>
 </maui:MauiWinUIApplication>

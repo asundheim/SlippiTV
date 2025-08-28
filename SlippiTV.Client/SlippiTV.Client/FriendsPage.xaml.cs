@@ -3,6 +3,9 @@ using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls.Shapes;
 using SlippiTV.Client.ViewModels;
+using SlippiTV.Shared;
+using SlippiTV.Shared.Types;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SlippiTV.Client;
@@ -82,7 +85,7 @@ public partial class FriendsPage : ContentPage
 
         MenuFlyout mf = new MenuFlyout();
         MenuFlyoutItem flyoutItem = new MenuFlyoutItem();
-        flyoutItem.Text = "Remove";
+        flyoutItem.Text = "Remove Friend";
         flyoutItem.Command = new RelayCommand(() =>
         {
             SettingsManager.Instance.RemoveFriend(((FriendViewModel)view!.BindingContext).ConnectCode);
@@ -116,5 +119,34 @@ public partial class FriendsPage : ContentPage
         {
             SettingsManager.Instance.AddFriend(code);
         }
+    }
+
+    private void OpenOpponentWebpage(object sender, EventArgs e)
+    {
+        FriendViewModel friend = (FriendViewModel)((VisualElement)sender).BindingContext;
+        if (!string.IsNullOrEmpty(friend.ActiveGameInfo?.OpponentConnectCode))
+        {
+            string sanitized = ConnectCodeUtils.SanitizeConnectCode(friend.ActiveGameInfo.OpponentConnectCode);
+            Process.Start(new ProcessStartInfo($"https://slippi.gg/user/{sanitized}") { UseShellExecute = true });
+        }
+
+        return;
+    }
+
+    private void OpenPlayerWebpage(object sender, EventArgs e)
+    {
+        FriendViewModel friend = (FriendViewModel)((VisualElement)sender).BindingContext;
+        if (!string.IsNullOrEmpty(friend.ActiveGameInfo?.PlayerConnectCode))
+        {
+            string sanitized = ConnectCodeUtils.SanitizeConnectCode(friend.ActiveGameInfo.PlayerConnectCode);
+            Process.Start(new ProcessStartInfo($"https://slippi.gg/user/{sanitized}") { UseShellExecute = true });
+        }
+
+        return;
+    }
+
+    private void NotificationBell_Tapped(object sender, TappedEventArgs e)
+    {
+        return;
     }
 }

@@ -5,7 +5,9 @@ using MauiIcons.Fluent.Filled;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.LifecycleEvents;
 using Microsoft.Maui.Platform;
+using Microsoft.UI.Windowing;
 using SlippiTV.Client.ViewModels;
+using System.Collections.Generic;
 using System.Runtime.Versioning;
 
 namespace SlippiTV.Client

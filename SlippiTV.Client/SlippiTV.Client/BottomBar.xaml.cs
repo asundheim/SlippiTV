@@ -1,6 +1,14 @@
+using Microsoft.Maui.Platform;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using SlippiTV.Client.Animations;
+using SlippiTV.Client.Converters;
+using SlippiTV.Client.PlatformUtils;
 using SlippiTV.Client.ViewModels;
+using SlippiTV.Shared.Types;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
+using ToolTip = Microsoft.UI.Xaml.Controls.ToolTip;
 
 namespace SlippiTV.Client;
 
@@ -29,19 +37,11 @@ public partial class BottomBar : ContentView
 
     private void OnShellViewModelPropertyChanged(object? sender, PropertyChangedEventArgs propertyName)
     {
-        if (propertyName.PropertyName is null || propertyName.PropertyName == nameof(ShellViewModel.AnimateRelayStatus))
+        if (propertyName.PropertyName == nameof(ShellViewModel.AnimateRelayStatus))
         {
-            RelayImage.CancelAnimations();
-
             if (ShellViewModel.AnimateRelayStatus)
             {
-                Animation pulse = new Animation();
-                Animation pulseOut = new Animation(v => RelayImage.Scale = v, 1, 1.2, Easing.CubicIn);
-                Animation pulseIn = new Animation(v => RelayImage.Scale = v, 1.2, 1, Easing.CubicOut);
-                pulse.Add(0, 0.5, pulseOut);
-                pulse.Add(0.5, 1, pulseIn);
-
-                RelayImage.Animate("PulseAnimation", pulse, length: 1000, repeat: () => ShellViewModel.AnimateRelayStatus == true);
+                DolphinStatusIcon.Pulse2(() => ShellViewModel.AnimateRelayStatus == true);
             }
         }
     }

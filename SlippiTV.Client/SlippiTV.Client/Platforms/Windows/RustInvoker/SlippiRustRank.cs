@@ -1,6 +1,6 @@
 ﻿namespace SlippiTV.Client.Platforms.Windows.RustInvoker;
 
-internal enum SlippiRustRank : byte
+public enum SlippiRustRank : byte
 {
     Unranked,
     Bronze1,
