@@ -12,19 +12,13 @@ namespace SlippiTV.Client.ViewModels;
 
 public partial class FriendsViewModel : BaseNotifyPropertyChanged
 {
-    public ShellViewModel ShellViewModel
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
+    public ShellViewModel ShellViewModel { get; set; }
+
+    public ObservableCollection<FriendViewModel> Friends { get; set; }
 
     public FriendsViewModel(ShellViewModel shellViewModel)
     {
-        this.ShellViewModel = shellViewModel;
+        ShellViewModel = shellViewModel;
         Settings.Friends.CollectionChanged += SettingsFriendsChanged;
         Friends = new ObservableCollection<FriendViewModel>();
         CreateFriendsFromSettings();
@@ -58,6 +52,29 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         });
     }
 
+    /// <summary>
+    /// Adds a friend by code if not present, refreshes, and watches if live.
+    /// </summary>
+    public async Task WatchByCodeAsync(string code, CancellationToken cancellationToken = default)
+    {
+        code = code.Trim().ToUpperInvariant();
+        var friend = Friends.FirstOrDefault(f => f.ConnectCode == code);
+        if (friend == null)
+        {
+            friend = new FriendViewModel(this, code);
+            Friends.Add(friend);
+        }
+        await friend.Refresh();
+        try
+        {
+            await friend.Watch(cancellationToken);
+        }
+        catch (InvalidOperationException)
+        {
+            // not live
+        }
+    }
+
     private void SettingsFriendsChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.Action == NotifyCollectionChangedAction.Add)
@@ -72,15 +89,6 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
 
     public ISlippiTVService SlippiTVService => ShellViewModel.SlippiTVService;
 
-    public ObservableCollection<FriendViewModel> Friends
-    {
-        get;
-        set
-        {
-            field = value;
-            OnPropertyChanged();
-        }
-    }
 
     public SlippiTVSettings Settings => SettingsManager.Instance.Settings;
 
@@ -93,7 +101,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
     }
 
     [RelayCommand]
-    public async Task ShowWindow()
+    public async Task ShowHideWindow()
     {
         // as good a place to check as any unless we dedicate some polling thread to it
         this.ShellViewModel.RequiresUpdate = await ClientVersion.RequiresUpdateAsync(SlippiTVService);
@@ -104,7 +112,14 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
             return;
         }
 
-        window.Show(disableEfficiencyMode: true);
+        if (window.IsActivated())
+        {
+            window.Hide(enableEfficiencyMode: true);
+        }
+        else
+        {
+            window.Show(disableEfficiencyMode: true);
+        }
     }
 
     [RelayCommand]
