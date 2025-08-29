@@ -7,18 +7,25 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using SlippiTV.Shared.Types;
 using SlippiTV.Shared.Versions;
+using SlippiTV.Client.Settings;
 
 namespace SlippiTV.Client.ViewModels;
 
 public partial class FriendsViewModel : BaseNotifyPropertyChanged
 {
-    public ShellViewModel ShellViewModel { get; set; }
-
-    public ObservableCollection<FriendViewModel> Friends { get; set; }
+    public ShellViewModel ShellViewModel
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
 
     public FriendsViewModel(ShellViewModel shellViewModel)
     {
-        ShellViewModel = shellViewModel;
+        this.ShellViewModel = shellViewModel;
         Settings.Friends.CollectionChanged += SettingsFriendsChanged;
         Friends = new ObservableCollection<FriendViewModel>();
         CreateFriendsFromSettings();
@@ -75,20 +82,20 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         }
     }
 
-    private void SettingsFriendsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (e.Action == NotifyCollectionChangedAction.Add)
-        {
-            Friends.Add(new FriendViewModel(this, (string)e.NewItems![0]!));
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Remove)
-        {
-            Friends.RemoveAt(e.OldStartingIndex);
-        }
-    }
+    public event EventHandler<FriendViewModel, ActiveGameInfo>? OnNewActiveGame;
+    internal void InvokeNewActiveGame(FriendViewModel friend, ActiveGameInfo gameInfo) => OnNewActiveGame?.Invoke(friend, gameInfo);
 
     public ISlippiTVService SlippiTVService => ShellViewModel.SlippiTVService;
 
+    public ObservableCollection<FriendViewModel> Friends
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    }
 
     public SlippiTVSettings Settings => SettingsManager.Instance.Settings;
 
@@ -100,8 +107,20 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         }
     }
 
+    private void SettingsFriendsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add)
+        {
+            Friends.Add(new FriendViewModel(this, (FriendSettings)e.NewItems![0]!));
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            Friends.RemoveAt(e.OldStartingIndex);
+        }
+    }
+
     [RelayCommand]
-    public async Task ShowHideWindow()
+    public async Task ShowWindow()
     {
         // as good a place to check as any unless we dedicate some polling thread to it
         this.ShellViewModel.RequiresUpdate = await ClientVersion.RequiresUpdateAsync(SlippiTVService);
@@ -112,14 +131,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
             return;
         }
 
-        if (window.IsActivated())
-        {
-            window.Hide(enableEfficiencyMode: true);
-        }
-        else
-        {
-            window.Show(disableEfficiencyMode: true);
-        }
+        window.Show(disableEfficiencyMode: true);
     }
 
     [RelayCommand]

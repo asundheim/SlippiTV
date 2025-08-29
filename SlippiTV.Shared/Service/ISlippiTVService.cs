@@ -14,5 +14,5 @@ public interface ISlippiTVService : IDisposable
 
     Task<string> GetCurrentClientVersion();
 
-    Task<string> GetUpdateScript();
+    Task<UpdateInfo> GetUpdateInfo();
 }

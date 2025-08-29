@@ -2,7 +2,9 @@
 
 public static class UpdateScript
 {
-    private const string _updateDownloadLink = @"https://github.com/asundheim/SlippiTV/releases/download/0.0.5-beta/SlippiTV.0.0.5-beta.zip";
+    public const string UpdateZipName = @"SlippiTV.0.0.5-beta.zip";
+    public const string UpdateDownloadLink = @$"https://github.com/asundheim/SlippiTV/releases/download/0.0.5-beta/{UpdateZipName}";
+
     public const string Powershell =
     $$"""
     $Host.UI.RawUI.BackgroundColor = "Black"
@@ -26,8 +28,7 @@ public static class UpdateScript
     Write-Host ""
 
     $exe = "SlippiTV.exe"
-    $zip = "SlippiTV_update.zip"
-    $downloadLink = "{{_updateDownloadLink}}"
+    $zip = "{{UpdateZipName}}"
     $scriptPath = $MyInvocation.MyCommand.Path
 
     function Delete-Self-And-Exit
@@ -40,6 +41,15 @@ public static class UpdateScript
     if (-not (Test-Path -Path $exe)) {
         Write-Host "[ERROR] SlippiTV.exe not found in the current directory: $scriptPath"
         Write-Host "Please ensure this script is in the same folder as SlippiTV.exe."
+        Read-Host "Press Enter to exit"
+        Delete-Self-And-Exit
+    }
+
+    # Verify zip exists
+    if (-not (Test-Path -Path $zip))
+    {
+        Write-Host "[ERROR] $zip not found in the current directory: $scriptPath"
+        Write-Host "Please ensure this script is in the same folder as $zip"
         Read-Host "Press Enter to exit"
         Delete-Self-And-Exit
     }
@@ -59,17 +69,6 @@ public static class UpdateScript
         }
     } else {
         Write-Host "[INFO] No active instances of SlippiTV.exe found."
-    }
-
-    # Download the updated ZIP
-    Write-Host "[INFO] Downloading the updated version (ZIP)..."
-    try {
-        Invoke-WebRequest -Uri $downloadLink -OutFile $zip -ErrorAction Stop
-        Write-Host "[INFO] Download completed."
-    } catch {
-        Write-Host "[ERROR] Failed to download the update ZIP. Please check your internet connection."
-        Read-Host "Press Enter to exit"
-        Delete-Self-And-Exit
     }
 
     # Unzip the new version (overwrite existing files)

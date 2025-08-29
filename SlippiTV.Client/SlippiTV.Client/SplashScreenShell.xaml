@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SlippiTV.Client"
     xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
-    Shell.FlyoutBehavior="Disabled">
-    <ShellContent ContentTemplate="{DataTemplate local:SplashScreenPage}" Route="SplashScreen"/>
+    Shell.FlyoutBehavior="Disabled"
+    x:DataType="{x:Type vm:SplashScreenViewModel}">
+    <ShellContent ContentTemplate="{DataTemplate local:SplashScreenPage}" BindingContext="{Binding}" Route="SplashScreen"/>
 </Shell>

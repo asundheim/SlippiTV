@@ -2,6 +2,7 @@
 using Slippi.NET.Console.Types;
 using Slippi.NET.Slp.Reader.File;
 using Slippi.NET.Slp.Writer;
+using SlippiTV.Client.Settings;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
 using SlippiTV.Shared.Types;
@@ -11,18 +12,17 @@ namespace SlippiTV.Client.ViewModels;
 
 public class FriendViewModel : BaseNotifyPropertyChanged
 {
-    public FriendViewModel(FriendsViewModel parent, string connectCode)
+    public FriendViewModel(FriendsViewModel parent, FriendSettings friend)
     {
         this.Parent = parent;
-        this.ConnectCode = connectCode;
+        this.FriendSettings = friend;
     }
 
     public FriendsViewModel Parent { get; }
-
     public ISlippiTVService SlippiTVService => Parent.SlippiTVService;
     public SlippiTVSettings Settings => SettingsManager.Instance.Settings;
+    public FriendSettings FriendSettings { get; }
 
-    public string ConnectCode { get; }
     public ActiveGameInfo? ActiveGameInfo 
     { 
         get;
@@ -69,8 +69,9 @@ public class FriendViewModel : BaseNotifyPropertyChanged
     {
         try
         {
-            var userInfo = await SlippiTVService.GetStatus(ConnectCode);
+            var userInfo = await SlippiTVService.GetStatus(FriendSettings.ConnectCode);
             Parent.ShellViewModel.RelayStatus = LiveStatus.Active;
+            CheckForNewStream(userInfo);
 
             LiveStatus = userInfo.LiveStatus;
             ActiveGameInfo = userInfo.ActiveGameInfo;
@@ -179,7 +180,7 @@ public class FriendViewModel : BaseNotifyPropertyChanged
 
             try
             {
-                using var socket = await SlippiTVService.WatchStream(ConnectCode);
+                using var socket = await SlippiTVService.WatchStream(FriendSettings.ConnectCode);
                 await SocketUtils.HandleSocket(socket, x => fileWriter.Write(x), null, anyCancellation);
             }
             catch { }
@@ -198,6 +199,14 @@ public class FriendViewModel : BaseNotifyPropertyChanged
                 }
             }
             catch { } // best effort
+        }
+    }
+
+    private void CheckForNewStream(UserStatusInfo newStatusInfo)
+    {
+        if (LiveStatus != LiveStatus.Active && newStatusInfo.LiveStatus == LiveStatus.Active && newStatusInfo.ActiveGameInfo is not null)
+        {
+            this.Parent.InvokeNewActiveGame(this, newStatusInfo.ActiveGameInfo);
         }
     }
 }

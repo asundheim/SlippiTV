@@ -2,12 +2,12 @@
 using SlippiTV.Client.ViewModels;
 using System.Collections.ObjectModel;
 
-namespace SlippiTV.Client;
+namespace SlippiTV.Client.Settings;
 
 [JsonObject]
 public class SlippiTVSettings : BaseNotifyPropertyChanged
 {
-    public ObservableCollection<string> Friends 
+    public ObservableCollection<FriendSettings> Friends
     { 
         get; 
         set
@@ -103,14 +103,6 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
 
     public int Version { get; set; } = 3;
 
-    //public enum StageImagePath
-    //{
-    //    "map-df.png"
-
-    //}
-
-    public string SlippiVersion { get; set; } = string.Empty;
-
     public string Theme
     {
         get;
@@ -124,6 +116,8 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
             }
         }
     } = Themes.GCPurple;
+
+    public string SlippiVersion { get; set; } = string.Empty;
 
     private void SaveSettings()
     {

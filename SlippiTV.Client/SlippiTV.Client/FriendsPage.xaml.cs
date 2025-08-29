@@ -2,11 +2,14 @@
 using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls.Shapes;
+using Slippi.NET.Melee;
+using Slippi.NET.Melee.Types;
 using SlippiTV.Client.ViewModels;
 using SlippiTV.Shared;
 using SlippiTV.Shared.Types;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using Windows.Media.Capture;
 
 namespace SlippiTV.Client;
 
@@ -35,6 +38,7 @@ public partial class FriendsPage : ContentPage
 
         // no clue why we have to do it twice
         Application.Current?.SetTheme(SettingsManager.Instance.Settings.Theme);
+        FriendsViewModel.OnNewActiveGame += OnNewActiveGame;
     }
 
     private async void AddFriendsButton_Clicked(object sender, EventArgs e)
@@ -91,7 +95,7 @@ public partial class FriendsPage : ContentPage
         flyoutItem.Text = "Remove Friend";
         flyoutItem.Command = new RelayCommand(() =>
         {
-            SettingsManager.Instance.RemoveFriend(((FriendViewModel)view!.BindingContext).ConnectCode);
+            SettingsManager.Instance.RemoveFriend(((FriendViewModel)view!.BindingContext).FriendSettings);
         });
         mf.Add(flyoutItem);
         FlyoutBase.SetContextFlyout(view, mf);
@@ -148,9 +152,29 @@ public partial class FriendsPage : ContentPage
         return;
     }
 
+    private void OnNewActiveGame(FriendViewModel friend, ActiveGameInfo gameInfo)
+    {
+        if (friend.FriendSettings.NotificationsEnabled &&
+            !string.IsNullOrEmpty(gameInfo.PlayerDisplayName) &&
+            !string.IsNullOrEmpty(gameInfo.OpponentDisplayName))
+        {
+            CharacterInfo playerCharacter = CharacterUtils.GetCharacterInfo(gameInfo.PlayerCharacter);
+            CharacterInfo opponentCharacter = CharacterUtils.GetCharacterInfo(gameInfo.OpponentCharacter);
+
+            TaskbarIcon.ShowNotification(
+                title: $"{friend.FriendSettings.ConnectCode} went live", 
+                message: $"{gameInfo.PlayerDisplayName} ({playerCharacter.Name}) vs {gameInfo.OpponentDisplayName} ({opponentCharacter.Name})",
+                customIconHandle: TaskbarIcon.Icon!.Handle,
+                sound: false,
+                largeIcon: true,
+                respectQuietTime: false,
+                timeout: TimeSpan.FromSeconds(2));
+        }
+    }
+
     private void NotificationBell_Tapped(object sender, TappedEventArgs e)
     {
         FriendViewModel friend = (FriendViewModel)((VisualElement)sender).BindingContext;
-        TaskbarIcon.ShowNotification($"{friend.ConnectCode} went live", "Click to open", H.NotifyIcon.Core.NotificationIcon.Info, respectQuietTime: false);
+        friend.FriendSettings.NotificationsEnabled = !friend.FriendSettings.NotificationsEnabled;
     }
 }

@@ -37,6 +37,7 @@
 		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent.Filled" Version="4.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.183" />
 		<!--<PackageReference Include="Slippi.NET" Version="0.4.2" />-->
 	</ItemGroup>
 
@@ -56,6 +57,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="InfoPopup.xaml.cs">
+	    <DependentUpon>InfoPopup.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="InputTextPopup.xaml.cs">
 	    <DependentUpon>InputTextPopup.xaml</DependentUpon>
 	  </Compile>
@@ -72,6 +76,9 @@
 		 <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="BottomBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="InfoPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ErrorPopup.xaml">
