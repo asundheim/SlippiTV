@@ -1,4 +1,4 @@
-namespace SlippiTV.Client;
+namespace SlippiTV.Client.Views;
 
 public partial class InfoPopup
 {

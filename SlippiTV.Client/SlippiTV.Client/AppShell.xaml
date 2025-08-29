@@ -5,6 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SlippiTV.Client"
     xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
+    xmlns:pages="clr-namespace:SlippiTV.Client.Pages"
     Shell.FlyoutBehavior="Disabled"
     x:DataType="{x:Type vm:ShellViewModel}"
     Title="SlippiTV.Client" Padding="0">
@@ -12,14 +13,14 @@
         <Tab Title="Friends">
             <ShellContent
                 Title="Friends"
-                ContentTemplate="{DataTemplate local:FriendsPage}"
+                ContentTemplate="{DataTemplate pages:FriendsPage}"
                 BindingContext="{Binding FriendsViewModel}"
                 Route="FriendsPage" />
         </Tab>
         <Tab Title="Settings">
             <ShellContent
                 Title="Settings"
-                ContentTemplate="{DataTemplate local:SettingsPage}"
+                ContentTemplate="{DataTemplate pages:SettingsPage}"
                 BindingContext="{Binding SettingsViewModel}"
                 Route="SettingsPage" />
         </Tab>

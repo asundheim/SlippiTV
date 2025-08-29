@@ -57,16 +57,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="InfoPopup.xaml.cs">
+	  <Compile Update="Views\InfoPopup.xaml.cs">
 	    <DependentUpon>InfoPopup.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="InputTextPopup.xaml.cs">
+	  <Compile Update="Views\InputTextPopup.xaml.cs">
 	    <DependentUpon>InputTextPopup.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="FriendsPage.xaml.cs">
+	  <Compile Update="Pages\FriendsPage.xaml.cs">
 	    <DependentUpon>FriendsPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="ErrorPopup.xaml.cs">
+	  <Compile Update="Views\ErrorPopup.xaml.cs">
 	    <DependentUpon>ErrorPopup.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
@@ -75,22 +75,25 @@
 	  <MauiXaml Update="AddFriendPopup.xaml.cs">
 		 <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="BottomBar.xaml">
+	  <MauiXaml Update="Views\BottomBar.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="InfoPopup.xaml">
+	  <MauiXaml Update="Views\FriendView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ErrorPopup.xaml">
+	  <MauiXaml Update="Views\InfoPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="SelectableListViewPopup.xaml">
+	  <MauiXaml Update="Views\ErrorPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="SettingsPage.xaml">
+	  <MauiXaml Update="Views\SelectableListViewPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="SplashScreenPage.xaml">
+	  <MauiXaml Update="Pages\SettingsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\SplashScreenPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SplashScreenShell.xaml">

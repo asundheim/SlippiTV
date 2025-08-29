@@ -1,17 +1,14 @@
 ﻿using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
-using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls.Shapes;
 using Slippi.NET.Melee;
 using Slippi.NET.Melee.Types;
 using SlippiTV.Client.ViewModels;
-using SlippiTV.Shared;
+using SlippiTV.Client.Views;
 using SlippiTV.Shared.Types;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using Windows.Media.Capture;
 
-namespace SlippiTV.Client;
+namespace SlippiTV.Client.Pages;
 
 public partial class FriendsPage : ContentPage
 {
@@ -35,10 +32,16 @@ public partial class FriendsPage : ContentPage
     private void FriendsPage_Loaded(object? sender, EventArgs e)
     {
         FriendsViewModel = (FriendsViewModel)this.BindingContext;
+        FriendsViewModel.OnShowErrorPopup += FriendsViewModel_OnShowErrorPopup;
+        FriendsViewModel.OnNewActiveGame += OnNewActiveGame;
 
         // no clue why we have to do it twice
         Application.Current?.SetTheme(SettingsManager.Instance.Settings.Theme);
-        FriendsViewModel.OnNewActiveGame += OnNewActiveGame;
+    }
+
+    private async Task FriendsViewModel_OnShowErrorPopup(object sender, TextPopupEventArgs args)
+    {
+        await this.ShowPopupAsync(new ErrorPopup(args.PopupContent), args.PopupOptions);
     }
 
     private async void AddFriendsButton_Clicked(object sender, EventArgs e)
@@ -62,46 +65,6 @@ public partial class FriendsPage : ContentPage
         }
 
         FriendsViewModel.TryAddFriend(result.Result, out _);
-    }
-
-    private async void WatchFriendButton_Clicked(object sender, EventArgs e)
-    {
-        if (sender is ImageButton button && button.BindingContext is FriendViewModel friend)
-        {
-            if (string.IsNullOrEmpty(FriendsViewModel.Settings.WatchDolphinPath) || string.IsNullOrEmpty(FriendsViewModel.Settings.WatchMeleeISOPath))
-            {
-                await this.ShowPopupAsync(new ErrorPopup("Invalid replay Dolphin path or SSBM .iso path"), new PopupOptions
-                {
-                    Shape = new RoundRectangle
-                    {
-                        CornerRadius = new CornerRadius(0),
-                        StrokeThickness = 0,
-                    }
-                });
-            }
-            else
-            {
-                await friend.Watch(CancellationToken.None);
-            }
-        }
-    }
-
-    private void FriendsMore_Tapped(object sender, TappedEventArgs e)
-    {
-        var view = sender as View;
-
-        MenuFlyout mf = new MenuFlyout();
-        MenuFlyoutItem flyoutItem = new MenuFlyoutItem();
-        flyoutItem.Text = "Remove Friend";
-        flyoutItem.Command = new RelayCommand(() =>
-        {
-           FriendsViewModel.RemoveFriend(((FriendViewModel)view!.BindingContext));
-        });
-        mf.Add(flyoutItem);
-        FlyoutBase.SetContextFlyout(view, mf);
-
-        var point = e.GetPosition(view);
-        PlatformUtils.PlatformUtils.ShowContextMenu(view, point);
     }
 
     private async void AddFromRecentButton_Clicked(object sender, EventArgs e)
@@ -128,30 +91,6 @@ public partial class FriendsPage : ContentPage
         }
     }
 
-    private void OpenOpponentWebpage(object sender, EventArgs e)
-    {
-        FriendViewModel friend = (FriendViewModel)((VisualElement)sender).BindingContext;
-        if (!string.IsNullOrEmpty(friend.ActiveGameInfo?.OpponentConnectCode))
-        {
-            string sanitized = ConnectCodeUtils.SanitizeConnectCode(friend.ActiveGameInfo.OpponentConnectCode);
-            Process.Start(new ProcessStartInfo($"https://slippi.gg/user/{sanitized}") { UseShellExecute = true });
-        }
-
-        return;
-    }
-
-    private void OpenPlayerWebpage(object sender, EventArgs e)
-    {
-        FriendViewModel friend = (FriendViewModel)((VisualElement)sender).BindingContext;
-        if (!string.IsNullOrEmpty(friend.ActiveGameInfo?.PlayerConnectCode))
-        {
-            string sanitized = ConnectCodeUtils.SanitizeConnectCode(friend.ActiveGameInfo.PlayerConnectCode);
-            Process.Start(new ProcessStartInfo($"https://slippi.gg/user/{sanitized}") { UseShellExecute = true });
-        }
-
-        return;
-    }
-
     private void OnNewActiveGame(FriendViewModel friend, ActiveGameInfo gameInfo)
     {
         if (friend.FriendSettings.NotificationsEnabled &&
@@ -170,11 +109,5 @@ public partial class FriendsPage : ContentPage
                 respectQuietTime: false,
                 timeout: TimeSpan.FromSeconds(2));
         }
-    }
-
-    private void NotificationBell_Tapped(object sender, TappedEventArgs e)
-    {
-        FriendViewModel friend = (FriendViewModel)((VisualElement)sender).BindingContext;
-        friend.FriendSettings.NotificationsEnabled = !friend.FriendSettings.NotificationsEnabled;
     }
 }

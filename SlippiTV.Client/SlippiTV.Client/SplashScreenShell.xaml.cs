@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Extensions;
 using SlippiTV.Client.ViewModels;
+using SlippiTV.Client.Views;
 using System.Diagnostics.CodeAnalysis;
 
 namespace SlippiTV.Client;

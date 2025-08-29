@@ -7,15 +7,15 @@
              xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:shared="clr-namespace:SlippiTV.Shared.Types;assembly=SlippiTV.Shared"
-             x:Class="SlippiTV.Client.BottomBar"
+             x:Class="SlippiTV.Client.Views.BottomBar"
              x:DataType="{x:Type vm:ShellViewModel}">
     <ContentView.Resources>
         <ResourceDictionary>
             <converters:LiveStatusToRelayStatusBarToolTipConverter x:Key="LiveStatusToRelayStatusBarToolTipConverter"/>
             <converters:LiveStatusToDolphinStatusBarToolTipConverter x:Key="LiveStatusToDolphinStatusBarToolTipConverter"/>
             <converters:LiveStatusToColorConverter x:Key="LiveStatusToColorConverter"/>
-            <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-            <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            <ResourceDictionary Source="../Resources/Styles/Colors.xaml" />
+            <ResourceDictionary Source="../Resources/Styles/Styles.xaml" />
             <toolkit:EnumToBoolConverter x:Key="LiveStatusToBoolConverter">
                 <toolkit:EnumToBoolConverter.TrueValues>
                     <shared:LiveStatus>Active</shared:LiveStatus>

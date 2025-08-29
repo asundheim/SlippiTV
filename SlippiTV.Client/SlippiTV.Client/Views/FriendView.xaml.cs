@@ -1,0 +1,90 @@
+using CommunityToolkit.Maui;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Maui.Controls.Shapes;
+using SlippiTV.Client.ViewModels;
+using SlippiTV.Shared;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
+
+namespace SlippiTV.Client.Views;
+
+public partial class FriendView : ContentView
+{
+    [AllowNull]
+    public FriendViewModel FriendViewModel { get; set; }
+
+	public FriendView()
+	{
+		InitializeComponent();
+        Loaded += FriendView_Loaded;
+	}
+
+    private void FriendView_Loaded(object? sender, EventArgs e)
+    {
+        this.FriendViewModel = (FriendViewModel)this.BindingContext;
+    }
+
+    private async void WatchFriendButton_Clicked(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(FriendViewModel.Settings.WatchDolphinPath) || string.IsNullOrEmpty(FriendViewModel.Settings.WatchMeleeISOPath))
+        {
+            await FriendViewModel.Parent.ShowErrorPopupAsync(this, new TextPopupEventArgs("Invalid replay Dolphin path or SSBM .iso path", new PopupOptions
+            {
+                Shape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(0),
+                    StrokeThickness = 0,
+                }
+            }));
+        }
+        else
+        {
+            await FriendViewModel.Watch(CancellationToken.None);
+        }
+    }
+
+    private void FriendsMore_Tapped(object sender, TappedEventArgs e)
+    {
+        var view = sender as View;
+
+        MenuFlyout mf = new MenuFlyout();
+        MenuFlyoutItem flyoutItem = new MenuFlyoutItem();
+        flyoutItem.Text = "Remove Friend";
+        flyoutItem.Command = new RelayCommand(() =>
+        {
+            FriendViewModel.Parent.RemoveFriend(FriendViewModel);
+        });
+        mf.Add(flyoutItem);
+        FlyoutBase.SetContextFlyout(view, mf);
+
+        var point = e.GetPosition(view);
+        PlatformUtils.PlatformUtils.ShowContextMenu(view, point);
+    }
+
+    private void OpenOpponentWebpage(object sender, EventArgs e)
+    {
+        if (!string.IsNullOrEmpty(FriendViewModel.ActiveGameInfo.OpponentConnectCode))
+        {
+            string sanitized = ConnectCodeUtils.SanitizeConnectCode(FriendViewModel.ActiveGameInfo.OpponentConnectCode);
+            Process.Start(new ProcessStartInfo($"https://slippi.gg/user/{sanitized}") { UseShellExecute = true });
+        }
+
+        return;
+    }
+
+    private void OpenPlayerWebpage(object sender, EventArgs e)
+    {
+        if (!string.IsNullOrEmpty(FriendViewModel.ActiveGameInfo.PlayerConnectCode))
+        {
+            string sanitized = ConnectCodeUtils.SanitizeConnectCode(FriendViewModel.ActiveGameInfo.PlayerConnectCode);
+            Process.Start(new ProcessStartInfo($"https://slippi.gg/user/{sanitized}") { UseShellExecute = true });
+        }
+
+        return;
+    }
+
+    private void NotificationBell_Tapped(object sender, TappedEventArgs e)
+    {
+        FriendViewModel.FriendSettings.NotificationsEnabled = !FriendViewModel.FriendSettings.NotificationsEnabled;
+    }
+}

@@ -2,7 +2,7 @@ using SlippiTV.Client.Animations;
 using SlippiTV.Client.ViewModels;
 using System.Diagnostics.CodeAnalysis;
 
-namespace SlippiTV.Client;
+namespace SlippiTV.Client.Pages;
 
 public partial class SplashScreenPage : ContentPage
 {

@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using Slippi.NET.Melee;
 using Slippi.NET.Melee.Data;
 using Slippi.NET.Melee.Types;
+using SlippiTV.Client.ViewModels;
 using SlippiTV.Shared.Types;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ public class StageToImageConverter : BaseConverterOneWay<Stage, ImageSource>
     }
 }
 
-public class CharacterToImageSourceConverter : BaseConverterOneWay<ActiveGameInfo?, ImageSource>
+public class CharacterToImageSourceConverter : BaseConverterOneWay<ActiveGameViewModel, ImageSource>
 {
     public override ImageSource DefaultConvertReturnValue
     {
@@ -46,7 +47,7 @@ public class CharacterToImageSourceConverter : BaseConverterOneWay<ActiveGameInf
 
     public bool IsOpponent { get; set; } = false;
 
-    public override ImageSource ConvertFrom(ActiveGameInfo? gameInfo, CultureInfo? culture)
+    public override ImageSource ConvertFrom(ActiveGameViewModel? gameInfo, CultureInfo? culture)
     {
         if (gameInfo is null)
         {
@@ -61,15 +62,3 @@ public class CharacterToImageSourceConverter : BaseConverterOneWay<ActiveGameInf
         return $"si_{name}_{color}.png";
     }
 }
-
-//public class StocksToIntConverter : BaseConverterOneWay<PlayerStocksLeft, int>
-//{
-//    public override int DefaultConvertReturnValue { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-//    public override int ConvertFrom(PlayerStocksLeft value, CultureInfo? culture)
-//    {
-//        throw new NotImplementedException();
-//    }
-//}
-
-

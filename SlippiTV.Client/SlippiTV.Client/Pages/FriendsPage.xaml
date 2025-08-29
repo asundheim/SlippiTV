@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:tb="https://notifyicon.com/"
+             xmlns:local="clr-namespace:SlippiTV.Client"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:vm="clr-namespace:SlippiTV.Client.ViewModels"
+             xmlns:converters="clr-namespace:SlippiTV.Client.Converters"
+             xmlns:mi="http://www.aathifmahir.com/dotnet/2022/maui/icons"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:service="clr-namespace:SlippiTV.Shared.Types;assembly=SlippiTV.Shared"
+             xmlns:views="clr-namespace:SlippiTV.Client.Views"
+             x:Class="SlippiTV.Client.Pages.FriendsPage"
+             x:DataType="{x:Type vm:FriendsViewModel}">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="../Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <toolkit:EnumToBoolConverter x:Key="LiveStatusToVisibilityConverter">
+                <toolkit:EnumToBoolConverter.TrueValues>
+                    <service:LiveStatus>Active</service:LiveStatus>
+                </toolkit:EnumToBoolConverter.TrueValues>
+            </toolkit:EnumToBoolConverter>
+            <toolkit:EnumToBoolConverter x:Key="ActiveOrIdleToBoolConverter">
+                <toolkit:EnumToBoolConverter.TrueValues>
+                    <service:LiveStatus>Active</service:LiveStatus>
+                    <service:LiveStatus>Idle</service:LiveStatus>
+                </toolkit:EnumToBoolConverter.TrueValues>
+            </toolkit:EnumToBoolConverter>
+            <toolkit:IsStringNotNullOrEmptyConverter x:Key="StringToVisibilityConverter"/>
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter"/>
+            <toolkit:IsEqualConverter x:Key="IsEqualConverter"/>
+            <toolkit:IsNotEqualConverter x:Key="IsNotEqualConverter"/>
+            <converters:LiveStatusToColorConverter x:Key="LiveStatusToColorConverter"/>
+            <converters:LiveStatusToToolTipConverter x:Key="LiveStatusToToolTipConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid Padding="12,12,12,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <Button x:Name="AddFriendsButton" HorizontalOptions="Start" HeightRequest="48" 
+                FontSize="18" Text="Add Friends by Connect Code" Grid.Row="0" FontAttributes="Bold" TextColor="{DynamicResource PrimaryText}" CornerRadius="12"
+                Margin="0,12,0,24" Clicked="AddFriendsButton_Clicked" BackgroundColor="{DynamicResource Tertiary}">
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroupList>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Opacity" Value="1"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="PointerOver">
+                            <VisualState.Setters>
+                                <Setter Property="Opacity" Value=".85"/>
+                                <Setter Property="Scale" Value=".98"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </VisualStateManager.VisualStateGroups>
+            <Button.ImageSource>
+                <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor={StaticResource StatusGreen}}" Size="32" />
+            </Button.ImageSource>
+        </Button>
+
+        <CollectionView ItemsSource="{Binding Friends}" Grid.Row="1" ItemTemplate="{DataTemplate views:FriendView}"/>
+
+        <views:BottomBar Grid.Row="2" BindingContext="{Binding ShellViewModel}" HeightRequest="20" VerticalOptions="End"/>
+
+        <tb:TaskbarIcon
+            IconSource="slippitv_small.ico"
+            LeftClickCommand="{Binding ShowWindowCommand}"
+            NoLeftClickDelay="True"
+            x:Name="TaskbarIcon">
+            <FlyoutBase.ContextFlyout>
+                <MenuFlyout>
+                    <MenuFlyoutItem Command="{Binding ShowWindowCommand}" Text="Show Window" />
+                    <MenuFlyoutSeparator />
+                    <MenuFlyoutItem Command="{Binding ExitApplicationCommand}" Text="Quit" />
+                </MenuFlyout>
+            </FlyoutBase.ContextFlyout>
+        </tb:TaskbarIcon>
+    </Grid>
+</ContentPage>

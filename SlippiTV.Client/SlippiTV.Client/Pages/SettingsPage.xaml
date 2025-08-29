@@ -7,23 +7,16 @@
              xmlns:local="clr-namespace:SlippiTV.Client"
              xmlns:shared="clr-namespace:SlippiTV.Shared.Types;assembly=SlippiTV.Shared"
              xmlns:versions="clr-namespace:SlippiTV.Shared.Versions;assembly=SlippiTV.Shared"
-             x:Class="SlippiTV.Client.SettingsPage"
+             xmlns:views="clr-namespace:SlippiTV.Client.Views"
+             x:Class="SlippiTV.Client.Pages.SettingsPage"
              Title="Settings"
              x:DataType="{x:Type vm:SettingsViewModel}">
     <ContentPage.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="../Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="../Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <!--<Style TargetType="Span">
-                <Setter Property="FontSize" Value="13"/>
-            </Style>-->
-            <!--<Style TargetType="Button">
-                <Setter Property="local:CursorProperties.Cursor" Value="Hand"/>
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="HeightRequest" Value="36"/>
-            </Style>-->
             <Style TargetType="Border">
                 <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}"/>
                 <Setter Property="StrokeShape" Value="RoundRectangle 8"/>
@@ -60,21 +53,27 @@
             
             <Grid Margin="0,12,0,24" Grid.Row="0" HeightRequest="48">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
                 
-                <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" VerticalOptions="Center" Grid.Column="0" HorizontalOptions="Start">
+                <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" VerticalOptions="Center" Grid.Column="0">
                     <Label.FormattedText>
                         <FormattedString>
                             <Span Text="Your Connection Info: " FontAttributes="Bold" FontSize="20"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End" Spacing="12" VerticalOptions="Center" HeightRequest="48">
+
+                <HorizontalStackLayout Grid.Column="3" Spacing="12" VerticalOptions="Center" HeightRequest="48">
+                    <ImageButton MaximumHeightRequest="10" Padding="0" Margin="0" VerticalOptions="Center">
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowClockwise24Filled}" Color="{DynamicResource PrimaryText}" Size="20" />
+                        </ImageButton.Source>
+                    </ImageButton>
                     <Border>
                         <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Padding="18,0,18,0">
                             <Label.FormattedText>
@@ -102,8 +101,7 @@
                                 HeightRequest="4" 
                                 WidthRequest="4"
                                 Margin="-4,-4,0,0"
-                                Grid.Row="0"
-                                Grid.Column="3">
+                                Grid.Column="4">
                     <ImageButton.Source>
                         <FontImageSource Glyph="{mi:FluentFilled Icon=Edit24Filled, IconColor={DynamicResource Tertiary}}"/>
                     </ImageButton.Source>
@@ -318,24 +316,6 @@
                     </ImageButton>
                 </Grid>
 
-                <!--<Grid>
-                    <Path Fill="{StaticResource LightPrimaryLight}" Margin="0,0,0,0" VerticalOptions="Center">
-                        <Path.Data>
-                            <EllipseGeometry Center="22.875,18.875" RadiusX="12" RadiusY="12"/>
-                        </Path.Data>
-                    </Path>
-                    <ImageButton x:Name="ButtonLightTheme"
-                            Clicked="UpdateThemeLight"
-                            VerticalOptions="Center"
-                            BackgroundColor="Transparent" 
-                            Aspect="AspectFit"
-                            ToolTipProperties.Text="Light">
-                        <ImageButton.Source>
-                            <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource White}}" Size="24"/>
-                        </ImageButton.Source>
-                    </ImageButton>
-                </Grid>-->
-
                 <Grid>
                     <Path Fill="{StaticResource GCPurplePrimaryLight}" Margin="0,0,0,0" VerticalOptions="Center">
                         <Path.Data>
@@ -356,6 +336,6 @@
             </HorizontalStackLayout>
         </Grid>
 
-        <local:BottomBar Grid.Row="5" BindingContext="{Binding ShellViewModel}" HeightRequest="20" VerticalOptions="End"/>
+        <views:BottomBar Grid.Row="5" BindingContext="{Binding ShellViewModel}" HeightRequest="20" VerticalOptions="End"/>
     </Grid>
 </ContentPage>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:system="clr-namespace:System;assembly=System.Runtime"
-             xmlns:local="clr-namespace:SlippiTV.Client"
-             x:TypeArguments="system:String"
-             x:Class="SlippiTV.Client.InputTextPopup"
-             x:DataType="{x:Type local:InputTextPopup}"
-             Padding="0"
-             Margin="0"
-             BackgroundColor="Transparent">
+<toolkit:Popup 
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:system="clr-namespace:System;assembly=System.Runtime"
+    xmlns:local="clr-namespace:SlippiTV.Client"
+    xmlns:views="clr-namespace:SlippiTV.Client.Views"
+    x:TypeArguments="system:String"
+    x:Class="SlippiTV.Client.Views.InputTextPopup"
+    x:DataType="{x:Type views:InputTextPopup}"
+    Padding="0" Margin="0" BackgroundColor="Transparent">
     <toolkit:Popup.Resources>
         <ResourceDictionary>
             <toolkit:IsStringNotNullOrEmptyConverter x:Key="StringToVisibilityConverter"/>

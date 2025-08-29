@@ -1,12 +1,11 @@
 using CommunityToolkit.Maui;
 using CommunityToolkit.Maui.Extensions;
 using Microsoft.Maui.Controls.Shapes;
-using SlippiTV.Client.Platforms.Windows;
 using SlippiTV.Client.ViewModels;
+using SlippiTV.Client.Views;
 using System.Diagnostics.CodeAnalysis;
-using System.Threading.Tasks;
 
-namespace SlippiTV.Client;
+namespace SlippiTV.Client.Pages;
 
 public partial class SettingsPage : ContentPage
 {

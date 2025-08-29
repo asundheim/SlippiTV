@@ -16,6 +16,7 @@ public class FriendViewModel : BaseNotifyPropertyChanged
     {
         this.Parent = parent;
         this.FriendSettings = friend;
+        this.ActiveGameInfo = new ActiveGameViewModel(this);
     }
 
     public FriendsViewModel Parent { get; }
@@ -23,18 +24,8 @@ public class FriendViewModel : BaseNotifyPropertyChanged
     public SlippiTVSettings Settings => SettingsManager.Instance.Settings;
     public FriendSettings FriendSettings { get; }
 
-    public ActiveGameInfo? ActiveGameInfo 
-    { 
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged();
-            }
-        }
-    }
+    // this shouldn't be bulk updated, it knows how to efficiently update itself
+    public ActiveGameViewModel ActiveGameInfo { get; set; }
 
     public LiveStatus LiveStatus
     {
@@ -62,9 +53,6 @@ public class FriendViewModel : BaseNotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<int> PlayerStocksLeft { get; } = new ObservableCollection<int>();
-    public ObservableCollection<int> OpponentStocksLeft { get; set; } = new ObservableCollection<int>();
-
     public async Task Refresh()
     {
         try
@@ -74,49 +62,8 @@ public class FriendViewModel : BaseNotifyPropertyChanged
             CheckForNewStream(userInfo);
 
             LiveStatus = userInfo.LiveStatus;
-            ActiveGameInfo = userInfo.ActiveGameInfo;
+            ActiveGameInfo.UpdateGameInfo(userInfo.ActiveGameInfo);
             ViewerCount = userInfo.ActiveViewerInfo?.ActiveViewerCount ?? 0;
-
-            if (ActiveGameInfo is not null)
-            {
-                // it's not smart but it works
-                int originalPlayerCount = PlayerStocksLeft.Count;
-                if (originalPlayerCount < ActiveGameInfo.PlayerStocksLeft)
-                {
-                    for (int i = 0; i < ActiveGameInfo.PlayerStocksLeft - originalPlayerCount; i++)
-                    {
-                        PlayerStocksLeft.Add(i);
-                    }
-                }
-                else if (PlayerStocksLeft.Count > ActiveGameInfo.PlayerStocksLeft)
-                {
-                    for (int i = 0; i < PlayerStocksLeft.Count - ActiveGameInfo.PlayerStocksLeft; i++)
-                    {
-                        PlayerStocksLeft.RemoveAt(PlayerStocksLeft.Count - 1);
-                    }
-                }
-
-                int originalOpponentCount = OpponentStocksLeft.Count;
-                if (originalOpponentCount < ActiveGameInfo.OpponentStocksLeft)
-                {
-                    for (int i = 0; i < ActiveGameInfo.OpponentStocksLeft - originalOpponentCount; i++)
-                    {
-                        OpponentStocksLeft.Add(i);
-                    }
-                }
-                else if (OpponentStocksLeft.Count > ActiveGameInfo.OpponentStocksLeft)
-                {
-                    for (int i = 0; i < originalOpponentCount - ActiveGameInfo.OpponentStocksLeft; i++)
-                    {
-                        OpponentStocksLeft.RemoveAt(OpponentStocksLeft.Count - 1);
-                    }
-                }
-            }
-            else
-            {
-                PlayerStocksLeft.Clear();
-                OpponentStocksLeft.Clear();
-            }
         }
         catch
         {

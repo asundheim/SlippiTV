@@ -100,6 +100,10 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
     public event EventHandler<FriendViewModel, ActiveGameInfo>? OnNewActiveGame;
     internal void InvokeNewActiveGame(FriendViewModel friend, ActiveGameInfo gameInfo) => OnNewActiveGame?.Invoke(friend, gameInfo);
 
+    // a bit of a hack, but better than rearchitecting to use DI everywhere - the view will handle this
+    public event AsyncEventHandler<object, TextPopupEventArgs>? OnShowErrorPopup;
+    internal Task ShowErrorPopupAsync(object sender, TextPopupEventArgs args) => OnShowErrorPopup?.Invoke(sender, args) ?? Task.CompletedTask;
+
     public ISlippiTVService SlippiTVService => ShellViewModel.SlippiTVService;
 
     public ObservableCollection<FriendViewModel> Friends

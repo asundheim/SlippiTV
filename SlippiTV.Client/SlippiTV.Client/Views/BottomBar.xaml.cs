@@ -1,16 +1,9 @@
-using Microsoft.Maui.Platform;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using SlippiTV.Client.Animations;
-using SlippiTV.Client.Converters;
-using SlippiTV.Client.PlatformUtils;
 using SlippiTV.Client.ViewModels;
-using SlippiTV.Shared.Types;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
-using ToolTip = Microsoft.UI.Xaml.Controls.ToolTip;
 
-namespace SlippiTV.Client;
+namespace SlippiTV.Client.Views;
 
 public partial class BottomBar : ContentView
 {
