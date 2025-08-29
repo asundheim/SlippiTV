@@ -31,6 +31,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\SlippiTV.Shared\SlippiTV.Shared.csproj" />
 		<ProjectReference Include="..\SlippiTV.Client\SlippiTV.Client.csproj" />
 		<!--<ProjectReference Include="..\..\..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>

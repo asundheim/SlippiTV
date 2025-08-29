@@ -7,7 +7,7 @@ namespace SlippiTV.Client.Settings;
 [JsonObject]
 public class SlippiTVSettings : BaseNotifyPropertyChanged
 {
-    public ObservableCollection<FriendSettings> Friends
+    public List<FriendSettings> Friends
     { 
         get; 
         set

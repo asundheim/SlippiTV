@@ -1,7 +1,8 @@
-﻿using H.NotifyIcon;
+﻿using MauiApp = Microsoft.Maui.Controls.Application;
+using WinUIApplication = Microsoft.UI.Xaml.Application;
+using System.Linq;
+using H.NotifyIcon;
 using Microsoft.UI.Dispatching;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
 using Microsoft.Win32;
 using Microsoft.Windows.AppLifecycle;
 using System;
@@ -9,6 +10,8 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Activation;
+using SlippiTV.Shared;
 
 namespace SlippiTV.Client.WinUI;
 
@@ -38,10 +41,10 @@ public partial class Program
     [STAThread]
     public static int Main(string[] args)
     {
-        WinRT.ComWrappersSupport.InitializeComWrappers();
+    WinRT.ComWrappersSupport.InitializeComWrappers();
 
-        AppActivationArguments activationArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
-        ExtendedActivationKind kind = activationArgs.Kind;
+    AppActivationArguments activationArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
+    ExtendedActivationKind kind = activationArgs.Kind;
 
         // You would think we would get launched with ExtendedActivationKind.Startup, but it's just Launch if we're set from the registry.
         // Unless someone puts our binary into System32 this should be an adequate workaround.
@@ -56,6 +59,8 @@ public partial class Program
             MauiProgram.OpenHidden = true;
         }
 
+        RegisterProtocol();
+
         AppInstance keyInstance = AppInstance.FindOrRegisterForKey("SlippiTV");
         if (!keyInstance.IsCurrent)
         {
@@ -65,7 +70,7 @@ public partial class Program
         {
             keyInstance.Activated += OnActivated;
 
-            Application.Start((p) =>
+            WinUIApplication.Start((p) =>
             {
                 var context = new DispatcherQueueSynchronizationContext(
                     DispatcherQueue.GetForCurrentThread());
@@ -87,8 +92,41 @@ public partial class Program
         }
     }
 
-    private static void OnActivated(object? sender, AppActivationArguments e)
+    private static async void OnActivated(object? sender, AppActivationArguments e)
     {
+        if (e.Data is ILaunchActivatedEventArgs launchArgs)
+        {
+            string[] commandLineArgs = launchArgs.Arguments?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
+            foreach (var arg in commandLineArgs)
+            {
+                var filteredArg = arg.Replace("\"", "");
+                if (filteredArg.StartsWith("slippi-tv://", StringComparison.OrdinalIgnoreCase))
+                {
+                    try
+                    {
+                        var uri = new Uri(filteredArg);
+                        if (uri.Host == "watch")
+                        {
+                            var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+                            string? slippiCodeToWatch = query?["code"];
+                            if (!string.IsNullOrWhiteSpace(slippiCodeToWatch))
+                            {
+                                var mainWindow = MauiApp.Current?.Windows.FirstOrDefault();
+                                if (mainWindow?.Page is SlippiTV.Client.AppShell appShellInst && 
+                                    appShellInst.ShellViewModel?.FriendsViewModel != null)
+                                {
+                                    await appShellInst.ShellViewModel.FriendsViewModel.WatchByCodeAsync(ConnectCodeUtils.UnsanitizeConnectCode(slippiCodeToWatch));
+                                }
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+        }
+
         MauiProgram.SlippiTVWindow?.Show(disableEfficiencyMode: true);
     }
 
@@ -110,5 +148,22 @@ public partial class Program
         // Bring the window to the foreground
         Process process = Process.GetProcessById((int)keyInstance.ProcessId);
         SetForegroundWindow(process.MainWindowHandle);
+    }
+    private static void RegisterProtocol()
+    {
+        try
+        {
+            using var key = Registry.CurrentUser.CreateSubKey(@"Software\Classes\slippi-tv");
+            key.SetValue("", "URL:SlippiTV Protocol");
+            key.SetValue("URL Protocol", "");
+
+            using var shell = key.CreateSubKey("shell");
+            using var open = shell.CreateSubKey("open");
+            using var command = open.CreateSubKey("command");
+            command.SetValue("", $"\"{Environment.ProcessPath}\" \"%1\"");
+        }
+        catch
+        {
+        }
     }
 }

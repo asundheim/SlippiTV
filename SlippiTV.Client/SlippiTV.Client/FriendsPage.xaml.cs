@@ -61,7 +61,7 @@ public partial class FriendsPage : ContentPage
             return;
         }
 
-        SettingsManager.Instance.AddFriend(result.Result);
+        FriendsViewModel.TryAddFriend(result.Result, out _);
     }
 
     private async void WatchFriendButton_Clicked(object sender, EventArgs e)
@@ -95,7 +95,7 @@ public partial class FriendsPage : ContentPage
         flyoutItem.Text = "Remove Friend";
         flyoutItem.Command = new RelayCommand(() =>
         {
-            SettingsManager.Instance.RemoveFriend(((FriendViewModel)view!.BindingContext).FriendSettings);
+           FriendsViewModel.RemoveFriend(((FriendViewModel)view!.BindingContext));
         });
         mf.Add(flyoutItem);
         FlyoutBase.SetContextFlyout(view, mf);
@@ -124,7 +124,7 @@ public partial class FriendsPage : ContentPage
         var codes = result.Result.Split(";", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         foreach (var code in codes)
         {
-            SettingsManager.Instance.AddFriend(code);
+            FriendsViewModel.TryAddFriend(code, out _);
         }
     }
 
