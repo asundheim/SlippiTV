@@ -67,7 +67,7 @@
             </Image>
         </HorizontalStackLayout>
 
-        <ImageButton x:Name="RefreshButton" MinimumWidthRequest="0" MinimumHeightRequest="0" Padding="0" Margin="4,0,0,0" Command="{Binding ReconnectCommand}" Grid.Column="2">
+        <ImageButton x:Name="RefreshButton" MinimumWidthRequest="0" MinimumHeightRequest="0" Padding="0" Margin="4,0,0,0" Command="{Binding ReconnectDolphinCommand}" Grid.Column="2">
             <ImageButton.Source>
                 <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowCounterclockwise12Filled}" Color="{DynamicResource SecondaryDark}" Size="14"/>
             </ImageButton.Source>

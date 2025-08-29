@@ -129,4 +129,33 @@ public partial class SettingsPage : ContentPage
             Application.Current.SetTheme(themeName);
         }
     }
+
+    private async void RefreshConnectInfo_Clicked(object sender, EventArgs e)
+    {
+        string folderPath = string.Empty;
+        if (System.IO.Path.Exists(SettingsViewModel.Settings.SlippiLauncherFolder))
+        {
+            folderPath = SettingsViewModel.Settings.SlippiLauncherFolder;
+        }
+        else if (SettingsManager.Instance.SearchForSlippiLauncher() is string newPath)
+        {
+            folderPath = newPath;
+            SettingsViewModel.Settings.SlippiLauncherFolder = newPath;
+        }
+
+        string? errorText = "Could not find Slippi Launcher installation data.";
+        if (string.IsNullOrEmpty(folderPath) || !SettingsManager.Instance.UpdateSettingsFromLauncher(folderPath, out errorText))
+        {
+            await this.ShowPopupAsync(new ErrorPopup(errorText), new PopupOptions()
+            {
+                Shape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(0),
+                    StrokeThickness = 0,
+                }
+            });
+        }
+
+        this.SettingsViewModel.ShellViewModel.ReconnectDolphin();
+    }
 }

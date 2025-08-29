@@ -106,7 +106,7 @@ public partial class FriendsPage : ContentPage
                 customIconHandle: TaskbarIcon.Icon!.Handle,
                 sound: false,
                 largeIcon: true,
-                respectQuietTime: false,
+                respectQuietTime: true,
                 timeout: TimeSpan.FromSeconds(2));
         }
     }

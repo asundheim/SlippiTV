@@ -56,6 +56,7 @@ public class ActiveStream : IDisposable
                         {
                             GameNumber = (int)(payload.GameStart.MatchInfo?.GameNumber ?? 1),
                             Stage = payload.GameStart.Stage!.Value,
+                            GameMode = payload.GameStart.GameMode!.Value,
                             PlayerConnectCode = connectCode ?? string.Empty,
                             PlayerDisplayName = playerInfo.DisplayName ?? string.Empty,
                             PlayerCharacter = playerInfo.Character!.Value,

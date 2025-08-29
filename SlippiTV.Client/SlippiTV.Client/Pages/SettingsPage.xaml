@@ -69,7 +69,8 @@
                 </Label>
 
                 <HorizontalStackLayout Grid.Column="3" Spacing="12" VerticalOptions="Center" HeightRequest="48">
-                    <ImageButton MaximumHeightRequest="10" Padding="0" Margin="0" VerticalOptions="Center">
+                    <ImageButton MaximumHeightRequest="10" Padding="0" Margin="0" VerticalOptions="Center"
+                                 Clicked="RefreshConnectInfo_Clicked">
                         <ImageButton.Source>
                             <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowClockwise24Filled}" Color="{DynamicResource PrimaryText}" Size="20" />
                         </ImageButton.Source>

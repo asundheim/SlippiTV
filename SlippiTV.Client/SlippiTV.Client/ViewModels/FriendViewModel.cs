@@ -2,11 +2,11 @@
 using Slippi.NET.Console.Types;
 using Slippi.NET.Slp.Reader.File;
 using Slippi.NET.Slp.Writer;
+using Slippi.NET.Types;
 using SlippiTV.Client.Settings;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
 using SlippiTV.Shared.Types;
-using System.Collections.ObjectModel;
 
 namespace SlippiTV.Client.ViewModels;
 
@@ -104,7 +104,7 @@ public class FriendViewModel : BaseNotifyPropertyChanged
                         dolphinCloseSource.Cancel();
                     };
                 }
-                
+
                 launcher.LaunchDolphin(new DolphinLaunchArgs()
                 {
                     Mode = DolphinLaunchModes.Mirror,
@@ -125,12 +125,50 @@ public class FriendViewModel : BaseNotifyPropertyChanged
                 currentFile = newFile;
             };
 
+            bool release = false;
             try
             {
+                // allow watching your own stream. this is useful for development and also for people to try it out.
+                // it also avoids the issue of streaming the playback dolphin as we must already be connected to the netplay dolphin.
+                // the upload loop will keep the lock uncontested and we won't interfere with it.
+                if (FriendSettings.ConnectCode != Settings.StreamMeleeConnectCode)
+                {
+                    // addref
+                    int refcount = Parent.ShellViewModel.AddStreamWatcher();
+                    release = true;
+
+                    if (refcount == 1)
+                    {
+                        // kill the upload loop, then take the lock, then re-enter the upload loop waiting on the lock, ensuring we don't race ourselves
+                        Parent.ShellViewModel.DisconnectStream();
+                        await Parent.ShellViewModel.StreamLock.WaitAsync(anyCancellation);
+
+                        // kick this off so we trigger a full reconnect that waits on the lock we've taken. we don't want to schedule it on our thread
+                        // as it's a mostly synchronous operation
+                        _ = Task.Run(Parent.ShellViewModel.ReconnectDolphin);
+                    }
+                    else
+                    {
+                        // another watcher already has the lock. we'll still check if we're responsible for releasing it at the end.
+                    }
+                }
+
                 using var socket = await SlippiTVService.WatchStream(FriendSettings.ConnectCode);
                 await SocketUtils.HandleSocket(socket, x => fileWriter.Write(x), null, anyCancellation);
             }
             catch { }
+            finally
+            {
+                if (release)
+                {
+                    // release
+                    int refcount = Parent.ShellViewModel.RemoveStreamWatcher();
+                    if (refcount == 0)
+                    {
+                        Parent.ShellViewModel.StreamLock.Release();
+                    }
+                }
+            }
         }
         finally
         {
@@ -149,11 +187,20 @@ public class FriendViewModel : BaseNotifyPropertyChanged
         }
     }
 
+    private int _lastNotified = -1;
     private void CheckForNewStream(UserStatusInfo newStatusInfo)
     {
-        if (LiveStatus != LiveStatus.Active && newStatusInfo.LiveStatus == LiveStatus.Active && newStatusInfo.ActiveGameInfo is not null)
+        if (LiveStatus != LiveStatus.Active && 
+            newStatusInfo.LiveStatus == LiveStatus.Active && 
+            newStatusInfo.ActiveGameInfo is not null && 
+            newStatusInfo.ActiveGameInfo.GameMode == GameMode.ONLINE)
         {
-            this.Parent.InvokeNewActiveGame(this, newStatusInfo.ActiveGameInfo);
+            // breaking the abstraction a bit but :/
+            if (_lastNotified == -1 || TimeSpan.FromMilliseconds(Environment.TickCount - _lastNotified).TotalHours >= 1)
+            {
+                this.Parent.InvokeNewActiveGame(this, newStatusInfo.ActiveGameInfo);
+                _lastNotified = Environment.TickCount;
+            }
         }
     }
 }

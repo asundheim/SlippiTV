@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Slippi.NET.Melee.Types;
+using Slippi.NET.Types;
 
 namespace SlippiTV.Shared.Types;
 
@@ -29,4 +30,5 @@ public class ActiveGameInfo
     public required int GameNumber { get; set; }
 
     public required Stage Stage { get; set; }
+    public required GameMode GameMode { get; set; }
 }

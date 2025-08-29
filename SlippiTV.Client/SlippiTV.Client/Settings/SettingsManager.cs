@@ -106,7 +106,7 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
         }
     } = [];
 
-    private string? SearchForSlippiLauncher()
+    internal string? SearchForSlippiLauncher()
     {
         List<string> candidates = 
         [

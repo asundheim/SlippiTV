@@ -1,5 +1,4 @@
-﻿using __XamlGeneratedCode__;
-using CommunityToolkit.Maui.Converters;
+﻿using CommunityToolkit.Maui.Converters;
 using SlippiTV.Client.ViewModels;
 using SlippiTV.Shared.Types;
 using System.Globalization;

@@ -56,6 +56,20 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
     public ISlippiTVService SlippiTVService { get; set; }
     public DolphinRustInvoker? DolphinRustInvoker { get; private set; }
 
+    public SemaphoreSlim StreamLock = new SemaphoreSlim(1, 1);
+
+    // a ref-count for stream watchers. this ensures multiple streams can be watched at the same time and that the last one always releases the lock
+    private int _streamWatchers = 0;
+    public int AddStreamWatcher()
+    {
+        return Interlocked.Increment(ref _streamWatchers);
+    }
+
+    public int RemoveStreamWatcher()
+    {
+        return Interlocked.Decrement(ref _streamWatchers);
+    }
+
     public bool RequiresUpdate 
     { 
         get;
@@ -126,14 +140,24 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
         {
             _socketTask = Task.Run(async () =>
             {
+                bool entered = false;
                 try
                 {
+                    await StreamLock.WaitAsync(_disconnectSource.Token);
+                    entered = true;
                     RelayStatus = LiveStatus.Idle;
                     using var socket = await SlippiTVService.Stream(Settings.StreamMeleeConnectCode);
                     RelayStatus = LiveStatus.Active;
                     await SocketUtils.HandleSocket(socket, null, _pendingData, _disconnectSource.Token);
                 }
                 catch { }
+                finally
+                {
+                    if (entered)
+                    {
+                        StreamLock.Release();
+                    }
+                }
             });
         }
         else if (status == ConnectionStatus.Disconnected)
@@ -192,9 +216,15 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
         });
     }
 
+    // resets all the connections
     [RelayCommand]
-    public void Reconnect()
+    public void ReconnectDolphin()
     {
         DolphinConnection.HandleDisconnect();
+    }
+
+    public void DisconnectStream()
+    {
+        _disconnectSource.Cancel();
     }
 }

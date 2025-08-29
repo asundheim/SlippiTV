@@ -1,4 +1,5 @@
 ﻿using Slippi.NET.Melee.Types;
+using Slippi.NET.Types;
 using SlippiTV.Shared.Types;
 using System.Collections.ObjectModel;
 
@@ -27,8 +28,18 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
         }
     }
 
-    // this seems to be reliable, though we could also parse it out of the game itself if it comes to it
-    public bool IsNetplay => GameNumber != 0;
+    public bool IsNetplay
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value; 
+                OnPropertyChanged();
+            }
+        }
+    }
 
     // this all kinda sucks but it makes the eventing real easy
     public string? PlayerConnectCode
@@ -182,6 +193,7 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
             IsActive = true;
             Stage = newGameInfo.Stage;
             GameNumber = newGameInfo.GameNumber;
+            IsNetplay = newGameInfo.GameMode == GameMode.ONLINE;
             OpponentCharacterColor = newGameInfo.OpponentCharacterColor;
             PlayerCharacterColor = newGameInfo.PlayerCharacterColor;
             OpponentCharacter = newGameInfo.OpponentCharacter;
@@ -230,6 +242,7 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
     {
         Stage = default;
         GameNumber = default;
+        IsNetplay = default;
         OpponentStocksLeft.Clear();
         PlayerStocksLeft.Clear();
         OpponentCharacter = default;
