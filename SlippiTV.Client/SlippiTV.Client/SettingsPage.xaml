@@ -41,7 +41,7 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid Padding="12">
+    <Grid Padding="12,12,12,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>

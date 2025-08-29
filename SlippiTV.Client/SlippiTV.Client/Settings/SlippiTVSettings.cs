@@ -115,7 +115,7 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
                 OnPropertyChanged();
             }
         }
-    } = Themes.GCPurple;
+    } = Themes.Dark;
 
     public string SlippiVersion { get; set; } = string.Empty;
 
