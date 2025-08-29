@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
+using SlippiTV.Shared;
 
 namespace SlippiTV.Client.WinUI;
 
@@ -114,7 +115,7 @@ public partial class Program
                                 if (mainWindow?.Page is SlippiTV.Client.AppShell appShellInst && 
                                     appShellInst.ShellViewModel?.FriendsViewModel != null)
                                 {
-                                    await appShellInst.ShellViewModel.FriendsViewModel.WatchByCodeAsync(slippiCodeToWatch);
+                                    await appShellInst.ShellViewModel.FriendsViewModel.WatchByCodeAsync(ConnectCodeUtils.UnsanitizeConnectCode(slippiCodeToWatch));
                                 }
                             }
                         }
