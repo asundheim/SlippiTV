@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:local="clr-namespace:SlippiTV.Client"
+             x:TypeArguments="system:String"
+             x:Class="SlippiTV.Client.InfoPopup"
+             x:DataType="{x:Type local:InfoPopup}"
+             Padding="0"
+             Margin="0"
+             BackgroundColor="Transparent">
+    <Border BackgroundColor="{StaticResource Tertiary}" StrokeShape="RoundRectangle 24" Margin="0" Padding="0" StrokeThickness="0" WidthRequest="360">
+        <VerticalStackLayout Spacing="16" Padding="24,24,24,12">
+            <VerticalStackLayout Spacing="8">
+                <Label Text="Info"
+                       FontSize="20"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource PrimaryText}"
+                       VerticalTextAlignment="Center"
+                       HorizontalTextAlignment="Center"/>
+                <BoxView HeightRequest="1" Color="{StaticResource SecondaryDark}"/>
+            </VerticalStackLayout>
+
+            <Label Text="{Binding InfoText}" TextColor="{DynamicResource PrimaryText}" HorizontalOptions="Center" />
+
+            <FlexLayout AlignContent="Center" VerticalOptions="Center" HorizontalOptions="Center">
+                <HorizontalStackLayout FlexLayout.Shrink="1" Spacing="20">
+                    <Button x:Name="CloseButton" Text="OK" Clicked="CloseButton_Clicked" TextColor="{StaticResource PrimaryText}"/>
+                </HorizontalStackLayout>
+            </FlexLayout>
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>

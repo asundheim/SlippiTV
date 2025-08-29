@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using SlippiTV.Shared.Types;
 using SlippiTV.Shared.Versions;
 
 namespace SlippiTV.Server.Controllers;
@@ -12,9 +14,14 @@ public class UpdateController : Controller
         return Ok(ClientVersion.SlippiClientVersion);
     }
 
-    [HttpGet("/update/updatescript")]
-    public IActionResult GetUpdateScript()
+    [HttpGet("/update/updateinfo")]
+    public IActionResult GetUpdateInfo()
     {
-        return Ok(UpdateScript.Powershell);
+        return Ok(JsonConvert.SerializeObject(new UpdateInfo()
+        {
+            UpdateScript = UpdateScript.Powershell,
+            UpdateLink = UpdateScript.UpdateDownloadLink,
+            UpdateFileName = UpdateScript.UpdateZipName
+        }));
     }
 }

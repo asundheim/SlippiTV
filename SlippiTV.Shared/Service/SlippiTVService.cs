@@ -60,12 +60,12 @@ internal class SlippiTVService : ISlippiTVService
         return await result.Content.ReadAsStringAsync();
     }
 
-    public async Task<string> GetUpdateScript()
+    public async Task<UpdateInfo> GetUpdateInfo()
     {
-        var result = await _client.GetAsync($"/update/updatescript");
+        var result = await _client.GetAsync($"/update/updateinfo");
         result.EnsureSuccessStatusCode();
 
-        return await result.Content.ReadAsStringAsync();
+        return JsonConvert.DeserializeObject<UpdateInfo>(await result.Content.ReadAsStringAsync()) ?? throw new Exception("invalid response");
     }
 
     public void Dispose()

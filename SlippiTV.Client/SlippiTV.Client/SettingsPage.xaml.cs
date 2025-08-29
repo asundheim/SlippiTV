@@ -97,7 +97,7 @@ public partial class SettingsPage : ContentPage
     {
         try
         {
-            await SettingsViewModel.BeginUpdate();
+            await SettingsViewModel.BeginUpdate((_) => { }, (_) => { });
         }
         catch
         {

@@ -1,11 +1,16 @@
 using CommunityToolkit.Maui.Extensions;
 using SlippiTV.Client.ViewModels;
+using System.Diagnostics.CodeAnalysis;
 
 namespace SlippiTV.Client;
 
 public partial class SplashScreenShell : Shell
 {
-    private Window _parent;
+    private readonly Window _parent;
+
+    [AllowNull]
+    public SplashScreenViewModel SplashScreenViewModel { get; private set; }
+
 	public SplashScreenShell(Window parent)
 	{
         _parent = parent;
@@ -17,7 +22,10 @@ public partial class SplashScreenShell : Shell
 
     private async void SplashScreenShell_Loaded(object? sender, EventArgs e)
     {
-        await Task.Delay(1000);
+        this.SplashScreenViewModel = (SplashScreenViewModel)this.BindingContext;
+
+        await Task.Delay(500);
+        this.SplashScreenViewModel.SplashScreenStatusText = "Checking for updates...";
         try
         {
             var realShell = await ShellViewModel.CreateAsync();
@@ -28,8 +36,8 @@ public partial class SplashScreenShell : Shell
             }
             else
             {
-                await this.ShowPopupAsync(new ErrorPopup("An update is available and will begin downloading."));
-                await realShell.SettingsViewModel.BeginUpdate();
+                this.SplashScreenViewModel.ShowProgressBar = true;
+                await realShell.SettingsViewModel.BeginUpdate((p) => SplashScreenViewModel.Progress = p, (s) => SplashScreenViewModel.SplashScreenStatusText = s);
                 Environment.Exit(0);
             }
         }

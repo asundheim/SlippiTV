@@ -47,7 +47,9 @@ public partial class Program
         // Unless someone puts our binary into System32 this should be an adequate workaround.
         if (Environment.CurrentDirectory != Environment.GetFolderPath(Environment.SpecialFolder.System))
         {
+#if !DEBUG // ifdefd out so its easier to run a release copy and a debug copy side by side
             UpdateLaunchOnStartup();
+#endif
         }
         else
         {

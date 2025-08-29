@@ -20,7 +20,7 @@ namespace SlippiTV.Client
                 Width = 600,
                 Title = "SlippiTV",
             };
-            window.Page = new SplashScreenShell(window);
+            window.Page = new SplashScreenShell(window) { BindingContext = new SplashScreenViewModel() };
 
             return window;
         }

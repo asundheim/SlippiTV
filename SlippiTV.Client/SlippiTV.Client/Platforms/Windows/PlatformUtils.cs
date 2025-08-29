@@ -67,6 +67,11 @@ public static class PlatformUtils
             };
         }
     }
+
+    public static IntPtr GetIconHandleFromSelf()
+    {
+        return IntPtr.Zero;
+    }
 }
 
 file static class Accessors

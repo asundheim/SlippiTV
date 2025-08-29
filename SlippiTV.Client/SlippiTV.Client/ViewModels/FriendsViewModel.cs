@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using SlippiTV.Shared.Types;
 using SlippiTV.Shared.Versions;
+using SlippiTV.Client.Settings;
 
 namespace SlippiTV.Client.ViewModels;
 
@@ -58,17 +59,8 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         });
     }
 
-    private void SettingsFriendsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (e.Action == NotifyCollectionChangedAction.Add)
-        {
-            Friends.Add(new FriendViewModel(this, (string)e.NewItems![0]!));
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Remove)
-        {
-            Friends.RemoveAt(e.OldStartingIndex);
-        }
-    }
+    public event EventHandler<FriendViewModel, ActiveGameInfo>? OnNewActiveGame;
+    internal void InvokeNewActiveGame(FriendViewModel friend, ActiveGameInfo gameInfo) => OnNewActiveGame?.Invoke(friend, gameInfo);
 
     public ISlippiTVService SlippiTVService => ShellViewModel.SlippiTVService;
 
@@ -89,6 +81,18 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         foreach (var friend in Settings.Friends)
         {
             Friends.Add(new FriendViewModel(this, friend));
+        }
+    }
+
+    private void SettingsFriendsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add)
+        {
+            Friends.Add(new FriendViewModel(this, (FriendSettings)e.NewItems![0]!));
+        }
+        else if (e.Action == NotifyCollectionChangedAction.Remove)
+        {
+            Friends.RemoveAt(e.OldStartingIndex);
         }
     }
 

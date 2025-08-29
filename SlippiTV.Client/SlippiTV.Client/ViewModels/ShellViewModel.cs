@@ -2,6 +2,7 @@
 using Slippi.NET.Console;
 using Slippi.NET.Console.Types;
 using SlippiTV.Client.Platforms.Windows;
+using SlippiTV.Client.Settings;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
 using SlippiTV.Shared.Types;

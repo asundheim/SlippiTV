@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Slippi.NET.Console.Types;
 using Slippi.NET.Utils;
+using SlippiTV.Client.Settings;
 using SlippiTV.Client.ViewModels;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
@@ -20,7 +21,7 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
         string settingsFolder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SlippiTV");
         Directory.CreateDirectory(settingsFolder);
 
-        _settingsPath = Path.Join(settingsFolder, "SlippiTV.settings.v4.json");
+        _settingsPath = Path.Join(settingsFolder, "SlippiTV.settings.v5.json");
         if (File.Exists(_settingsPath) &&
             File.ReadAllText(_settingsPath) is string settingsData &&
             JsonConvert.DeserializeObject<SlippiTVSettings>(settingsData) is SlippiTVSettings existingSettings)
@@ -64,16 +65,16 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
     public void AddFriend(string connectCode)
     {
         // lazy, could be a dictionary
-        if (!Settings.Friends.Any(code => code == connectCode))
+        if (!Settings.Friends.Any(friend => friend.ConnectCode == connectCode))
         {
-            Settings.Friends.Add(connectCode);
+            Settings.Friends.Add(new FriendSettings() { ConnectCode = connectCode });
             SaveSettings();
         }
     }
 
-    public void RemoveFriend(string connectCode)
+    public void RemoveFriend(FriendSettings friend)
     {
-        Settings.Friends.Remove(connectCode);
+        Settings.Friends.Remove(friend);
         SaveSettings();
     }
 
@@ -184,7 +185,7 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
                 foreach (var candidate in result)
                 {
                     string normalized = FullWidthConverter.ToHalfwidth(candidate.connectCode);
-                    if (_settings.Friends.Any(friend => friend == normalized))
+                    if (_settings.Friends.Any(friend => friend.ConnectCode == normalized))
                     {
                         continue;
                     }
