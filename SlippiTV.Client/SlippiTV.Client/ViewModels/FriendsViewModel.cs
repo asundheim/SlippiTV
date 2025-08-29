@@ -3,11 +3,11 @@ using SlippiTV.Shared.Service;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using CommunityToolkit.Mvvm.Input;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using SlippiTV.Shared.Types;
 using SlippiTV.Shared.Versions;
 using SlippiTV.Client.Settings;
+using SlippiTV.Shared;
 
 namespace SlippiTV.Client.ViewModels;
 
@@ -26,8 +26,6 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
     public FriendsViewModel(ShellViewModel shellViewModel)
     {
         this.ShellViewModel = shellViewModel;
-        Settings.Friends.CollectionChanged += SettingsFriendsChanged;
-        Friends = new ObservableCollection<FriendViewModel>();
         CreateFriendsFromSettings();
 
         _ = Task.Run(async () =>
@@ -59,18 +57,35 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         });
     }
 
+    public bool TryAddFriend(string connectCode, out FriendViewModel friend)
+    {
+        if (SettingsManager.Instance.TryCreateFriend(connectCode, out FriendSettings friendSettings))
+        {
+            friend = new FriendViewModel(this, friendSettings);
+            Friends.Add(friend);
+            return true;
+        }
+        else
+        {
+            friend = Friends.First(f => f.FriendSettings.ConnectCode == friendSettings.ConnectCode);
+            return false;
+        }
+    }
+
+    public void RemoveFriend(FriendViewModel friend)
+    {
+        SettingsManager.Instance.RemoveFriend(friend.FriendSettings);
+        Friends.Remove(friend);
+    }
+
     /// <summary>
     /// Adds a friend by code if not present, refreshes, and watches if live.
     /// </summary>
     public async Task WatchByCodeAsync(string code, CancellationToken cancellationToken = default)
     {
-        code = code.Trim().ToUpperInvariant();
-        var friend = Friends.FirstOrDefault(f => f.ConnectCode == code);
-        if (friend == null)
-        {
-            friend = new FriendViewModel(this, code);
-            Friends.Add(friend);
-        }
+        code = ConnectCodeUtils.NormalizeConnectCode(code.Trim());
+        TryAddFriend(code, out FriendViewModel friend);
+
         await friend.Refresh();
         try
         {
@@ -95,7 +110,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
             field = value;
             OnPropertyChanged();
         }
-    }
+    } = new ObservableCollection<FriendViewModel>();
 
     public SlippiTVSettings Settings => SettingsManager.Instance.Settings;
 
@@ -104,18 +119,6 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         foreach (var friend in Settings.Friends)
         {
             Friends.Add(new FriendViewModel(this, friend));
-        }
-    }
-
-    private void SettingsFriendsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        if (e.Action == NotifyCollectionChangedAction.Add)
-        {
-            Friends.Add(new FriendViewModel(this, (FriendSettings)e.NewItems![0]!));
-        }
-        else if (e.Action == NotifyCollectionChangedAction.Remove)
-        {
-            Friends.RemoveAt(e.OldStartingIndex);
         }
     }
 

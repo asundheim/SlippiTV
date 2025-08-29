@@ -1,20 +1,16 @@
 ﻿using MauiApp = Microsoft.Maui.Controls.Application;
 using WinUIApplication = Microsoft.UI.Xaml.Application;
-using SlippiTV.Client;
 using System.Linq;
 using H.NotifyIcon;
 using Microsoft.UI.Dispatching;
-using Microsoft.UI.Windowing;
-using Microsoft.UI.Xaml;
 using Microsoft.Win32;
 using Microsoft.Windows.AppLifecycle;
 using System;
 using System.Diagnostics;
-using System.IO;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Activation;
 
 namespace SlippiTV.Client.WinUI;
 
@@ -62,7 +58,7 @@ public partial class Program
             MauiProgram.OpenHidden = true;
         }
 
-    RegisterProtocol();
+        RegisterProtocol();
 
         AppInstance keyInstance = AppInstance.FindOrRegisterForKey("SlippiTV");
         if (!keyInstance.IsCurrent)
@@ -97,10 +93,9 @@ public partial class Program
 
     private static async void OnActivated(object? sender, AppActivationArguments e)
     {
-        if (e.Data is Windows.ApplicationModel.Activation.ILaunchActivatedEventArgs launchArgs)
+        if (e.Data is ILaunchActivatedEventArgs launchArgs)
         {
             string[] commandLineArgs = launchArgs.Arguments?.Split(' ', StringSplitOptions.RemoveEmptyEntries) ?? Array.Empty<string>();
-            string? slippiCodeToWatch = null;
             foreach (var arg in commandLineArgs)
             {
                 var filteredArg = arg.Replace("\"", "");
@@ -112,11 +107,11 @@ public partial class Program
                         if (uri.Host == "watch")
                         {
                             var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
-                            slippiCodeToWatch = query["code"];
+                            string? slippiCodeToWatch = query?["code"];
                             if (!string.IsNullOrWhiteSpace(slippiCodeToWatch))
                             {
                                 var mainWindow = MauiApp.Current?.Windows.FirstOrDefault();
-                                if (mainWindow?.Page is SlippiTV.Client.AppShell appShellInst &&
+                                if (mainWindow?.Page is SlippiTV.Client.AppShell appShellInst && 
                                     appShellInst.ShellViewModel?.FriendsViewModel != null)
                                 {
                                     await appShellInst.ShellViewModel.FriendsViewModel.WatchByCodeAsync(slippiCodeToWatch);
@@ -166,8 +161,8 @@ public partial class Program
             using var command = open.CreateSubKey("command");
             command.SetValue("", $"\"{Environment.ProcessPath}\" \"%1\"");
         }
-    catch
-    {
-    }
+        catch
+        {
+        }
     }
 }

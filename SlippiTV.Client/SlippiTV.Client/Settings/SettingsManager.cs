@@ -62,20 +62,30 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
     } = ConnectionStatus.Disconnected;
     public event EventHandler<ConnectionStatus>? OnDolphinConnectionStatus;
 
-    public void AddFriend(string connectCode)
+    public bool TryCreateFriend(string connectCode, out FriendSettings friendSettings)
     {
         // lazy, could be a dictionary
         if (!Settings.Friends.Any(friend => friend.ConnectCode == connectCode))
         {
-            Settings.Friends.Add(new FriendSettings() { ConnectCode = connectCode });
+            friendSettings = new FriendSettings() { ConnectCode = connectCode };
+            Settings.Friends.Add(friendSettings);
             SaveSettings();
+
+            return true;
+        }
+        else
+        {
+            friendSettings = Settings.Friends.First(friend => friend.ConnectCode == connectCode);
+            return false;
         }
     }
 
-    public void RemoveFriend(FriendSettings friend)
+    public bool RemoveFriend(FriendSettings friend)
     {
-        Settings.Friends.Remove(friend);
+        bool result = Settings.Friends.Remove(friend);
         SaveSettings();
+
+        return result;
     }
 
     public void SaveSettings()
@@ -227,7 +237,7 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
                 // this.AddFromRecentCandidates = addFromRecentCandidates;
                 foreach (var recentFriend in addFromRecentCandidates.Take(10))
                 {
-                    AddFriend(recentFriend);
+                    TryCreateFriend(recentFriend, out _);
                 }
             }
 
