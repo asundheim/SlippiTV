@@ -2,8 +2,8 @@
 
 public static class UpdateScript
 {
-    public const string UpdateZipName = @"SlippiTV.0.0.5-beta.zip";
-    public const string UpdateDownloadLink = @$"https://github.com/asundheim/SlippiTV/releases/download/0.0.5-beta/{UpdateZipName}";
+    public const string UpdateZipName = @"SlippiTV-0.0.8-beta.zip";
+    public const string UpdateDownloadLink = @$"https://github.com/asundheim/SlippiTV/releases/download/0.0.8-beta/{UpdateZipName}";
 
     public const string Powershell =
     $$"""
