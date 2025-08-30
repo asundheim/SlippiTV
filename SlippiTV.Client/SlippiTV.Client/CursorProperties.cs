@@ -37,5 +37,6 @@ public enum CursorIcon
     Arrow,
     Hand,
     Help,
-    Wait
+    Wait,
+    Move
 }

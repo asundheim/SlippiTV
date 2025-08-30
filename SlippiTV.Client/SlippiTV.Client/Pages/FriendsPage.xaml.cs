@@ -34,9 +34,6 @@ public partial class FriendsPage : ContentPage
         FriendsViewModel = (FriendsViewModel)this.BindingContext;
         FriendsViewModel.OnShowErrorPopup += FriendsViewModel_OnShowErrorPopup;
         FriendsViewModel.OnNewActiveGame += OnNewActiveGame;
-
-        // no clue why we have to do it twice
-        Application.Current?.SetTheme(SettingsManager.Instance.Settings.Theme);
     }
 
     private async Task FriendsViewModel_OnShowErrorPopup(object sender, TextPopupEventArgs args)
@@ -109,5 +106,12 @@ public partial class FriendsPage : ContentPage
                 respectQuietTime: true,
                 timeout: TimeSpan.FromSeconds(2));
         }
+    }
+
+    private void DropGestureRecognizer_DragOver(object sender, DragEventArgs e)
+    {
+        var dragUI = e.PlatformArgs!.DragEventArgs.DragUIOverride;
+        dragUI.IsCaptionVisible = false;
+        dragUI.IsGlyphVisible = false;
     }
 }

@@ -6,56 +6,10 @@
     
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
     
-    <Color x:Key="Primary">#140E4C</Color>
-    <Color x:Key="PrimaryDark">#acAAea</Color>
-    <Color x:Key="PrimaryLight">#898FFF</Color>
-    <Color x:Key="PrimaryText">#FAFAFA</Color>
-    <Color x:Key="SecondaryText">#CACACA</Color>
-    <Color x:Key="PrimaryDarkText">#2B0B98</Color>
-    <Color x:Key="Secondary">#0D004E</Color>
-    <Color x:Key="AccentButtons">#0D004E</Color>
-    <Color x:Key="SecondaryDark">#3F3FFF</Color>
-    <Color x:Key="Tertiary">#2F2FFF</Color>
-    <Color x:Key="Quatriary">#0D0125</Color>
-    
-    <!-- Dark Theme Colors -->
-    <Color x:Key="DarkPrimary">#171717</Color>
-    <Color x:Key="DarkPrimaryDark">#000000</Color>
-    <Color x:Key="DarkPrimaryLight">#191919</Color>
-    <Color x:Key="DarkPrimaryText">#FAFAFA</Color>
-    <Color x:Key="DarkSecondaryText">#CACACA</Color>
-    <Color x:Key="DarkPrimaryDarkText">#171717</Color>
-    <Color x:Key="DarkSecondary">#212023</Color>
-    <Color x:Key="DarkAccentButtons">#FF0000</Color>
+    <!-- Duplicate colors for theme selection -->
     <Color x:Key="DarkSecondaryDark">#A2A1A2</Color>
-    <Color x:Key="DarkTertiary">#353437</Color>
-    <Color x:Key="DarkQuatriary">#0F0F0F</Color>
-
-    <!-- Light Theme Colors -->
-    <Color x:Key="LightPrimary">#F3F0F2</Color>
-    <Color x:Key="LightPrimaryDark">#000000</Color>
-    <Color x:Key="LightPrimaryLight">#C3C1C2</Color>
-    <Color x:Key="LightPrimaryText">#0F0F0F</Color>
-    <Color x:Key="LightSecondaryText">#1F1F1F</Color>
-    <Color x:Key="LightPrimaryDarkText">#333333</Color>
-    <Color x:Key="LightSecondary">#FAFAFA</Color>
-    <Color x:Key="LightAccentButtons">#FF0000</Color>
-    <Color x:Key="LightSecondaryDark">#D2D2D3</Color>
-    <Color x:Key="LightTertiary">#D2D2D3</Color>
-    <Color x:Key="LightQuatriary">#f1f1f1</Color>
-
-    <!-- GCPurple Theme Colors -->
-    <Color x:Key="GCPurplePrimary">#140E4C</Color>
-    <Color x:Key="GCPurplePrimaryDark">#acAAea</Color>
     <Color x:Key="GCPurplePrimaryLight">#898FFF</Color>
-    <Color x:Key="GCPurplePrimaryText">#FAFAFA</Color>
-    <Color x:Key="GCPurpleSecondaryText">#CACACA</Color>
-    <Color x:Key="GCPurplePrimaryDarkText">#2B0B98</Color>
-    <Color x:Key="GCPurpleSecondary">#0D004E</Color>
-    <Color x:Key="GCPurpleAccentButtons">#0D004E</Color>
-    <Color x:Key="GCPurpleSecondaryDark">#3F3FFF</Color>
-    <Color x:Key="GCPurpleTertiary">#2F2FFF</Color> 
-    <Color x:Key="GCPurpleQuatriary">#0D0125</Color>
+    <Color x:Key="GCPurpleTertiary">#2F2FFF</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
@@ -76,9 +30,9 @@
     <Color x:Key="StatusYellow">#FABF10</Color>
     <Color x:Key="StatusGreen">#10FA94</Color>
 
-    <SolidColorBrush x:Key="PrimaryBrush" Color="{StaticResource Primary}"/>
-    <SolidColorBrush x:Key="SecondaryBrush" Color="{StaticResource Secondary}"/>
-    <SolidColorBrush x:Key="TertiaryBrush" Color="{StaticResource Tertiary}"/>
+    <SolidColorBrush x:Key="PrimaryBrush" Color="{DynamicResource Primary}"/>
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{DynamicResource Secondary}"/>
+    <SolidColorBrush x:Key="TertiaryBrush" Color="{DynamicResource Tertiary}"/>
     <SolidColorBrush x:Key="WhiteBrush" Color="{StaticResource White}"/>
     <SolidColorBrush x:Key="BlackBrush" Color="{StaticResource Black}"/>
 

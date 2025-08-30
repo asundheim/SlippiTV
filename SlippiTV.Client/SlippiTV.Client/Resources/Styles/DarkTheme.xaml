@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SlippiTV.Client.Resources.Styles.DarkTheme">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="Colors.xaml"/>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Color x:Key="Primary">#171717</Color>
+    <Color x:Key="PrimaryDark">#000000</Color>
+    <Color x:Key="PrimaryLight">#191919</Color>
+    <Color x:Key="PrimaryText">#FAFAFA</Color>
+    <Color x:Key="SecondaryText">#CACACA</Color>
+    <Color x:Key="PrimaryDarkText">#171717</Color>
+    <Color x:Key="Secondary">#212023</Color>
+    <Color x:Key="AccentButtons">#FF0000</Color>
+    <Color x:Key="SecondaryDark">#A2A1A2</Color>
+    <Color x:Key="Tertiary">#353437</Color>
+    <Color x:Key="Quatriary">#0F0F0F</Color>
+</ResourceDictionary>

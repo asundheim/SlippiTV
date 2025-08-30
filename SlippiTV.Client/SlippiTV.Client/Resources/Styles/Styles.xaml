@@ -440,7 +440,7 @@
         <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource Primary}" />
         <Setter Property="Shell.TabBarForegroundColor" Value="{StaticResource White}" />
         <Setter Property="Shell.TabBarTitleColor" Value="{DynamicResource PrimaryText}" />
-        <Setter Property="Shell.TabBarUnselectedColor" Value="{StaticResource SecondaryText}"/>
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource SecondaryText}"/>
     </Style>
    
 

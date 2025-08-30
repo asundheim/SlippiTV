@@ -35,6 +35,7 @@ public static class PlatformUtils
                 CursorIcon.Arrow => CoreCursorType.Arrow,
                 CursorIcon.Wait => CoreCursorType.Wait,
                 CursorIcon.Help => CoreCursorType.Help,
+                CursorIcon.Move => CoreCursorType.SizeAll,
                 _ => CoreCursorType.Arrow
             };
 

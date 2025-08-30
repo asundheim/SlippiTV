@@ -1,4 +1,6 @@
-﻿namespace SlippiTV.Client;
+﻿using SlippiTV.Client.Resources.Styles;
+
+namespace SlippiTV.Client;
 
 public static class Themes
 {
@@ -9,31 +11,22 @@ public static class Themes
 
 public static class ThemeUtils
 {
-    private static readonly List<string> _themedKeys = [
-        "Primary",
-        "PrimaryDark",
-        "PrimaryText",
-        "SecondaryText",
-        "PrimaryDarkText",
-        "Secondary",
-        "AccentButtons",
-        "SecondaryDark",
-        "SecondaryDarkText",
-        "Tertiary",
-        "Quatriary"
-    ];
-
     public static void SetTheme(this Application application, string theme)
     {
-        foreach (ResourceDictionary resourceDictionary in application.Resources.MergedDictionaries)
+        var mergedDictionaries = application.Resources.MergedDictionaries;
+        if (mergedDictionaries is not null)
         {
-            foreach (var key in _themedKeys)
+            mergedDictionaries.Clear();
+            
+            ResourceDictionary newTheme = theme switch
             {
-                if (resourceDictionary.TryGetValue($"{theme}{key}", out var themeValue))
-                {
-                    resourceDictionary[key] = themeValue;
-                }
-            }
+                Themes.Dark => new DarkTheme(),
+                Themes.Light => new LightTheme(),
+                Themes.GCPurple => new GCPurpleTheme(),
+                _ => new DarkTheme()
+            };
+
+            mergedDictionaries.Add(newTheme);
         }
     }
 }

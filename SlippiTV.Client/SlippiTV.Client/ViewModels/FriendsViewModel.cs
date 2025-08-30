@@ -32,14 +32,16 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         {
             while (true)
             {
-                foreach (var friend in Friends)
-                {
-                    await friend.Refresh();
-                }
-
-                // Check on ourselves
                 try
                 {
+                    // rather than lock the collection and risk some incredibly long request visibly blocking things,
+                    // just accept our fate if get a concurrent modification exception, we'll recheck again next iteration
+                    foreach (var friend in Friends)
+                    {
+                        await friend.Refresh();
+                    }
+
+                    // Check on ourselves
                     var myStatus = await SlippiTVService.GetStatus(Settings.StreamMeleeConnectCode);
                     if (myStatus.LiveStatus == LiveStatus.Active)
                     {
@@ -106,6 +108,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
 
     public ISlippiTVService SlippiTVService => ShellViewModel.SlippiTVService;
 
+    private readonly Lock _friendsLock = new Lock();
     public ObservableCollection<FriendViewModel> Friends
     {
         get;

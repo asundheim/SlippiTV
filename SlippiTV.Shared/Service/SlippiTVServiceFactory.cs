@@ -4,7 +4,7 @@
 
 public class SlippiTVServiceFactory
 {
-    private const bool DEBUG = true;
+    private const bool DEBUG = false;
 
     public static SlippiTVServiceFactory Instance = new SlippiTVServiceFactory();
 

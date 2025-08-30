@@ -4,16 +4,6 @@
              xmlns:local="clr-namespace:SlippiTV.Client"
              x:Class="SlippiTV.Client.App">
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
-                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <!--<DataTemplate x:Key="MauiAppTitleBar">
-                <Grid Background="Transparent" ZIndex="1" VerticalOptions="Fill" HorizontalOptions="Fill">
-
-                </Grid>
-            </DataTemplate>-->
-        </ResourceDictionary>
+        <ResourceDictionary Source="/Resources/Styles/DarkTheme.xaml;assembly=SlippiTV.Client"/>
     </Application.Resources>
 </Application>

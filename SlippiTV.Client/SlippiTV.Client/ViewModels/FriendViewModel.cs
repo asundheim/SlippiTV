@@ -10,7 +10,7 @@ using SlippiTV.Shared.Types;
 
 namespace SlippiTV.Client.ViewModels;
 
-public class FriendViewModel : BaseNotifyPropertyChanged
+public partial class FriendViewModel : BaseNotifyPropertyChanged
 {
     public FriendViewModel(FriendsViewModel parent, FriendSettings friend)
     {
