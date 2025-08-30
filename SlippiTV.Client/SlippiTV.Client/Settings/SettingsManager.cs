@@ -21,7 +21,7 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
         string settingsFolder = Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SlippiTV");
         Directory.CreateDirectory(settingsFolder);
 
-        _settingsPath = Path.Join(settingsFolder, "SlippiTV.settings.v5.json");
+        _settingsPath = Path.Join(settingsFolder, "SlippiTV.settings.v8.json");
         if (File.Exists(_settingsPath) &&
             File.ReadAllText(_settingsPath) is string settingsData &&
             JsonConvert.DeserializeObject<SlippiTVSettings>(settingsData) is SlippiTVSettings existingSettings)

@@ -2,6 +2,7 @@
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.Types;
 using System.Diagnostics;
+using System.IO.Compression;
 using System.Net.Http.Handlers;
 using System.Text;
 
@@ -58,13 +59,27 @@ public class SettingsViewModel : BaseNotifyPropertyChanged
             }
         };
 
+        string zipDestination = Path.Join(dir, updateInfo.UpdateFileName);
         HttpClient client = new HttpClient(progressHandler);
         using var response = await client.GetAsync(updateInfo.UpdateLink, CancellationToken.None);
 
-        using var fileStream = new FileStream(Path.Join(dir, updateInfo.UpdateFileName), FileMode.Create);
-        await response.Content.CopyToAsync(fileStream);
+        using (var fileStream = new FileStream(zipDestination, FileMode.Create))
+        {
+            await response.Content.CopyToAsync(fileStream);
+        }
+
+        /* TODO do this in here and let the script swap
+            onStatusText("Extracting update...");
+            string zipExtractDir = Path.Join(dir, Path.GetFileNameWithoutExtension(updateInfo.UpdateFileName));
+            // now unzip it
+            using (var zipStream = new FileStream(zipDestination, FileMode.Open))
+            {
+                ZipFile.ExtractToDirectory(zipStream, zipExtractDir);
+            }
+        */
 
         onStatusText("Applying update...");
+        await Task.Delay(100);
 
         // Start the script in a detached process
         var psi = new ProcessStartInfo

@@ -37,8 +37,16 @@ public partial class SplashScreenShell : Shell
             }
             else
             {
-                this.SplashScreenViewModel.ShowProgressBar = true;
-                await realShell.SettingsViewModel.BeginUpdate((p) => SplashScreenViewModel.Progress = p, (s) => SplashScreenViewModel.SplashScreenStatusText = s);
+                try
+                {
+                    this.SplashScreenViewModel.ShowProgressBar = true;
+                    await realShell.SettingsViewModel.BeginUpdate((p) => SplashScreenViewModel.Progress = p, (s) => SplashScreenViewModel.SplashScreenStatusText = s);
+                }
+                catch (Exception ex)
+                {
+                    await this.ShowPopupAsync(new ErrorPopup($"Failed to update: {ex.Message}"));
+                }
+                
                 Environment.Exit(0);
             }
         }
