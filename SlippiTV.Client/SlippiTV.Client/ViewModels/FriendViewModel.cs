@@ -140,7 +140,7 @@ public partial class FriendViewModel : BaseNotifyPropertyChanged
                     if (refcount == 1)
                     {
                         // kill the upload loop, then take the lock, then re-enter the upload loop waiting on the lock, ensuring we don't race ourselves
-                        Parent.ShellViewModel.DisconnectStream();
+                        await Parent.ShellViewModel.DisconnectStream();
                         await Parent.ShellViewModel.StreamLock.WaitAsync(anyCancellation);
 
                         // kick this off so we trigger a full reconnect that waits on the lock we've taken. we don't want to schedule it on our thread

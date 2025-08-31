@@ -223,8 +223,12 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
         DolphinConnection.HandleDisconnect();
     }
 
-    public void DisconnectStream()
+    public async Task DisconnectStream()
     {
         _disconnectSource.Cancel();
+        if (_socketTask is not null)
+        {
+            await _socketTask;
+        }
     }
 }

@@ -40,7 +40,7 @@
 			<Pack>true</Pack>
 			<PackagePath>runtimes/win-x64/native</PackagePath>
 		</ProjectReference>
-
+		
 		<ProjectReference Include="..\..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
 	</ItemGroup>
 	
