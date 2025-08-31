@@ -94,7 +94,18 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<int> PlayerStocksLeft { get; set; } = new ObservableCollection<int>();
+    public ObservableCollection<int> PlayerStocksLeft 
+    { 
+        get; 
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    } = new ObservableCollection<int>();
 
     public string? OpponentConnectCode
     {
@@ -148,7 +159,18 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
         }
     }
 
-    public ObservableCollection<int> OpponentStocksLeft { get; set; } = new ObservableCollection<int>();
+    public ObservableCollection<int> OpponentStocksLeft 
+    { 
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    } = new ObservableCollection<int>();
 
     public int GameNumber
     {
@@ -207,6 +229,7 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
             int originalPlayerCount = PlayerStocksLeft.Count;
             if (originalPlayerCount < newGameInfo.PlayerStocksLeft)
             {
+                PlayerStocksLeft = new ObservableCollection<int>();
                 for (int i = 0; i < newGameInfo.PlayerStocksLeft - originalPlayerCount; i++)
                 {
                     PlayerStocksLeft.Add(i);
@@ -223,6 +246,7 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
             int originalOpponentCount = OpponentStocksLeft.Count;
             if (originalOpponentCount < newGameInfo.OpponentStocksLeft)
             {
+                OpponentStocksLeft = new ObservableCollection<int>();
                 for (int i = 0; i < newGameInfo.OpponentStocksLeft - originalOpponentCount; i++)
                 {
                     OpponentStocksLeft.Add(i);
@@ -243,8 +267,8 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
         Stage = default;
         GameNumber = default;
         IsNetplay = default;
-        OpponentStocksLeft.Clear();
-        PlayerStocksLeft.Clear();
+        OpponentStocksLeft = new ObservableCollection<int>();
+        PlayerStocksLeft = new ObservableCollection<int>();
         OpponentCharacter = default;
         PlayerCharacter = default;
         PlayerCharacterColor = default;
