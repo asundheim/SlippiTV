@@ -85,7 +85,7 @@ public class SettingsViewModel : BaseNotifyPropertyChanged
         var psi = new ProcessStartInfo
         {
             FileName = "powershell.exe",
-            Arguments = $"\"{scriptPath}\"",
+            Arguments = $"-File \"{scriptPath}\"",
             WorkingDirectory = dir,
             CreateNoWindow = false,
             UseShellExecute = true,
