@@ -4,7 +4,7 @@ namespace SlippiTV.Shared.Versions;
 
 public static class ClientVersion
 {
-    public const string SlippiClientVersion = "0.0.9";
+    public const string SlippiClientVersion = "0.1.0";
 
     public static async Task<bool> RequiresUpdateAsync(ISlippiTVService service)
     {
