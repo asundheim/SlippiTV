@@ -28,6 +28,7 @@ public class ActiveStream : IDisposable
         if (e.Command == Command.GAME_END)
         {
             IsActive = false;
+            ActiveGameInfo = null;
             EndGame();
         }
         else if (e.Command == Command.GAME_START)
@@ -39,7 +40,6 @@ public class ActiveStream : IDisposable
                 // try to put ourselves as Player, unless neither player is Player
                 for (int i = 0; i < 2; i++)
                 {
-                    
                     Player playerInfo = payload.GameStart.Players[i];
                     Player opponentInfo = payload.GameStart.Players[i ^ 1]; // p = 0, 0 ^ 1 => 1; p = 1, 1 ^ 1 => 0
                     string? connectCode = playerInfo.ConnectCode;
