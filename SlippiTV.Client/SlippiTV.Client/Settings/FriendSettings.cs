@@ -20,4 +20,18 @@ public class FriendSettings : BaseNotifyPropertyChanged
             }
         }
     } = false;
+
+    public string Nickname
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                SettingsManager.Instance?.SaveSettings();
+                OnPropertyChanged();
+            }
+        }
+    } = string.Empty;
 }

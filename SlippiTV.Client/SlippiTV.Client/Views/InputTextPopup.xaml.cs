@@ -1,4 +1,4 @@
-using SlippiTV.Shared;
+using CommunityToolkit.Maui.Views;
 
 namespace SlippiTV.Client.Views;
 
@@ -35,23 +35,15 @@ public partial class InputTextPopup
         }
     } = string.Empty;
 
-    private const string _invalidConnectCodeErrorText = "Invalid connect code format";
+    protected string InputText => InputTextEntry.Text;
 
     private async void CancelButton_Clicked(object sender, EventArgs e)
     {
         await CloseAsync(string.Empty);
     }
 
-    private async void SubmitButton_Clicked(object sender, EventArgs e)
+    protected virtual async void SubmitButton_Clicked(object sender, EventArgs e)
     {
-        string rawCode = ConnectCodeEntry.Text;
-        if (ConnectCodeUtils.IsValidConnectCode(rawCode))
-        {
-            await CloseAsync(ConnectCodeUtils.NormalizeConnectCode(rawCode));
-        }
-        else
-        {
-            ErrorText = _invalidConnectCodeErrorText;
-        }
+        await this.CloseAsync(InputText);
     }
 }

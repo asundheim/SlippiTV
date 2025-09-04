@@ -247,7 +247,7 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
             if (originalOpponentCount < newGameInfo.OpponentStocksLeft)
             {
                 OpponentStocksLeft = new ObservableCollection<int>();
-                for (int i = 0; i < newGameInfo.OpponentStocksLeft - originalOpponentCount; i++)
+                for (int i = 0; i < newGameInfo.OpponentStocksLeft; i++)
                 {
                     OpponentStocksLeft.Add(i);
                 }

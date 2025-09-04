@@ -1,6 +1,10 @@
 using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Mvvm.Input;
+using MauiIcons.Core;
+using MauiIcons.Fluent.Filled;
 using Microsoft.Maui.Controls.Shapes;
+using SlippiTV.Client.Pages;
 using SlippiTV.Client.ViewModels;
 using SlippiTV.Shared;
 using System.Diagnostics;
@@ -12,6 +16,9 @@ public partial class FriendView : ContentView
 {
     [AllowNull]
     public FriendViewModel FriendViewModel { get; set; }
+
+    [AllowNull]
+    public FriendsPage FriendsPage { get; set; }
 
 	public FriendView()
 	{
@@ -48,13 +55,40 @@ public partial class FriendView : ContentView
         var view = sender as View;
 
         MenuFlyout mf = new MenuFlyout();
-        MenuFlyoutItem flyoutItem = new MenuFlyoutItem();
-        flyoutItem.Text = "Remove Friend";
-        flyoutItem.Command = new RelayCommand(() =>
+
+        MenuFlyoutItem renameItem = new MenuFlyoutItem();
+        renameItem.Text = string.IsNullOrEmpty(FriendViewModel.FriendSettings.Nickname) ? "Set nickname" : "Rename";
+        MauiIcon renameIcon = new MauiIcon() { Icon = FluentFilledIcons.Edit24Filled };
+        renameItem.IconImageSource = (ImageSource)renameIcon; // I think this is actually what they want you to do?
+        renameItem.Command = new RelayCommand(async () =>
+        {
+            var result = await Shell.Current.CurrentPage.ShowPopupAsync<string>(
+                new InputTextPopup("Set a nickname for this friend", "Set Nickname"),
+                new PopupOptions
+                {
+                    Shape = new RoundRectangle
+                    {
+                        CornerRadius = new CornerRadius(0),
+                        StrokeThickness = 0,
+                    }
+                });
+            if (!string.IsNullOrEmpty(result.Result) && !result.WasDismissedByTappingOutsideOfPopup)
+            {
+                FriendViewModel.RenameFriend(result.Result);
+            }
+        });
+        mf.Add(renameItem);
+
+        MenuFlyoutItem removeItem = new MenuFlyoutItem();
+        removeItem.Text = "Remove Friend";
+        MauiIcon removeIcon = new MauiIcon() { Icon = FluentFilledIcons.Delete24Filled };
+        removeItem.IconImageSource = (FontImageSource)removeIcon;
+        removeItem.Command = new RelayCommand(() =>
         {
             FriendViewModel.Parent.RemoveFriend(FriendViewModel);
         });
-        mf.Add(flyoutItem);
+        mf.Add(removeItem);
+
         FlyoutBase.SetContextFlyout(view, mf);
 
         var point = e.GetPosition(view);

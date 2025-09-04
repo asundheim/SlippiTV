@@ -44,10 +44,7 @@ public partial class FriendsPage : ContentPage
     private async void AddFriendsButton_Clicked(object sender, EventArgs e)
     {
         var result = await this.ShowPopupAsync<string>(
-            new InputTextPopup(
-                placeholderText: "Enter Connect Code (ABC#123)",
-                title: "Input Connect Code"
-                ), 
+            new InputConnectCodePopup(title: "Input Connect Code"), 
             new PopupOptions 
             { 
                 Shape = new RoundRectangle

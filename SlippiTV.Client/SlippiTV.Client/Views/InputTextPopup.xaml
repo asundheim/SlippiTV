@@ -29,7 +29,7 @@
             </VerticalStackLayout>
 
             <Border StrokeShape="RoundRectangle 12" StrokeThickness="0">
-                <Entry x:Name="ConnectCodeEntry" 
+                <Entry x:Name="InputTextEntry" 
                        Placeholder="{Binding PlaceholderText}" 
                        TextColor="{StaticResource PrimaryText}" 
                        BackgroundColor="{StaticResource Quatriary}"/>

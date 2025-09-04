@@ -186,25 +186,26 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
 
         string directCodesPath = Path.Combine(launcherPath, @"netplay\User\Slippi\direct-codes.json");
         List<string>? addFromRecentCandidates = null;
-        if (IsFirstLaunch && File.Exists(directCodesPath))
-        {
-            var directCodesType = new { connectCode = "" };
-            var result = JsonConvert.DeserializeAnonymousType(File.ReadAllText(directCodesPath), Enumerable.Range(0, 0).Select(x => directCodesType).ToList());
-            if (result is not null)
-            {
-                foreach (var candidate in result)
-                {
-                    string normalized = FullWidthConverter.ToHalfwidth(candidate.connectCode);
-                    if (_settings.Friends.Any(friend => friend.ConnectCode == normalized))
-                    {
-                        continue;
-                    }
+        // TODO do we actually want this?
+        //if (IsFirstLaunch && File.Exists(directCodesPath))
+        //{
+        //    var directCodesType = new { connectCode = "" };
+        //    var result = JsonConvert.DeserializeAnonymousType(File.ReadAllText(directCodesPath), Enumerable.Range(0, 0).Select(x => directCodesType).ToList());
+        //    if (result is not null)
+        //    {
+        //        foreach (var candidate in result)
+        //        {
+        //            string normalized = FullWidthConverter.ToHalfwidth(candidate.connectCode);
+        //            if (_settings.Friends.Any(friend => friend.ConnectCode == normalized))
+        //            {
+        //                continue;
+        //            }
 
-                    addFromRecentCandidates ??= new List<string>();
-                    addFromRecentCandidates.Add(normalized);
-                }
-            }
-        }
+        //            addFromRecentCandidates ??= new List<string>();
+        //            addFromRecentCandidates.Add(normalized);
+        //        }
+        //    }
+        //}
 
         string playbackDolphinPath = Path.Join(launcherPath, @"playback", "Slippi Dolphin.exe");
         string? playbackPathTemp = null;

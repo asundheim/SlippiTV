@@ -124,7 +124,8 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
 
     // TODO extract this all out into some connection manager
 
-    private CancellationTokenSource _disconnectSource = new CancellationTokenSource();
+    private CancellationTokenSource _dolphinDisconnectSource = new CancellationTokenSource();
+    private CancellationTokenSource _socketDisconnectSource = new CancellationTokenSource();
     private Task? _socketTask = null;
     private async void DolphinConnection_OnStatusChange(object? sender, ConnectionStatus status)
     {
@@ -138,42 +139,34 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
 
         if (status == ConnectionStatus.Connected)
         {
-            _socketTask = Task.Run(async () =>
-            {
-                bool entered = false;
-                try
-                {
-                    await StreamLock.WaitAsync(_disconnectSource.Token);
-                    entered = true;
-                    RelayStatus = LiveStatus.Idle;
-                    using var socket = await SlippiTVService.Stream(Settings.StreamMeleeConnectCode);
-                    RelayStatus = LiveStatus.Active;
-                    await SocketUtils.HandleSocket(socket, null, _pendingData, _disconnectSource.Token);
-                }
-                catch { }
-                finally
-                {
-                    if (entered)
-                    {
-                        StreamLock.Release();
-                    }
-                }
-            });
-        }
-        else if (status == ConnectionStatus.Disconnected)
-        {
-            _disconnectSource.Cancel();
+            _socketDisconnectSource.Cancel();
             if (_socketTask is not null)
             {
                 await _socketTask;
                 _socketTask = null;
-                RelayStatus = LiveStatus.Offline;
             }
 
-            _disconnectSource.Dispose();
-            _disconnectSource = new CancellationTokenSource();
+            StartSocket();
+        }
+        else if (status == ConnectionStatus.Disconnected)
+        {
+            try
+            {
+                _dolphinDisconnectSource.Cancel();
+                if (_socketTask is not null)
+                {
+                    await _socketTask;
+                    _socketTask = null;
+                }
+            }
+            catch { }
+            finally
+            {
+                _dolphinDisconnectSource.Dispose();
+                _dolphinDisconnectSource = new CancellationTokenSource();
 
-            ConnectToDolphin();
+                ConnectToDolphin();
+            }
         }
     }
 
@@ -216,6 +209,38 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
         });
     }
 
+    private void StartSocket()
+    {
+        _socketDisconnectSource.Dispose();
+        _socketDisconnectSource = new CancellationTokenSource();
+        CancellationToken anyCancellation = CancellationTokenSource.CreateLinkedTokenSource(_dolphinDisconnectSource.Token, _socketDisconnectSource.Token).Token;
+
+        _socketTask = Task.Run(async () =>
+        {
+            while (!anyCancellation.IsCancellationRequested)
+            {
+                bool entered = false;
+                try
+                {
+                    await StreamLock.WaitAsync(anyCancellation);
+                    entered = true;
+                    RelayStatus = LiveStatus.Idle;
+                    using var socket = await SlippiTVService.Stream(Settings.StreamMeleeConnectCode);
+                    RelayStatus = LiveStatus.Active;
+                    await SocketUtils.HandleSocket(socket, null, _pendingData, anyCancellation);
+                }
+                catch { }   
+                finally
+                {
+                    if (entered)
+                    {
+                        StreamLock.Release();
+                    }
+                }
+            }
+        });
+    }
+
     // resets all the connections
     [RelayCommand]
     public void ReconnectDolphin()
@@ -223,12 +248,30 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
         DolphinConnection.HandleDisconnect();
     }
 
-    public async Task DisconnectStream()
+    /// <returns>If a stream was active to be disconnected.</returns>
+    public bool DisconnectStream()
     {
-        _disconnectSource.Cancel();
+        if (_socketTask is not null)
+        {
+            _socketDisconnectSource.Cancel();
+            return true;
+        }
+
+        return false;
+    }
+
+    public async Task ReconnectStream()
+    {
+        // Presumably we're here after DisconnectStream() was called, but just in case
+        // TODO can this just be all wrapped into StartSocket()?
+        _socketDisconnectSource.Cancel();
+
         if (_socketTask is not null)
         {
             await _socketTask;
+            _socketTask = null;
         }
+
+        StartSocket();
     }
 }

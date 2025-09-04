@@ -72,10 +72,7 @@ public partial class SettingsPage : ContentPage
     private async void EditConnectCodeButton_Clicked(object sender, EventArgs e)
     {
         var result = await this.ShowPopupAsync<string>(
-            new InputTextPopup(
-                placeholderText: "Enter Connect Code (ABC#123)",
-                title: "Input Your Connect Code"
-            ),
+            new InputConnectCodePopup(title: "Input Your Connect Code"),
             new PopupOptions
             {
                 Shape = new RoundRectangle

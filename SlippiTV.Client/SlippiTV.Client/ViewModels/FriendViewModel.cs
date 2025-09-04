@@ -1,4 +1,6 @@
-﻿using Slippi.NET.Console;
+﻿using CommunityToolkit.Maui;
+using Microsoft.Maui.Controls.Shapes;
+using Slippi.NET.Console;
 using Slippi.NET.Console.Types;
 using Slippi.NET.Slp.Reader.File;
 using Slippi.NET.Slp.Writer;
@@ -7,6 +9,7 @@ using SlippiTV.Client.Settings;
 using SlippiTV.Shared.Service;
 using SlippiTV.Shared.SocketUtils;
 using SlippiTV.Shared.Types;
+using Path = System.IO.Path;
 
 namespace SlippiTV.Client.ViewModels;
 
@@ -53,6 +56,11 @@ public partial class FriendViewModel : BaseNotifyPropertyChanged
         }
     }
 
+    public void RenameFriend(string newName)
+    {
+        FriendSettings.Nickname = newName;
+    }
+
     public async Task Refresh()
     {
         try
@@ -73,44 +81,58 @@ public partial class FriendViewModel : BaseNotifyPropertyChanged
 
     public async Task Watch(CancellationToken cancellation)
     {
-        if (LiveStatus != LiveStatus.Active)
+        if (LiveStatus == LiveStatus.Offline)
         {
-            throw new InvalidOperationException();
+            await this.Parent.ShowErrorPopupAsync(this, new TextPopupEventArgs("Stream ended", new PopupOptions
+            {
+                Shape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(0),
+                    StrokeThickness = 0,
+                }
+            }));
+            return;
         }
 
         if (!Path.Exists(Settings.WatchDolphinPath) || !Path.Exists(Settings.WatchMeleeISOPath))
         {
-            // TODO show message box
+            await this.Parent.ShowErrorPopupAsync(this, new TextPopupEventArgs("Invalid replay Dolphin path or SSBM .iso path", new PopupOptions
+            {
+                Shape = new RoundRectangle
+                {
+                    CornerRadius = new CornerRadius(0),
+                    StrokeThickness = 0,
+                }
+            }));
             return;
         }
 
-        DolphinLauncher? launcher = null;
+        CancellationTokenSource dolphinCloseSource = new CancellationTokenSource();
+        CancellationToken anyCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellation, dolphinCloseSource.Token).Token;
+
+        DolphinLauncher launcher = new DolphinLauncher(Settings.WatchMeleeISOPath, Settings.WatchDolphinPath);
+        launcher.OnDolphinClosed += (o, e) =>
+        {
+            dolphinCloseSource.Cancel();
+        };
+
         SlpFileWriter fileWriter = new SlpFileWriter(new SlpFileWriterSettings
         {
             FolderPath = Path.GetTempPath()
         });
-        CancellationTokenSource dolphinCloseSource = new CancellationTokenSource();
-        CancellationToken anyCancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellation, dolphinCloseSource.Token).Token;
+        
         string? currentFile = null;
         try
         {
             fileWriter.OnNewFile += (object? sender, string newFile) =>
             {
-                if (launcher is null)
-                {
-                    launcher = new DolphinLauncher(Settings.WatchMeleeISOPath, Settings.WatchDolphinPath);
-                    launcher.OnDolphinClosed += (o, e) =>
-                    {
-                        dolphinCloseSource.Cancel();
-                    };
-                }
-
                 launcher.LaunchDolphin(new DolphinLaunchArgs()
                 {
                     Mode = DolphinLaunchModes.Mirror,
                     Replay = newFile,
                     IsRealTimeMode = false,
-                    GameStation = "SlippiTV"
+                    GameStation = "SlippiTV",
+                    CommandId = Guid.NewGuid().ToString(),
                 });
 
                 try
@@ -140,18 +162,27 @@ public partial class FriendViewModel : BaseNotifyPropertyChanged
                     if (refcount == 1)
                     {
                         // kill the upload loop, then take the lock, then re-enter the upload loop waiting on the lock, ensuring we don't race ourselves
-                        await Parent.ShellViewModel.DisconnectStream();
+                        bool shouldReconnect = Parent.ShellViewModel.DisconnectStream();
                         await Parent.ShellViewModel.StreamLock.WaitAsync(anyCancellation);
-
-                        // kick this off so we trigger a full reconnect that waits on the lock we've taken. we don't want to schedule it on our thread
-                        // as it's a mostly synchronous operation
-                        _ = Task.Run(Parent.ShellViewModel.ReconnectDolphin);
+                        if (shouldReconnect)
+                        {
+                            await Parent.ShellViewModel.ReconnectStream();
+                        }
                     }
                     else
                     {
                         // another watcher already has the lock. we'll still check if we're responsible for releasing it at the end.
                     }
                 }
+
+                launcher.LaunchDolphin(new DolphinLaunchArgs()
+                {
+                    Mode = DolphinLaunchModes.Normal,
+                    Replay = Path.Join(Path.GetTempPath(), "DolphinLauncher", "templaunch.slp"), // this will get overwritten once the filewriter sees a new game and updates the comm file
+                    IsRealTimeMode = false,
+                    CommandId = Guid.NewGuid().ToString(),
+                    GameStation = "SlippiTV (waiting for game)"
+                });
 
                 using var socket = await SlippiTVService.WatchStream(FriendSettings.ConnectCode);
                 await SocketUtils.HandleSocket(socket, x => fileWriter.Write(x), null, anyCancellation);
@@ -173,7 +204,7 @@ public partial class FriendViewModel : BaseNotifyPropertyChanged
         finally
         {
             fileWriter.Dispose();
-            launcher?.Dispose();
+            launcher.Dispose();
             dolphinCloseSource.Dispose();
 
             try
