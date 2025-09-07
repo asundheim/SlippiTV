@@ -2,8 +2,8 @@
 
 public static class UpdateScript
 {
-    public const string UpdateZipName = @"SlippiTV.0.2.0-beta.zip";
-    public const string UpdateDownloadLink = @$"https://github.com/asundheim/SlippiTV/releases/download/0.2.0-beta/{UpdateZipName}";
+    public const string UpdateZipName = @"SlippiTV.0.2.1-beta.zip";
+    public const string UpdateDownloadLink = @$"https://github.com/asundheim/SlippiTV/releases/download/0.2.1-beta/{UpdateZipName}";
 
     /// <summary>
     /// Deprecated, but kept around for a while for old versions to migrate from.
