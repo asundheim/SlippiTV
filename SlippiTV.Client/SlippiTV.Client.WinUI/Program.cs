@@ -41,10 +41,10 @@ public partial class Program
     [STAThread]
     public static int Main(string[] args)
     {
-    WinRT.ComWrappersSupport.InitializeComWrappers();
+        WinRT.ComWrappersSupport.InitializeComWrappers();
 
-    AppActivationArguments activationArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
-    ExtendedActivationKind kind = activationArgs.Kind;
+        AppActivationArguments activationArgs = AppInstance.GetCurrent().GetActivatedEventArgs();
+        ExtendedActivationKind kind = activationArgs.Kind;
 
         // You would think we would get launched with ExtendedActivationKind.Startup, but it's just Launch if we're set from the registry.
         // Unless someone puts our binary into System32 this should be an adequate workaround.

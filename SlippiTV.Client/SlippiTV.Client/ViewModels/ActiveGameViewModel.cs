@@ -216,6 +216,17 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
             Stage = newGameInfo.Stage;
             GameNumber = newGameInfo.GameNumber;
             IsNetplay = newGameInfo.GameMode == GameMode.ONLINE;
+
+            if (PlayerCharacter != newGameInfo.PlayerCharacter)
+            {
+                PlayerStocksLeft = new ObservableCollection<int>();
+            }
+
+            if (OpponentCharacter != newGameInfo.OpponentCharacter)
+            {
+                OpponentStocksLeft = new ObservableCollection<int>();
+            }
+
             OpponentCharacterColor = newGameInfo.OpponentCharacterColor;
             PlayerCharacterColor = newGameInfo.PlayerCharacterColor;
             OpponentCharacter = newGameInfo.OpponentCharacter;
@@ -230,14 +241,14 @@ public class ActiveGameViewModel : BaseNotifyPropertyChanged
             if (originalPlayerCount < newGameInfo.PlayerStocksLeft)
             {
                 PlayerStocksLeft = new ObservableCollection<int>();
-                for (int i = 0; i < newGameInfo.PlayerStocksLeft - originalPlayerCount; i++)
+                for (int i = 0; i < newGameInfo.PlayerStocksLeft; i++)
                 {
                     PlayerStocksLeft.Add(i);
                 }
             }
             else if (PlayerStocksLeft.Count > newGameInfo.PlayerStocksLeft)
             {
-                for (int i = 0; i < PlayerStocksLeft.Count - newGameInfo.PlayerStocksLeft; i++)
+                for (int i = 0; i < originalPlayerCount- newGameInfo.PlayerStocksLeft; i++)
                 {
                     PlayerStocksLeft.RemoveAt(PlayerStocksLeft.Count - 1);
                 }
