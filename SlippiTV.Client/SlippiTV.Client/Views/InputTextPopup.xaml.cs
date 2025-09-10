@@ -6,11 +6,10 @@ public partial class InputTextPopup
 {
 	public InputTextPopup(string placeholderText, string title)
 	{
-		InitializeComponent();
+        InitializeComponent();
 
         this.PlaceholderText = placeholderText;
         this.Title = title;
-
 
         Loaded += InputTextPopup_Loaded;
 	}
@@ -18,6 +17,11 @@ public partial class InputTextPopup
     private void InputTextPopup_Loaded(object? sender, EventArgs e)
     {
         this.BindingContext = this;
+        if (ThemeUtils.CurrentTheme is not null)
+        {
+            this.Resources.MergedDictionaries.Clear();
+            this.Resources.MergedDictionaries.Add(ThemeUtils.CurrentTheme);
+        }
     }
 
     public string PlaceholderText { get; set; }

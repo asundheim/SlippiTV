@@ -52,21 +52,21 @@
                 <ImageButton Clicked="WatchFriendButton_Clicked" IsEnabled="{Binding LiveStatus, Converter={StaticResource ActiveOrIdleToBoolConverter}}"
                              VerticalOptions="Center" Margin="0" Padding="-4, 6, 0, 0" BackgroundColor="Transparent" >
                     <ImageButton.Source>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled, IconColor={DynamicResource AccentButtons}}"/>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=Tv24Filled}" Color="{DynamicResource IconPrimary}"/>
                     </ImageButton.Source>
                 </ImageButton>
 
                 <HorizontalStackLayout HorizontalOptions="End" Margin="-8,0,0,0" IsEnabled="True" IsVisible="{Binding LiveStatus, Converter={StaticResource ActiveOrIdleToBoolConverter}}">
                     <Image MaximumHeightRequest="14" VerticalOptions="Center" Margin="0,4,0,0" ToolTipProperties.Text="Active Viewers">
                         <Image.Source>
-                            <FontImageSource Glyph="{mi:FluentFilled Icon=Person24Filled, IconColor={StaticResource StatusGreen}}"/>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=Person24Filled}" Color="{StaticResource AccentPrimary}"/>
                         </Image.Source>
                     </Image>
 
                     <Label FontSize="10" VerticalTextAlignment="Center" Padding="2,4,5,2" Grid.ColumnSpan="1" Margin="0" HorizontalOptions="Start">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding ViewerCount}" TextColor="{StaticResource StatusGreen}"/>
+                                <Span Text="{Binding ViewerCount}" TextColor="{DynamicResource AccentPrimary}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -79,14 +79,14 @@
                        Text="{Binding FriendSettings.Nickname}"
                        local:CursorProperties.Cursor="Help"
                        ToolTipProperties.Text="{Binding FriendSettings.ConnectCode}"
-                       FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center"/>
+                       FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center" TextColor="{DynamicResource TextPrimary}"/>
                 
                 <!--Or -->
                 
                 <!-- Connect Code-->
                 <Label IsVisible="{Binding FriendSettings.Nickname, Converter={StaticResource IsStringNullOrEmptyConverter}}" 
                        Text="{Binding FriendSettings.ConnectCode}"
-                       FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center"/>
+                       FontAttributes="Bold" FontSize="24" VerticalTextAlignment="Center" TextColor="{DynamicResource TextPrimary}"/>
                 
                 <Image MaximumHeightRequest="12" VerticalOptions="Center" Margin="4,2,0,0" ToolTipProperties.Text="{Binding LiveStatus, Converter={StaticResource LiveStatusToToolTipConverter}}"
                     local:CursorProperties.Cursor="Help">
@@ -119,7 +119,7 @@
                                 VerticalOptions="Center"
                                 HorizontalOptions="Center"
                                 FontSize="14"
-                                TextColor="{DynamicResource PrimaryText}"
+                                TextColor="{DynamicResource TextPrimary}"
                                 BackgroundColor="Transparent" 
                                 Text="{Binding ActiveGameInfo.PlayerDisplayName}"
                                 ToolTipProperties.Text="{Binding ActiveGameInfo.PlayerConnectCode}"
@@ -142,7 +142,7 @@
                 </Border>
 
                 <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" ToolTipProperties.Text="{Binding ActiveGameInfo.Stage}">
-                    <Label IsVisible="{Binding ActiveGameInfo.IsNetplay}" FontSize="12" VerticalTextAlignment="Start" Margin="0" HorizontalOptions="Center" Padding="0">
+                    <Label IsVisible="{Binding ActiveGameInfo.IsNetplay}" FontSize="12" VerticalTextAlignment="Start" Margin="0" HorizontalOptions="Center" Padding="0" TextColor="{DynamicResource TextPrimary}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="Game " />
@@ -150,14 +150,14 @@
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label IsVisible="{Binding ActiveGameInfo.IsNetplay, Converter={StaticResource InverseBoolConverter}}" FontSize="12" VerticalTextAlignment="Start" Margin="0" HorizontalOptions="Center" Padding="0">
+                    <Label IsVisible="{Binding ActiveGameInfo.IsNetplay, Converter={StaticResource InverseBoolConverter}}" FontSize="12" VerticalTextAlignment="Start" Margin="0" HorizontalOptions="Center" Padding="0" TextColor="{DynamicResource TextPrimary}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="Local" />
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
-                    <Label IsVisible="True" FontSize="14" VerticalTextAlignment="Center" Margin="0,-4,0,0" HorizontalTextAlignment="Start" Padding="0" HorizontalOptions="Center" Grid.Column="1">
+                    <Label IsVisible="True" FontSize="14" VerticalTextAlignment="Center" Margin="0,-4,0,0" HorizontalTextAlignment="Start" Padding="0" HorizontalOptions="Center" Grid.Column="1" TextColor="{DynamicResource TextPrimary}">
                         <Label.FormattedText>
                             <FormattedString>
                                 <Span Text="vs."/>
@@ -173,7 +173,7 @@
                                 IsVisible="{Binding ActiveGameInfo.PlayerDisplayName, Converter={StaticResource StringToVisibilityConverter}}"
                                 VerticalOptions="Center"
                                 FontSize="14"
-                                TextColor="{DynamicResource PrimaryText}"
+                                TextColor="{DynamicResource TextPrimary}"
                                 BackgroundColor="Transparent"
                                 Text="{Binding ActiveGameInfo.OpponentDisplayName}" 
                                 ToolTipProperties.Text="{Binding ActiveGameInfo.OpponentConnectCode}"
@@ -199,7 +199,7 @@
             <HorizontalStackLayout Grid.Column="3">
                 <Image VerticalOptions="Center" ToolTipProperties.Text="Rearrange" local:CursorProperties.Cursor="Move">
                     <Image.Source>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon=GridDots24Filled}" Color="{DynamicResource Gray600}"/>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=GridDots24Filled}" Color="{DynamicResource IconSecondary}"/>
                     </Image.Source>
                 </Image>
                 <ImageButton VerticalOptions="Center" ToolTipProperties.Text="Alerts" Margin="0,0,-12,0" Padding="0">
@@ -207,8 +207,8 @@
                         <TapGestureRecognizer Tapped="NotificationBell_Tapped" NumberOfTapsRequired="1"/>
                     </ImageButton.GestureRecognizers>
                     <ImageButton.Source>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon={Binding FriendSettings.NotificationsEnabled, Converter={StaticResource BoolToNotificationIconConverter}}, 
-                                                                 IconColor={Binding FriendSettings.NotificationsEnabled, Converter={StaticResource BoolToNotificationColorConverter}}}"/>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon={Binding FriendSettings.NotificationsEnabled, Converter={StaticResource BoolToNotificationIconConverter}}}" 
+                                                                 Color="{Binding FriendSettings.NotificationsEnabled, Converter={StaticResource BoolToNotificationColorConverter}}"/>
                     </ImageButton.Source>
                 </ImageButton>
                 <ImageButton x:Name="FriendsMore" VerticalOptions="Center" Margin="0" Padding="0,8,0,0" Grid.Column="4" HorizontalOptions="End">
@@ -216,7 +216,7 @@
                         <TapGestureRecognizer Tapped="FriendsMore_Tapped" NumberOfTapsRequired="1"/>
                     </ImageButton.GestureRecognizers>
                     <ImageButton.Source>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled, IconColor={DynamicResource AccentButtons}}"/>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=MoreHorizontal24Filled}" Color="{DynamicResource IconPrimary}"/>
                     </ImageButton.Source>
                 </ImageButton>
             </HorizontalStackLayout>
@@ -224,7 +224,7 @@
         <BoxView HeightRequest="1" IsVisible="{Binding IsBeingDraggedOver}">
             <BoxView.Triggers>
                 <DataTrigger TargetType="BoxView" Binding="{Binding IsBeingDraggedOver}" Value="True">
-                    <Setter Property="BackgroundColor" Value="{StaticResource GCPurpleTertiary}"/>
+                    <Setter Property="BackgroundColor" Value="{DynamicResource AccentSecondary}"/>
                 </DataTrigger>
             </BoxView.Triggers>
         </BoxView>

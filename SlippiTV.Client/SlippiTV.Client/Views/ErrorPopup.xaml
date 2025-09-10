@@ -10,23 +10,23 @@
     x:Class="SlippiTV.Client.Views.ErrorPopup"
     x:DataType="{x:Type views:ErrorPopup}"
     Padding="0" Margin="0" BackgroundColor="Transparent">
-    <Border BackgroundColor="{StaticResource Tertiary}" StrokeShape="RoundRectangle 24" Margin="0" Padding="0" StrokeThickness="0" WidthRequest="360">
+    <Border BackgroundColor="{DynamicResource BGSecondary}" StrokeShape="RoundRectangle 24" Margin="0" Padding="0" StrokeThickness="0" WidthRequest="360">
         <VerticalStackLayout Spacing="16" Padding="24,24,24,12">
             <VerticalStackLayout Spacing="8">
                 <Label Text="Error"
                        FontSize="20"
                        FontAttributes="Bold"
-                       TextColor="{StaticResource PrimaryText}"
+                       TextColor="{DynamicResource TextPrimary}"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
-                <BoxView HeightRequest="1" Color="{StaticResource SecondaryDark}"/>
+                <BoxView HeightRequest="1" Color="{DynamicResource BGTertiary}"/>
             </VerticalStackLayout>
 
-            <Label Text="{Binding ErrorText}" TextColor="{StaticResource StatusRed}" HorizontalOptions="Center" />
+            <Label Text="{Binding ErrorText}" TextColor="{DynamicResource ErrorPrimary}" HorizontalOptions="Center" />
 
             <FlexLayout AlignContent="Center" VerticalOptions="Center" HorizontalOptions="Center">
                 <HorizontalStackLayout FlexLayout.Shrink="1" Spacing="20">
-                    <Button x:Name="CloseButton" Text="OK" Clicked="CloseButton_Clicked" TextColor="{StaticResource PrimaryText}"/>
+                    <Button x:Name="CloseButton" Text="OK" Clicked="CloseButton_Clicked" TextColor="{DynamicResource TextPrimary}"/>
                 </HorizontalStackLayout>
             </FlexLayout>
         </VerticalStackLayout>

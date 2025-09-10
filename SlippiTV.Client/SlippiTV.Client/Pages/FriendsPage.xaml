@@ -47,14 +47,14 @@
 
         <VerticalStackLayout>
             <Button x:Name="AddFriendsButton" HorizontalOptions="Start" HeightRequest="48" 
-                    FontSize="18" Text="Add Friends by Connect Code" Grid.Row="0" FontAttributes="Bold" TextColor="{DynamicResource PrimaryText}" CornerRadius="12"
-                    Margin="0,12,0,24" Clicked="AddFriendsButton_Clicked" BackgroundColor="{DynamicResource Tertiary}">
+                    FontSize="18" Text="Add Friends by Connect Code" Grid.Row="0" FontAttributes="Bold" TextColor="{DynamicResource TextPrimary}" CornerRadius="12"
+                    Margin="0,12,0,24" Clicked="AddFriendsButton_Clicked" BackgroundColor="{DynamicResource BGButton}">
                 <Button.ImageSource>
-                    <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled, IconColor={StaticResource StatusGreen}}" Size="32" />
+                    <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled}" Color="{DynamicResource AccentPrimary}" Size="32" />
                 </Button.ImageSource>
             </Button>
 
-            <BoxView BackgroundColor="{StaticResource GCPurpleTertiary}" HeightRequest="1" IsVisible="{Binding IsBeingDraggedOver}"/>
+            <BoxView HeightRequest="1" IsVisible="{Binding IsBeingDraggedOver}"/>
             <VerticalStackLayout.GestureRecognizers>
                 <DropGestureRecognizer AllowDrop="True"
                                        DropCommand="{Binding ItemDroppedStartCommand}"

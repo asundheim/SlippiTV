@@ -6,16 +6,21 @@
         <ResourceDictionary Source="Colors.xaml"/>
         <ResourceDictionary Source="Styles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
+
+    <Color x:Key="TextPrimary">#0F0F0F</Color>
+    <Color x:Key="TextSecondary">#1F1F1F</Color>
+    <Color x:Key="TextTertiary">#333333</Color>
+    <Color x:Key="BGPrimary">#f1f1f1</Color>
+    <Color x:Key="BGSecondary">#D2D2D3</Color>
+    <Color x:Key="BGTertiary">#C3C1C2</Color>
+    <Color x:Key="BGButton">#DFDFDF</Color>
+    <Color x:Key="BGButtonInactive">#333333</Color>
+    <Color x:Key="IconPrimary">#333333</Color>
+    <Color x:Key="IconSecondary">#A2A1A2</Color>
+    <Color x:Key="AccentPrimary">#05FF8B</Color>
+    <Color x:Key="AccentSecondary">#A2A1A2</Color>
+    <Color x:Key="ErrorPrimary">#DB5151</Color>
+    <Color x:Key="NotificationPrimary">#E2A517</Color>
+    <Color x:Key="NotificationSecondary">#DCDCDC</Color>
     
-    <Color x:Key="Primary">#F3F0F2</Color>
-    <Color x:Key="PrimaryDark">#000000</Color>
-    <Color x:Key="PrimaryLight">#C3C1C2</Color>
-    <Color x:Key="PrimaryText">#0F0F0F</Color>
-    <Color x:Key="SecondaryText">#1F1F1F</Color>
-    <Color x:Key="PrimaryDarkText">#333333</Color>
-    <Color x:Key="Secondary">#FAFAFA</Color>
-    <Color x:Key="AccentButtons">#FF0000</Color>
-    <Color x:Key="SecondaryDark">#D2D2D3</Color>
-    <Color x:Key="Tertiary">#D2D2D3</Color>
-    <Color x:Key="Quatriary">#f1f1f1</Color>
 </ResourceDictionary>

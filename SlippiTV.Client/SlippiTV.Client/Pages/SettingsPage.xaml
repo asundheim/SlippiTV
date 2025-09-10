@@ -18,7 +18,7 @@
                 <ResourceDictionary Source="../Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="Border">
-                <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}"/>
+                <Setter Property="BackgroundColor" Value="{DynamicResource BGSecondary}"/>
                 <Setter Property="StrokeShape" Value="RoundRectangle 8"/>
             </Style>
             <Style TargetType="HorizontalStackLayout">
@@ -26,11 +26,6 @@
                 <Setter Property="Spacing" Value="12"/>
             </Style>
             <toolkit:IsStringNotNullOrEmptyConverter x:Key="StringToVisibilityConverter"/>
-            <Path x:Key="GCPurpleThemeCircle" Fill="{StaticResource GCPurpleTertiary}" Stroke="White">
-                <Path.Data>
-                    <EllipseGeometry Center="50,50" RadiusX="12" RadiusY="12"/>
-                </Path.Data>
-            </Path>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -72,14 +67,14 @@
                     <ImageButton MaximumHeightRequest="10" Padding="0" Margin="0" VerticalOptions="Center"
                                  Clicked="RefreshConnectInfo_Clicked">
                         <ImageButton.Source>
-                            <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowClockwise24Filled}" Color="{DynamicResource PrimaryText}" Size="20" />
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=ArrowClockwise24Filled}" Color="{StaticResource StaticIconPrimary}" Size="20" />
                         </ImageButton.Source>
                     </ImageButton>
                     <Border>
                         <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Padding="18,0,18,0">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding Settings.StreamMeleeConnectCode}" FontSize="12"/>
+                                    <Span Text="{Binding Settings.StreamMeleeConnectCode}" FontSize="12" TextColor="{DynamicResource TextSecondary}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -88,7 +83,7 @@
                         <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Padding="18,0,18,0">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{Binding Settings.StreamMeleeDisplayName}" FontSize="12"/>
+                                    <Span Text="{Binding Settings.StreamMeleeDisplayName}" FontSize="12" TextColor="{DynamicResource TextSecondary}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -104,7 +99,7 @@
                                 Margin="-4,-4,0,0"
                                 Grid.Column="4">
                     <ImageButton.Source>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon=Edit24Filled, IconColor={DynamicResource Tertiary}}"/>
+                        <FontImageSource Glyph="{mi:FluentFilled Icon=Edit24Filled, IconColor={StaticResource StaticIconPrimary}}"/>
                     </ImageButton.Source>
                 </ImageButton>
             </Grid>
@@ -136,7 +131,7 @@
                     <Label VerticalTextAlignment="Center" HorizontalOptions="Start" LineBreakMode="TailTruncation"  Padding="18,0,18,0" WidthRequest="360">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Settings.WatchMeleeISOPath}" FontSize="12"/>
+                                <Span Text="{Binding Settings.WatchMeleeISOPath}" FontSize="12" TextColor="{DynamicResource TextSecondary}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -150,8 +145,8 @@
                         Grid.Column="1"
                         Padding="16,4,16,8"
                         CornerRadius="8"
-                        TextColor="{DynamicResource PrimaryText}"
-                        BackgroundColor="{DynamicResource Tertiary}">
+                        TextColor="{DynamicResource TextPrimary}"
+                        BackgroundColor="{DynamicResource BGButton}">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroupList>
                             <VisualStateGroup Name="CommonStates">
@@ -196,10 +191,10 @@
                 </Grid.ColumnDefinitions>
                 
                 <Border VerticalOptions="Center" HorizontalOptions="Start" WidthRequest="360" HeightRequest="36" Grid.Column="0">
-                    <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation"  Padding="18,0,18,0">
+                    <Label VerticalTextAlignment="Center" LineBreakMode="TailTruncation"  Padding="18,0,18,0" TextColor="{DynamicResource TextSecondary}">
                         <Label.FormattedText>
                             <FormattedString>
-                                <Span Text="{Binding Settings.WatchDolphinPath}"/>
+                                <Span Text="{Binding Settings.WatchDolphinPath}" TextColor="{DynamicResource TextSecondary}"/>
                             </FormattedString>
                         </Label.FormattedText>
                     </Label>
@@ -214,8 +209,8 @@
                     Grid.Column="1" 
                     Padding="16,4,16,8"
                     CornerRadius="8"
-                    BackgroundColor="{DynamicResource Tertiary}"
-                        TextColor="{DynamicResource PrimaryText}">
+                    BackgroundColor="{DynamicResource BGButton}"
+                    TextColor="{DynamicResource TextPrimary}">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroupList>
                             <VisualStateGroup Name="CommonStates">
@@ -264,7 +259,7 @@
                         <Label VerticalTextAlignment="Center" LineBreakMode="NoWrap" Padding="18,0,18,0">
                             <Label.FormattedText>
                                 <FormattedString>
-                                    <Span Text="{x:Static versions:ClientVersion.SlippiClientVersion}"/>
+                                    <Span Text="{x:Static versions:ClientVersion.SlippiClientVersion}" TextColor="{DynamicResource TextSecondary}"/>
                                 </FormattedString>
                             </Label.FormattedText>
                         </Label>
@@ -276,7 +271,8 @@
                         VerticalOptions="Center"
                         Padding="16,4,16,8"
                         CornerRadius="8"
-                        BackgroundColor="{DynamicResource Tertiary}"/>
+                        TextColor="{DynamicResource TextPrimary}"
+                        BackgroundColor="{DynamicResource BGButton}"/>
                 </HorizontalStackLayout>
 
             </Grid>
@@ -300,7 +296,7 @@
             <HorizontalStackLayout Spacing="0" HorizontalOptions="End" Grid.Column="1" Padding="0">
                 <!--Click on the button to select your theme, icon shows color preview of theme, popup text shows name of theme-->
                 <Grid>
-                    <Path Fill="{StaticResource DarkSecondaryDark}" Margin="0,0,0,0" VerticalOptions="Center">
+                    <Path Fill="{StaticResource DarkThemeButtonStroke}" Margin="0,0,0,0" VerticalOptions="Center">
                         <Path.Data>
                             <EllipseGeometry Center="22.875,18.875" RadiusX="12" RadiusY="12"/>
                         </Path.Data>
@@ -312,13 +308,13 @@
                         Aspect="AspectFit"
                         ToolTipProperties.Text="Dark">
                         <ImageButton.Source>
-                            <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource OffBlack}}" Size="24"/>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource DarkThemeButton}}" Size="24"/>
                         </ImageButton.Source>
                     </ImageButton>
                 </Grid>
 
                 <Grid>
-                    <Path Fill="{StaticResource GCPurplePrimaryLight}" Margin="0,0,0,0" VerticalOptions="Center">
+                    <Path Fill="{StaticResource GCPurpleThemeButtonStroke}" Margin="0,0,0,0" VerticalOptions="Center">
                         <Path.Data>
                             <EllipseGeometry Center="22.875,18.875" RadiusX="12" RadiusY="12"/>
                         </Path.Data>
@@ -330,7 +326,25 @@
                                 Aspect="AspectFit"
                                 ToolTipProperties.Text="GC Purple">
                         <ImageButton.Source>
-                            <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource GCPurpleTertiary}}"/>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource GCPurpleThemeButton}}"/>
+                        </ImageButton.Source>
+                    </ImageButton>
+                </Grid>
+
+                <Grid>
+                    <Path Fill="{StaticResource LightThemeButtonStroke}" Margin="0,0,0,0" VerticalOptions="Center">
+                        <Path.Data>
+                            <EllipseGeometry Center="22.875,18.875" RadiusX="12" RadiusY="12"/>
+                        </Path.Data>
+                    </Path>
+                    <ImageButton x:Name="ButtonLightTheme"
+                                Clicked="UpdateThemeLight"
+                                VerticalOptions="Center"
+                                BackgroundColor="Transparent"
+                                Aspect="AspectFit"
+                                ToolTipProperties.Text="Light">
+                        <ImageButton.Source>
+                            <FontImageSource Glyph="{mi:FluentFilled Icon=Circle24Filled, IconColor={StaticResource LightThemeButton}}"/>
                         </ImageButton.Source>
                     </ImageButton>
                 </Grid>

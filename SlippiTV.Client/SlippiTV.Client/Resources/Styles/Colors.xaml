@@ -5,17 +5,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
     
     <!-- Note: For Android please see also Platforms\Android\Resources\values\colors.xml -->
-    
+
     <!-- Duplicate colors for theme selection -->
-    <Color x:Key="DarkSecondaryDark">#A2A1A2</Color>
-    <Color x:Key="GCPurplePrimaryLight">#898FFF</Color>
-    <Color x:Key="GCPurpleTertiary">#2F2FFF</Color>
+    <Color x:Key="DarkThemeButton">#111111</Color>
+    <Color x:Key="DarkThemeButtonStroke">#A2A1A2</Color>
+    <Color x:Key="LightThemeButton">#FAFAFA</Color>
+    <Color x:Key="LightThemeButtonStroke">#CCCCCC</Color>
+    <Color x:Key="GCPurpleThemeButton">#2F2FFF</Color>
+    <Color x:Key="GCPurpleThemeButtonStroke">#898FFF</Color>
+    <Color x:Key="StaticIconPrimary">#6F6F6F</Color>
 
     <Color x:Key="White">White</Color>
     <Color x:Key="Black">Black</Color>
-    <Color x:Key="Magenta">#D600AA</Color>
-    <Color x:Key="MidnightBlue">#190649</Color>
-    <Color x:Key="OffBlack">#111111</Color>
 
     <Color x:Key="Gray100">#E1E1E1</Color>
     <Color x:Key="Gray200">#C8C8C8</Color>

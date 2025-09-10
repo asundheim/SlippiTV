@@ -22,12 +22,17 @@ public class BoolToNotificationColorConverter : BaseConverterOneWay<bool, Color>
 {
     public override Color DefaultConvertReturnValue
     {
-        get => Color.FromArgb("#40FFFFFFF");
+        get => Color.FromArgb("#333333");
         set { }
     }
 
     public override Color ConvertFrom(bool value, CultureInfo? culture)
     {
-        return value ? Color.FromArgb("#FABF10") : Color.FromArgb("#ACACAC");
+        if (Application.Current is Application application)
+        {
+            return value ? (Color)Application.Current.Resources["NotificationPrimary"] : (Color)Application.Current.Resources["NotificationSecondary"];
+        }
+
+        return value ? Color.FromArgb("#FABF10") : Color.FromArgb("#333333");
     }
 }
