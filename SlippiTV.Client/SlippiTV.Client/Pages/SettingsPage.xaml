@@ -145,7 +145,7 @@
                         Grid.Column="1"
                         Padding="16,4,16,8"
                         CornerRadius="8"
-                        TextColor="{DynamicResource TextPrimary}"
+                        TextColor="{DynamicResource TextQuat}"
                         BackgroundColor="{DynamicResource BGButton}">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroupList>
@@ -210,7 +210,7 @@
                     Padding="16,4,16,8"
                     CornerRadius="8"
                     BackgroundColor="{DynamicResource BGButton}"
-                    TextColor="{DynamicResource TextPrimary}">
+                    TextColor="{DynamicResource TextQuat}">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroupList>
                             <VisualStateGroup Name="CommonStates">

@@ -20,7 +20,7 @@
 
     <Style TargetType="Button">
         <Setter Property="local:CursorProperties.Cursor" Value="Hand"/>
-        <Setter Property="TextColor" Value="{DynamicResource TextPrimary}" />
+        <Setter Property="TextColor" Value="{DynamicResource TextQuat}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource BGButton}" />
         <Setter Property="FontFamily" Value="OpenSansRegular"/>
         <Setter Property="FontSize" Value="14"/>

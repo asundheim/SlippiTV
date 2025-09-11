@@ -47,7 +47,7 @@
 
         <VerticalStackLayout>
             <Button x:Name="AddFriendsButton" HorizontalOptions="Start" HeightRequest="48" 
-                    FontSize="18" Text="Add Friends by Connect Code" Grid.Row="0" FontAttributes="Bold" TextColor="{DynamicResource TextPrimary}" CornerRadius="12"
+                    FontSize="18" Text="Add Friends by Connect Code" Grid.Row="0" FontAttributes="Bold" TextColor="{DynamicResource TextQuat}" CornerRadius="12"
                     Margin="0,12,0,24" Clicked="AddFriendsButton_Clicked" BackgroundColor="{DynamicResource BGButton}">
                 <Button.ImageSource>
                     <FontImageSource Glyph="{mi:FluentFilled Icon=AddCircle24Filled}" Color="{DynamicResource AccentPrimary}" Size="32" />

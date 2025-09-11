@@ -10,10 +10,11 @@
     <Color x:Key="TextPrimary">#FAFAFA</Color>
     <Color x:Key="TextSecondary">#CACACA</Color>
     <Color x:Key="TextTertiary">#6F6F6F</Color>
+    <Color x:Key="TextQuat">#FAFAFA</Color>
     <Color x:Key="BGPrimary">#0F0F0F</Color>
     <Color x:Key="BGSecondary">#262528</Color>
     <Color x:Key="BGTertiary">#353437</Color>
-    <Color x:Key="BGButton">#3a3a3a</Color>
+    <Color x:Key="BGButton">#333333</Color>
     <Color x:Key="BGButtonInactive">#0F0F0F</Color>
     <Color x:Key="IconPrimary">#FAFAFA</Color>
     <Color x:Key="IconSecondary">#4B4B4C</Color>

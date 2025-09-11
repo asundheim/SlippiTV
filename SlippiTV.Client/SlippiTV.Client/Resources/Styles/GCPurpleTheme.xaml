@@ -10,6 +10,7 @@
     <Color x:Key="TextPrimary">#FAFAFA</Color>
     <Color x:Key="TextSecondary">#C3C3C3</Color>
     <Color x:Key="TextTertiary">#ACACAC</Color>
+    <Color x:Key="TextQuat">#FAFAFA</Color>
     <Color x:Key="BGPrimary">#0D0125</Color>
     <Color x:Key="BGSecondary">#140E4C</Color>
     <Color x:Key="BGTertiary">#0D002E</Color>

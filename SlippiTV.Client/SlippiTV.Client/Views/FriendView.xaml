@@ -207,7 +207,7 @@
                         <TapGestureRecognizer Tapped="NotificationBell_Tapped" NumberOfTapsRequired="1"/>
                     </ImageButton.GestureRecognizers>
                     <ImageButton.Source>
-                        <FontImageSource Glyph="{mi:FluentFilled Icon={Binding FriendSettings.NotificationsEnabled, Converter={StaticResource BoolToNotificationIconConverter}}}" 
+                        <FontImageSource x:Name="NotificationBellIcon" Glyph="{mi:FluentFilled Icon={Binding FriendSettings.NotificationsEnabled, Converter={StaticResource BoolToNotificationIconConverter}}}" 
                                                                  Color="{Binding FriendSettings.NotificationsEnabled, Converter={StaticResource BoolToNotificationColorConverter}}"/>
                     </ImageButton.Source>
                 </ImageButton>

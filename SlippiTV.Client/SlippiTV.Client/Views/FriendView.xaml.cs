@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using MauiIcons.Core;
 using MauiIcons.Fluent.Filled;
 using Microsoft.Maui.Controls.Shapes;
+using Newtonsoft.Json.Linq;
 using SlippiTV.Client.Pages;
 using SlippiTV.Client.ViewModels;
 using SlippiTV.Shared;
@@ -29,6 +30,19 @@ public partial class FriendView : ContentView
     private void FriendView_Loaded(object? sender, EventArgs e)
     {
         this.FriendViewModel = (FriendViewModel)this.BindingContext;
+        BellNotificationColor();
+    }
+
+    public void BellNotificationColor()
+    {
+        var bellIcon = NotificationBellIcon;
+        var notifStatus = FriendViewModel.FriendSettings.NotificationsEnabled;
+
+        if (Application.Current is Application application)
+        {
+            var colorOption = notifStatus ? (Color)Application.Current.Resources["NotificationPrimary"] : (Color)Application.Current.Resources["NotificationSecondary"];
+            bellIcon.Color = colorOption;
+        }
     }
 
     private async void WatchFriendButton_Clicked(object sender, EventArgs e)
@@ -120,5 +134,6 @@ public partial class FriendView : ContentView
     private void NotificationBell_Tapped(object sender, TappedEventArgs e)
     {
         FriendViewModel.FriendSettings.NotificationsEnabled = !FriendViewModel.FriendSettings.NotificationsEnabled;
+        BellNotificationColor();
     }
 }
