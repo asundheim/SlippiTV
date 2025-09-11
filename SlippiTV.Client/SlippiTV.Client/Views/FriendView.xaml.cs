@@ -30,19 +30,7 @@ public partial class FriendView : ContentView
     private void FriendView_Loaded(object? sender, EventArgs e)
     {
         this.FriendViewModel = (FriendViewModel)this.BindingContext;
-        BellNotificationColor();
-    }
-
-    public void BellNotificationColor()
-    {
-        var bellIcon = NotificationBellIcon;
-        var notifStatus = FriendViewModel.FriendSettings.NotificationsEnabled;
-
-        if (Application.Current is Application application)
-        {
-            var colorOption = notifStatus ? (Color)Application.Current.Resources["NotificationPrimary"] : (Color)Application.Current.Resources["NotificationSecondary"];
-            bellIcon.Color = colorOption;
-        }
+        SetBellNotificationColor();
     }
 
     private async void WatchFriendButton_Clicked(object sender, EventArgs e)
@@ -134,6 +122,11 @@ public partial class FriendView : ContentView
     private void NotificationBell_Tapped(object sender, TappedEventArgs e)
     {
         FriendViewModel.FriendSettings.NotificationsEnabled = !FriendViewModel.FriendSettings.NotificationsEnabled;
-        BellNotificationColor();
+        SetBellNotificationColor();
+    }
+
+    private void SetBellNotificationColor()
+    {
+        NotificationBellIcon.SetDynamicResource(FontImageSource.ColorProperty, FriendViewModel.FriendSettings.NotificationsEnabled ? "NotificationPrimary" : "NotificationSecondary");
     }
 }
