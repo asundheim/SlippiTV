@@ -142,6 +142,7 @@ public partial class FriendsViewModel : BaseNotifyPropertyChanged
         }
 
         window.Show(disableEfficiencyMode: true);
+        window.Activate();
     }
 
     [RelayCommand]

@@ -88,7 +88,10 @@ public partial class Program
         if (runKey is not null)
         {
             runKey.DeleteValue("SlippiTV", throwOnMissingValue: false);
-            runKey.SetValue("SlippiTV", Environment.ProcessPath!, RegistryValueKind.String);
+            if (SettingsManager.Instance.Settings.LaunchOnStartup)
+            {
+                runKey.SetValue("SlippiTV", Environment.ProcessPath!, RegistryValueKind.String);
+            }
         }
     }
 

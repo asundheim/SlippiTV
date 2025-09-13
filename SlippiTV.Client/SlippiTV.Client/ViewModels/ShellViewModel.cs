@@ -39,10 +39,7 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
             //    viewModel.Settings.SlippiVersion);
         }
 
-        if (await ClientVersion.RequiresUpdateAsync(viewModel.SlippiTVService))
-        {
-            viewModel.RequiresUpdate = true;
-        }
+        viewModel.RequiresUpdate = await ClientVersion.RequiresUpdateAsync(viewModel.SlippiTVService);
 
         return viewModel;
     }
@@ -70,8 +67,8 @@ public partial class ShellViewModel : BaseNotifyPropertyChanged
         return Interlocked.Decrement(ref _streamWatchers);
     }
 
-    public bool RequiresUpdate 
-    { 
+    public bool RequiresUpdate
+    {
         get;
         set
         {

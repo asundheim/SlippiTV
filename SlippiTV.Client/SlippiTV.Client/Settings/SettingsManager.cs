@@ -48,20 +48,6 @@ public partial class SettingsManager : BaseNotifyPropertyChanged
     public SlippiTVSettings Settings => _settings;
     public bool IsFirstLaunch { get; }
 
-    public ConnectionStatus DolphinConnectionStatus
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                OnDolphinConnectionStatus?.Invoke(this, value);
-                field = value;
-            }
-        }
-    } = ConnectionStatus.Disconnected;
-    public event EventHandler<ConnectionStatus>? OnDolphinConnectionStatus;
-
     public bool TryCreateFriend(string connectCode, out FriendSettings friendSettings)
     {
         // lazy, could be a dictionary

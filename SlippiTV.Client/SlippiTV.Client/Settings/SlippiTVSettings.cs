@@ -97,9 +97,7 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
     
     public bool ShowConnectCodeEdit => string.IsNullOrEmpty(SlippiLauncherFolder) || string.IsNullOrEmpty(StreamMeleeConnectCode);
 
-    // TODO it seems fine to allow playback with a different dolphin, at that point you're on your own
-    // string.IsNullOrEmpty(SlippiLauncherFolder) || string.IsNullOrEmpty(WatchDolphinPath)
-    public bool ShowWatchDolphinEdit => true;
+    public bool ShowWatchDolphinEdit => string.IsNullOrEmpty(SlippiLauncherFolder) || string.IsNullOrEmpty(WatchDolphinPath);
 
     public int Version { get; set; } = 3;
 
@@ -118,6 +116,19 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
     } = Themes.Dark;
 
     public string SlippiVersion { get; set; } = string.Empty;
+
+    public bool LaunchOnStartup 
+    { 
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    } = true;
 
     private void SaveSettings()
     {

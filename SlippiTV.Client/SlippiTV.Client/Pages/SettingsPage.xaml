@@ -36,6 +36,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -169,8 +170,7 @@
             <BoxView HeightRequest="1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,6"/>
         </Grid>
 
-        
-        <Grid Margin="0,6,0,6" Grid.Row="2" RowSpacing="12">
+        <Grid Margin="0,6,0,6" Grid.Row="2" RowSpacing="12" IsVisible="{Binding Settings.ShowWatchDolphinEdit}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
@@ -200,7 +200,6 @@
                     </Label>
                 </Border>
                 <Button x:Name="WatchDolphinBrowseButton" 
-                    IsVisible="{Binding Settings.ShowWatchDolphinEdit}"
                     Text="Browse"
                     FontSize="14"
                     Clicked="WatchDolphinBrowseButton_Clicked"
@@ -233,7 +232,6 @@
             <BoxView HeightRequest="1" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="0,0,0,6"/>
         </Grid>
 
-
         <Grid Margin="0,6,0,6" Grid.Row="3" RowSpacing="12">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -254,46 +252,56 @@
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>
-                <HorizontalStackLayout Grid.Column="1" HorizontalOptions="End">
-                    <Border>
-                        <Label VerticalTextAlignment="Center" LineBreakMode="NoWrap" Padding="18,0,18,0">
-                            <Label.FormattedText>
-                                <FormattedString>
-                                    <Span Text="{x:Static versions:ClientVersion.SlippiClientVersion}" TextColor="{DynamicResource TextSecondary}"/>
-                                </FormattedString>
-                            </Label.FormattedText>
-                        </Label>
-                    </Border>
-                    <Button x:Name="UpdateSlippiTVButton" 
-                        IsVisible="{Binding ShellViewModel.RequiresUpdate}"
-                        Text="Update"
-                        Clicked="UpdateSlippiTV_Clicked"
-                        VerticalOptions="Center"
-                        Padding="16,4,16,8"
-                        CornerRadius="8"
-                        TextColor="{DynamicResource TextPrimary}"
-                        BackgroundColor="{DynamicResource BGButton}"/>
-                </HorizontalStackLayout>
-
+                <Grid Grid.Column="1" HorizontalOptions="End">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <HorizontalStackLayout Grid.Row="0" VerticalOptions="Start">
+                        <Border>
+                            <Label VerticalTextAlignment="Center" LineBreakMode="NoWrap" Padding="18,0,18,0">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="{x:Static versions:ClientVersion.SlippiClientVersion}" TextColor="{DynamicResource TextSecondary}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </Border>
+                        <Button x:Name="UpdateSlippiTVButton" 
+                                IsVisible="{Binding ShellViewModel.RequiresUpdate}"
+                                Text="Update"
+                                Clicked="UpdateSlippiTV_Clicked"
+                                VerticalOptions="Center"
+                                Padding="16,4,16,8"
+                                CornerRadius="8"
+                                TextColor="{DynamicResource TextPrimary}"
+                                BackgroundColor="{DynamicResource BGButton}"/>
+                    </HorizontalStackLayout>
+                    <ProgressBar Margin="0,5,0,0" Grid.Row="1" IsVisible="{Binding ShowProgressBar}" Progress="{Binding Progress}"/>
+                </Grid>
             </Grid>
             <BoxView HeightRequest="1" Margin="0,0,0,0" Grid.ColumnSpan="2" Grid.Row="1"/>
         </Grid>
 
-
-        <Grid Margin="0,0,0,0" VerticalOptions="End" Grid.Row="4">
+        <Grid Margin="0,0,0,6" VerticalOptions="End" Grid.Row="4" RowSpacing="12">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap">
+            <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Grid.Row="0">
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="Theme" FontAttributes="Bold" FontSize="20"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <HorizontalStackLayout Spacing="0" HorizontalOptions="End" Grid.Column="1" Padding="0">
+            <HorizontalStackLayout Spacing="0" HorizontalOptions="End" Grid.Row="0" Grid.Column="1" Padding="0">
                 <!--Click on the button to select your theme, icon shows color preview of theme, popup text shows name of theme-->
                 <Grid>
                     <Path Fill="{StaticResource DarkThemeButtonStroke}" Margin="0,0,0,0" VerticalOptions="Center">
@@ -349,8 +357,38 @@
                     </ImageButton>
                 </Grid>
             </HorizontalStackLayout>
+            <BoxView HeightRequest="1" Margin="0,0,0,0" Grid.ColumnSpan="2" Grid.Row="1"/>
+        </Grid>
+        <Grid Grid.Row="5" VerticalOptions="End" Margin="0,6,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Grid.Column="0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Launch on startup" FontAttributes="Bold" FontSize="20"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <CheckBox Grid.Column="2" Margin="0" MinimumWidthRequest="0" HorizontalOptions="End" IsChecked="{Binding Settings.LaunchOnStartup, Mode=TwoWay}">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Color" Value="{DynamicResource BGButton}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+            </CheckBox>
         </Grid>
 
-        <views:BottomBar Grid.Row="5" BindingContext="{Binding ShellViewModel}" HeightRequest="20" VerticalOptions="End"/>
+        <views:BottomBar Grid.Row="6" BindingContext="{Binding ShellViewModel}" HeightRequest="20" VerticalOptions="End"/>
     </Grid>
 </ContentPage>

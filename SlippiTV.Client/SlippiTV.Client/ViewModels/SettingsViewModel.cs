@@ -36,6 +36,32 @@ public class SettingsViewModel : BaseNotifyPropertyChanged
 
     public string WatchDolphinPathLabelText => "Playback Dolphin path: ";
 
+    public bool ShowProgressBar
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    } = false;
+
+    public double Progress
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    } = 0;
+
     public async Task BeginUpdate(Action<double> onProgress, Action<string> onStatusText)
     {
         onStatusText("Gathering update information...");
@@ -89,6 +115,9 @@ public class SettingsViewModel : BaseNotifyPropertyChanged
         echo                  ^|_^|     ^|_^|                        
         echo ====================================================
 
+        REM Wait a moment to ensure the parent process has exited
+        timeout 2 >nul 2>&1
+
         REM Verify SlippiTV.exe exists
         if not exist "SlippiTV.exe" (
             echo [ERROR] SlippiTV.exe not found in the current directory.
@@ -114,6 +143,7 @@ public class SettingsViewModel : BaseNotifyPropertyChanged
         )
 
         set "tempFile={{zipExtractDir}}\SlippiTV.exe"
+        echo [INFO] New version downloaded to !tempFile!
         REM Replace the old .exe with the new .exe
         echo [INFO] Replacing the old SlippiTV.exe with the new version...
         del "SlippiTV.exe" >nul 2>&1
@@ -175,5 +205,7 @@ public class SettingsViewModel : BaseNotifyPropertyChanged
             WindowStyle = ProcessWindowStyle.Normal,
         };
         Process.Start(psi);
+
+        Environment.Exit(0);
     }
 }

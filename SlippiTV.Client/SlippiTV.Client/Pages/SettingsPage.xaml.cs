@@ -93,13 +93,19 @@ public partial class SettingsPage : ContentPage
     {
         try
         {
-            await SettingsViewModel.BeginUpdate((_) => { }, (_) => { });
+            SettingsViewModel.ShowProgressBar = true;
+            await SettingsViewModel.BeginUpdate((p) => SettingsViewModel.Progress = p, (_) => { });
         }
         catch
         {
             await this.ShowPopupAsync(new ErrorPopup("Failed to update"));
         }
-        
+        finally
+        {
+            SettingsViewModel.ShowProgressBar = false;
+            SettingsViewModel.Progress = 0;
+        }
+
         return;
     }
 
