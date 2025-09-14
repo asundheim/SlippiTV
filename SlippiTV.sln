@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36025.13
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.11010.61 d18.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlippiTV.Server", "SlippiTV.Server\SlippiTV.Server.csproj", "{70E9556A-CE74-4069-8913-921B20F9B1E4}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Slippi.NET", "..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj", "{AECA9562-57F1-25D1-112B-0C487EB114DF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DolphinENet", "..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj", "{61DE1493-CC9D-451C-B1C4-17DCCAB29CE1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SlippiTV.Updater", "SlippiTV.Updater\SlippiTV.Updater.vcxproj", "{4598C4C1-6C53-4F60-8B32-26436A4DDB70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,18 @@ Global
 		{61DE1493-CC9D-451C-B1C4-17DCCAB29CE1}.Release|x64.Build.0 = Release|x64
 		{61DE1493-CC9D-451C-B1C4-17DCCAB29CE1}.Release|x86.ActiveCfg = Release|Win32
 		{61DE1493-CC9D-451C-B1C4-17DCCAB29CE1}.Release|x86.Build.0 = Release|Win32
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Debug|Any CPU.Build.0 = Debug|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Debug|x64.ActiveCfg = Debug|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Debug|x64.Build.0 = Debug|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Debug|x86.ActiveCfg = Debug|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Debug|x86.Build.0 = Debug|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Release|Any CPU.ActiveCfg = Release|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Release|Any CPU.Build.0 = Release|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Release|x64.ActiveCfg = Release|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Release|x64.Build.0 = Release|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Release|x86.ActiveCfg = Release|x64
+		{4598C4C1-6C53-4F60-8B32-26436A4DDB70}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<!--TODO summon the courage to rename the server project to disambiguate-->
 		<AssemblyName>SlippiTV</AssemblyName>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net9.0-windows10.0.26100.0</TargetFramework>
@@ -33,6 +32,11 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\SlippiTV.Shared\SlippiTV.Shared.csproj" />
 		<ProjectReference Include="..\SlippiTV.Client\SlippiTV.Client.csproj" />
+		<ProjectReference Include="..\..\SlippiTV.Updater\SlippiTV.Updater.vcxproj">
+			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+			<OutputItemType>Content</OutputItemType>
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</ProjectReference>
 		<!--<ProjectReference Include="..\..\..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 			<OutputItemType>Content</OutputItemType>
@@ -70,5 +74,12 @@
 	<PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
 		<HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
 	</PropertyGroup>
+
+	<Target Name="CopyVcxprojOutputToPublish" AfterTargets="Publish">
+		<ItemGroup>
+			<VcxprojOutput Include="..\..\SlippiTV.Updater\bin\$(Configuration)\x64\SlippiTV.Updater.exe" />
+		</ItemGroup>
+		<Copy SourceFiles="@(VcxprojOutput)" DestinationFolder="$(PublishDir)" />
+	</Target>
 
 </Project>
