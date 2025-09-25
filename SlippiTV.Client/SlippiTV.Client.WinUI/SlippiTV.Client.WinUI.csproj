@@ -34,7 +34,6 @@
 		<ProjectReference Include="..\SlippiTV.Client\SlippiTV.Client.csproj" />
 		<ProjectReference Include="..\..\SlippiTV.Updater\SlippiTV.Updater.vcxproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-			<OutputItemType>Content</OutputItemType>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</ProjectReference>
 		<!--<ProjectReference Include="..\..\..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj">

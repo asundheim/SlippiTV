@@ -11,17 +11,17 @@
     <Color x:Key="TextSecondary">#1F1F1F</Color>
     <Color x:Key="TextTertiary">#333333</Color>
     <Color x:Key="TextQuat">#0F0F0F</Color>
-    <Color x:Key="BGPrimary">#f1f1f1</Color>
-    <Color x:Key="BGSecondary">#D2D2D3</Color>
+    <Color x:Key="BGPrimary">#FDFDFD</Color>
+    <Color x:Key="BGSecondary">#F3F3F3</Color>
     <Color x:Key="BGTertiary">#C3C1C2</Color>
-    <Color x:Key="BGButton">#CCCCCC</Color>
+    <Color x:Key="BGButton">#F1F1F1</Color>
     <Color x:Key="BGButtonInactive">#333333</Color>
-    <Color x:Key="IconPrimary">#333333</Color>
+    <Color x:Key="IconPrimary">#A1A1A1</Color>
     <Color x:Key="IconSecondary">#A2A1A2</Color>
-    <Color x:Key="AccentPrimary">#05FF8B</Color>
+    <Color x:Key="AccentPrimary">#18E193</Color>
     <Color x:Key="AccentSecondary">#A2A1A2</Color>
     <Color x:Key="ErrorPrimary">#DB5151</Color>
-    <Color x:Key="NotificationPrimary">#E2A517</Color>
+    <Color x:Key="NotificationPrimary">#FFB805</Color>
     <Color x:Key="NotificationSecondary">#DCDCDC</Color>
     
 </ResourceDictionary>
