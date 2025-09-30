@@ -2,6 +2,7 @@
 using Slippi.NET.Slp.EventStream.Types;
 using Slippi.NET.Stats.Types;
 using Slippi.NET.Types;
+using Slippi.NET.Utils;
 using SlippiTV.Shared;
 using SlippiTV.Shared.Types;
 using System.Collections.Concurrent;
@@ -30,6 +31,33 @@ public class ActiveStream : IDisposable
             IsActive = false;
             ActiveGameInfo = null;
             EndGame();
+
+            if (_playerIndices is not null && _lastGameStart is not null && e.Payload is GameEndPayload payload)
+            {
+                List<PostFrameUpdate> finalPostFrameUpdates = [];
+                if (_lastPlayerPostFrameUpdate is not null)
+                {
+                    finalPostFrameUpdates.Add(_lastPlayerPostFrameUpdate);
+                }
+
+                if (_lastOpponentPostFrameUpdate is not null)
+                {
+                    finalPostFrameUpdates.Add(_lastOpponentPostFrameUpdate);
+                }
+
+                Placement? winner = WinnerCalculator.GetWinners(payload.GameEnd, _lastGameStart, finalPostFrameUpdates).FirstOrDefault();
+                if (winner is not null)
+                {
+                    if (winner.PlayerIndex == _playerIndices.PlayerIndex)
+                    {
+                        _playerGamesWon++;
+                    }
+                    else if (winner.PlayerIndex == _playerIndices.OpponentIndex)
+                    {
+                        _opponentGamesWon++;
+                    }
+                }
+            }
         }
         else if (e.Command == Command.GAME_START)
         {
@@ -52,26 +80,38 @@ public class ActiveStream : IDisposable
                             OpponentIndex = i ^ 1
                         };
 
+                        if (connectCode != _playerConnectCode || opponentInfo.ConnectCode != _opponentConnectCode)
+                        {
+                            _playerGamesWon = 0;
+                            _opponentGamesWon = 0;
+                        }
+
+                        _playerConnectCode = connectCode;
+                        _opponentConnectCode = opponentInfo.ConnectCode;
                         ActiveGameInfo = new ActiveGameInfo()
                         {
                             GameNumber = (int)(payload.GameStart.MatchInfo?.GameNumber ?? 1),
                             Stage = payload.GameStart.Stage!.Value,
                             GameMode = payload.GameStart.GameMode!.Value,
-                            PlayerConnectCode = connectCode ?? string.Empty,
+                            PlayerConnectCode = _playerConnectCode ?? string.Empty,
                             PlayerDisplayName = playerInfo.DisplayName ?? string.Empty,
                             PlayerCharacter = playerInfo.Character!.Value,
                             PlayerCharacterColor = playerInfo.CharacterColor!.Value,
-                            PlayerStocksLeft = 4,
-                            OpponentConnectCode = opponentInfo.ConnectCode ?? string.Empty,
+                            PlayerStocksLeft = (byte)(playerInfo.StartStocks ?? 4),
+                            OpponentConnectCode = _opponentConnectCode ?? string.Empty,
                             OpponentDisplayName = opponentInfo.DisplayName ?? string.Empty,
                             OpponentCharacter = opponentInfo.Character!.Value,
                             OpponentCharacterColor = opponentInfo.CharacterColor!.Value,
-                            OpponentStocksLeft = 4
+                            OpponentStocksLeft = (byte)(opponentInfo.StartStocks ?? 4),
+                            PlayerGamesWon = _playerGamesWon,
+                            OpponentGamesWon = _opponentGamesWon
                         };
 
                         break;
                     }
                 }
+
+                _lastGameStart = payload.GameStart;
             }
         }
         else if (e.Command == Command.POST_FRAME_UPDATE)
@@ -83,10 +123,12 @@ public class ActiveStream : IDisposable
                     if (payload.PostFrameUpdate.PlayerIndex == _playerIndices.PlayerIndex)
                     {
                         ActiveGameInfo.PlayerStocksLeft = payload.PostFrameUpdate.StocksRemaining!.Value;
+                        _lastPlayerPostFrameUpdate = payload.PostFrameUpdate;
                     }
                     else if (payload.PostFrameUpdate.PlayerIndex == _playerIndices.OpponentIndex)
                     {
                         ActiveGameInfo.OpponentStocksLeft = payload.PostFrameUpdate.StocksRemaining!.Value;
+                        _lastOpponentPostFrameUpdate = payload.PostFrameUpdate;
                     }
                 }
             }
@@ -111,6 +153,14 @@ public class ActiveStream : IDisposable
 
     private readonly Lock _currentGameDataLock = new Lock();
     private List<byte[]> _currentGameData = [];
+
+    private string? _playerConnectCode;
+    private string? _opponentConnectCode;
+    private int _playerGamesWon = 0;
+    private int _opponentGamesWon = 0;
+    private GameStart? _lastGameStart;
+    private PostFrameUpdate? _lastPlayerPostFrameUpdate;
+    private PostFrameUpdate? _lastOpponentPostFrameUpdate;
 
     public BlockingCollection<byte[]> GetDataStream()
     {

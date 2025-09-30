@@ -12,6 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using SlippiTV.Shared;
+using System.ComponentModel;
 
 namespace SlippiTV.Client.WinUI;
 
@@ -50,9 +51,7 @@ public partial class Program
         // Unless someone puts our binary into System32 this should be an adequate workaround.
         if (Environment.CurrentDirectory != Environment.GetFolderPath(Environment.SpecialFolder.System))
         {
-#if !DEBUG // ifdefd out so its easier to run a release copy and a debug copy side by side
-            UpdateLaunchOnStartup();
-#endif
+            TryUpdateLaunchOnStartup(SettingsManager.Instance.Settings.LaunchOnStartup);
         }
         else
         {
@@ -69,6 +68,7 @@ public partial class Program
         else
         {
             keyInstance.Activated += OnActivated;
+            SettingsManager.Instance.Settings.PropertyChanged += OnSettingsChanged;
 
             WinUIApplication.Start((p) =>
             {
@@ -82,16 +82,28 @@ public partial class Program
         return 0;
     }
 
-    private static void UpdateLaunchOnStartup()
+    private static void TryUpdateLaunchOnStartup(bool launchOnStartup)
     {
-        var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", writable: true);
-        if (runKey is not null)
+        try
         {
-            runKey.DeleteValue("SlippiTV", throwOnMissingValue: false);
-            if (SettingsManager.Instance.Settings.LaunchOnStartup)
+            var runKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run", writable: true);
+            if (runKey is not null)
             {
-                runKey.SetValue("SlippiTV", Environment.ProcessPath!, RegistryValueKind.String);
+                runKey.DeleteValue("SlippiTV", throwOnMissingValue: false);
+                if (launchOnStartup)
+                {
+                    runKey.SetValue("SlippiTV", Environment.ProcessPath!, RegistryValueKind.String);
+                }
             }
+        }
+        catch { }
+    }
+
+    private static void OnSettingsChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(SettingsManager.Settings.LaunchOnStartup))
+        {
+            TryUpdateLaunchOnStartup(SettingsManager.Instance.Settings.LaunchOnStartup);
         }
     }
 
