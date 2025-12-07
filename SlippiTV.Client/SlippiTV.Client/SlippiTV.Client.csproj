@@ -38,7 +38,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.183" />
-		<!--<PackageReference Include="Slippi.NET" Version="0.4.2" />-->
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,7 +52,7 @@
 		-->
 	  <!--<ProjectReference Include="..\..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
 	  
-	  <PackageReference Include="Slippi.NET" Version="0.7.1" />
+	  <PackageReference Include="Slippi.NET" Version="0.8.0" />
 	  <ProjectReference Include="..\..\SlippiTV.Shared\SlippiTV.Shared.csproj" />
 	</ItemGroup>
 

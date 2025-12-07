@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
 	<LangVersion>13.0</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.23.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-	<PackageReference Include="Slippi.NET" Version="0.7.1" />
+	<PackageReference Include="Slippi.NET" Version="0.8.0" />
 	<!--<ProjectReference Include="..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
   </ItemGroup>
 

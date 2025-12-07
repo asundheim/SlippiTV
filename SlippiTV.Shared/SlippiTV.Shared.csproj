@@ -9,7 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-	<PackageReference Include="Slippi.NET" Version="0.7.1" />
+	<PackageReference Include="Slippi.NET" Version="0.8.0" />
   </ItemGroup>
 
 </Project>
