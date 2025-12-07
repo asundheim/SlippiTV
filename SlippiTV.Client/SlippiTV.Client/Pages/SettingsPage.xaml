@@ -37,6 +37,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -380,7 +381,7 @@
                         <VisualStateGroup x:Name="CommonStates">
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
-                                    <Setter Property="Color" Value="{DynamicResource BGButton}"/>
+                                    <Setter Property="Color" Value="{DynamicResource IconSecondary}"/>
                                 </VisualState.Setters>
                             </VisualState>
                         </VisualStateGroup>
@@ -389,6 +390,36 @@
             </CheckBox>
         </Grid>
 
-        <views:BottomBar Grid.Row="6" BindingContext="{Binding ShellViewModel}" HeightRequest="20" VerticalOptions="End"/>
+        <Grid Grid.Row="6" VerticalOptions="End" Margin="0,6,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label VerticalTextAlignment="Center" LineBreakMode="CharacterWrap" Grid.Column="0">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Enable menu events (experimental)" FontAttributes="Bold" FontSize="20"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+
+            <CheckBox Grid.Column="2" Margin="0" MinimumWidthRequest="0" HorizontalOptions="End" IsChecked="{Binding Settings.EnableMenuEvents, Mode=TwoWay}">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter Property="Color" Value="{DynamicResource IconSecondary}"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+            </CheckBox>
+        </Grid>
+
+        <views:BottomBar Grid.Row="7" BindingContext="{Binding ShellViewModel}" HeightRequest="20" VerticalOptions="End"/>
     </Grid>
 </ContentPage>

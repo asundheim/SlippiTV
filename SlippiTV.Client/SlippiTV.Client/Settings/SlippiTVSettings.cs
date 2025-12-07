@@ -131,6 +131,20 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
         }
     } = true;
 
+    public bool EnableMenuEvents
+    {
+        get; 
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged();
+                SaveSettings();
+            }
+        }
+    } = false;
+
     private void SaveSettings()
     {
         SettingsManager.Instance?.SaveSettings();

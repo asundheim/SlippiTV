@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using SlippiTV.Shared;
 using System.ComponentModel;
+using System.IO;
+using System.Collections.Generic;
 
 namespace SlippiTV.Client.WinUI;
 
@@ -99,11 +101,139 @@ public partial class Program
         catch { }
     }
 
+    private static void TryToggleMenuEvents(bool enableMenuEvents)
+    {
+        try
+        {
+            if (Directory.Exists(SettingsManager.Instance.Settings.SlippiLauncherFolder))
+            {
+                string geckoPath = Path.Join(SettingsManager.Instance.Settings.SlippiLauncherFolder, "netplay", "User", "GameSettings", "GALE01.ini");  
+                if (File.Exists(geckoPath))
+                {
+                    List<string> geckoLines = File.ReadAllLines(geckoPath).ToList();
+                    const string menuEventKey = "$Optional: Extract Menu Info";
+                    bool menuEventsDefined = false;
+                    int geckoStart = -1;
+                    int geckoEnd = -1;
+
+                    for (int i = 0; i < geckoLines.Count; i++)
+                    {
+                        if (geckoLines[i] == "[Gecko]")
+                        {
+                            geckoStart = i;
+                            int geckoExtent = 0;
+                            foreach (string line in IterateBlock([..geckoLines.Skip(i)]))
+                            {
+                                geckoExtent++;
+                                if (line.Contains(menuEventKey))
+                                {
+                                    menuEventsDefined = true;
+                                }
+                            }
+
+                            geckoEnd = geckoStart + geckoExtent;
+                        }
+                    }
+
+                    if (!menuEventsDefined && geckoEnd != -1)
+                    {
+                        geckoLines.InsertRange(geckoEnd, Settings.GeckoCodes.MenuCode.Split(Environment.NewLine));
+                    }
+
+                    int geckoEnabledStart = -1;
+                    int geckoEnabledExtent = 0;
+                    int geckoEnabledKeyLine = -1;
+                    for (int i = 0; i < geckoLines.Count; i++)
+                    {
+                        if (geckoLines[i] == "[Gecko_Enabled]")
+                        {
+                            geckoEnabledStart = i;
+                            foreach (string line in IterateBlock([..geckoLines.Skip(i)]))
+                            {
+                                geckoEnabledExtent++;
+                                if (line.Contains(menuEventKey))
+                                {
+                                    geckoEnabledKeyLine = geckoEnabledStart + geckoEnabledExtent;
+                                    break;
+                                }
+                            }
+
+                            if (geckoEnabledKeyLine != -1 && !enableMenuEvents)
+                            {
+                                geckoLines.RemoveAt(geckoEnabledKeyLine);
+                            }
+                            else if (geckoEnabledKeyLine == -1 && enableMenuEvents)
+                            {
+                                geckoLines.Insert(geckoEnabledStart + 1, menuEventKey);
+                            }
+                        }
+                    }
+
+                    int geckoDisabledStart = -1;
+                    int geckoDisabledExtent = 0;
+                    int geckoDisabledKeyLine = -1;
+                    for (int i = 0; i < geckoLines.Count; i++)
+                    {
+                        if (geckoLines[i] == "[Gecko_Disabled]")
+                        {
+                            geckoDisabledStart = i;
+                            foreach (string line in IterateBlock([..geckoLines.Skip(i)]))
+                            {
+                                geckoDisabledExtent++;
+                                if (line.Contains(menuEventKey))
+                                {
+                                    geckoDisabledKeyLine = geckoDisabledStart + geckoDisabledExtent; 
+                                    break;
+                                }
+                            }
+
+                            if (geckoDisabledKeyLine != -1 && enableMenuEvents)
+                            {
+                                geckoLines.RemoveAt(geckoDisabledKeyLine);
+                            }
+                            else if (geckoDisabledKeyLine == -1 && !enableMenuEvents)
+                            {
+                                geckoLines.Insert(geckoDisabledStart + 1, menuEventKey);
+                            }
+                        }
+                    }
+
+                    File.WriteAllLines(geckoPath, geckoLines);
+                }
+            }
+        }
+        catch { }
+
+        static IEnumerable<string> IterateBlock(List<string> blockLines)
+        {
+            if (blockLines.Count == 0 || !blockLines[0].StartsWith('['))
+            {
+                yield break;
+            }
+
+            foreach (string line in blockLines.Skip(1))
+            {
+                if (line.StartsWith('['))
+                {
+                    yield break;
+                }
+
+                yield return line;
+            }
+
+            yield break;
+        }
+    }
+
     private static void OnSettingsChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(SettingsManager.Settings.LaunchOnStartup))
         {
             TryUpdateLaunchOnStartup(SettingsManager.Instance.Settings.LaunchOnStartup);
+        }
+        else if (e.PropertyName == nameof(SettingsManager.Settings.EnableMenuEvents))
+        {
+            TryToggleMenuEvents(SettingsManager.Instance.Settings.EnableMenuEvents);
         }
     }
 
