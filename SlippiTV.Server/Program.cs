@@ -24,6 +24,7 @@ public class Program
 
         app.UseHttpLogging();
         app.UseWebSockets();
+        app.UseCors(cors => cors.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         
         //app.UseHttpsRedirection();
         //app.UseAuthorization();
