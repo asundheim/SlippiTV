@@ -31,4 +31,6 @@ public class ActiveGameInfo
 
     public required Stage Stage { get; set; }
     public required GameMode GameMode { get; set; }
+    public required int PlayerGamesWon { get; set; }
+    public required int OpponentGamesWon { get; set; }
 }

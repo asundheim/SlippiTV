@@ -8,14 +8,17 @@ namespace SlippiTV.Server.Controllers;
 [ApiController]
 public class StatusController : ControllerBase
 {
-    public StatusController()
+    private readonly StreamManager _streamManager;
+
+    public StatusController(StreamManager streamManager)
     {
+        _streamManager = streamManager;
     }
 
     [HttpGet("status/activity/{user}")]
     public IActionResult GetUserStatusInfo_Legacy(string user)
     {
-        ActiveStream? stream = StreamManager.GetStreamForUser(user);
+        ActiveStream? stream = _streamManager.GetStreamForUser(user);
         if (stream is not null)
         {
             return stream.IsActive ? Ok() : NoContent();
@@ -29,7 +32,7 @@ public class StatusController : ControllerBase
     [HttpGet("status/activity/{user}/all")]
     public async Task GetUserStatusInfo(string user)
     {
-        ActiveStream? stream = StreamManager.GetStreamForUser(user);
+        ActiveStream? stream = _streamManager.GetStreamForUser(user);
         if (stream is not null)
         {
             UserStatusInfo statusInfo = new UserStatusInfo();

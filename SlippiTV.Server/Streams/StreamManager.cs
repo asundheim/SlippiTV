@@ -2,11 +2,11 @@
 
 namespace SlippiTV.Server.Streams;
 
-public static class StreamManager
+public class StreamManager
 {
-    private static readonly ConcurrentDictionary<string, ActiveStream> _streams = new ConcurrentDictionary<string, ActiveStream>();
+    private readonly ConcurrentDictionary<string, ActiveStream> _streams = new ConcurrentDictionary<string, ActiveStream>();
 
-    public static ActiveStream CreateOrUpdateStream(string user)
+    public ActiveStream CreateOrUpdateStream(string user)
     {
         ActiveStream activeStream = new ActiveStream(user);
         _streams.AddOrUpdate(user, activeStream, (_, old) =>
@@ -18,7 +18,7 @@ public static class StreamManager
         return activeStream;
     }
 
-    public static bool EndStream(string user)
+    public bool EndStream(string user)
     {
         var activeStream = GetStreamForUser(user);
         if (activeStream is not null)
@@ -30,7 +30,7 @@ public static class StreamManager
         return false;
     }
 
-    public static ActiveStream? GetStreamForUser(string user)
+    public ActiveStream? GetStreamForUser(string user)
     {
         if (_streams.TryGetValue(user, out ActiveStream? stream))
         {

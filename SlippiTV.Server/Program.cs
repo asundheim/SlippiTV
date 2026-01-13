@@ -1,3 +1,5 @@
+using SlippiTV.Server.Streams;
+
 namespace SlippiTV.Server;
 
 public class Program
@@ -13,6 +15,8 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddApplicationInsightsTelemetry();
+        builder.Services.AddSingleton<StreamManager, StreamManager>();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -30,6 +34,13 @@ public class Program
         //app.UseAuthorization();
 
         app.MapControllers();
+
+        // Separate thread for hosted streams
+        _ = Task.Run(async () =>
+        {
+            HostedStreams hostedStreams = new HostedStreams(app.Services);
+            await hostedStreams.BeginHostingAsync();
+        });
 
         app.Run();
     }

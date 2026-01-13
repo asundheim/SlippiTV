@@ -38,22 +38,21 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.183" />
-		<!--<PackageReference Include="Slippi.NET" Version="0.4.2" />-->
 	</ItemGroup>
 
 	<ItemGroup>
-		<!--
-		<ProjectReference Include="..\..\..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj">
+
+		<!--<ProjectReference Include="..\..\..\Slippi.NET\src\DolphinENet\DolphinENet.vcxproj">
 			<ReferenceOutputAssembly>false</ReferenceOutputAssembly>
 			<OutputItemType>Content</OutputItemType>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 			<Pack>true</Pack>
 			<PackagePath>runtimes/win-x64/native</PackagePath>
 		</ProjectReference>
-		-->
-	  <!--<ProjectReference Include="..\..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
+		
+	  <ProjectReference Include="..\..\..\Slippi.NET\src\Slippi.NET\Slippi.NET.csproj" />-->
 	  
-	  <PackageReference Include="Slippi.NET" Version="0.7.1" />
+	  <PackageReference Include="Slippi.NET" Version="0.9.0" />
 	  <ProjectReference Include="..\..\SlippiTV.Shared\SlippiTV.Shared.csproj" />
 	</ItemGroup>
 

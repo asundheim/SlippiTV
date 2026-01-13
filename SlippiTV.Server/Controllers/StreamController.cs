@@ -8,10 +8,12 @@ namespace SlippiTV.Server.Controllers;
 public class StreamController : ControllerBase
 {
     private readonly CancellationToken _shutdown;
+    private readonly StreamManager _streamManager;
 
-    public StreamController(IHostApplicationLifetime lifetime)
+    public StreamController(IHostApplicationLifetime lifetime, StreamManager streamManager)
     {
         _shutdown = lifetime.ApplicationStopping;
+        _streamManager = streamManager;
     }
 
     [HttpGet("stream/{user}")]
@@ -21,7 +23,7 @@ public class StreamController : ControllerBase
         {
             try
             {
-                ActiveStream stream = StreamManager.CreateOrUpdateStream(user);
+                ActiveStream stream = _streamManager.CreateOrUpdateStream(user);
 
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
                 await SocketUtils.HandleSocket(webSocket, x => stream.WriteData(x), null, _shutdown);
@@ -29,7 +31,7 @@ public class StreamController : ControllerBase
             catch { }
             finally
             {
-                StreamManager.EndStream(user);
+                _streamManager.EndStream(user);
             }
         }
         else
@@ -43,7 +45,7 @@ public class StreamController : ControllerBase
     {
         if (HttpContext.WebSockets.IsWebSocketRequest)
         {
-            ActiveStream? stream = StreamManager.GetStreamForUser(user);
+            ActiveStream? stream = _streamManager.GetStreamForUser(user);
             if (stream != null)
             {
                 try
