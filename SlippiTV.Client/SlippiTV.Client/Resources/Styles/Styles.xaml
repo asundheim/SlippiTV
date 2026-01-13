@@ -48,6 +48,10 @@
         </Setter>
     </Style>
 
+    <Style TargetType="CheckBox">
+        <Setter Property="local:CursorProperties.Cursor" Value="Hand"/>
+    </Style>
+
     <Style TargetType="Entry">
         <Setter Property="TextColor" Value="{DynamicResource TextPrimary}" />
         <Setter Property="BackgroundColor" Value="Transparent" />

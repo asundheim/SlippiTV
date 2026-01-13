@@ -126,6 +126,7 @@ public class SlippiTVSettings : BaseNotifyPropertyChanged
             {
                 field = value;
                 OnPropertyChanged();
+                SaveSettings();
             }
         }
     } = true;
