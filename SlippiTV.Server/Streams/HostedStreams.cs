@@ -39,46 +39,8 @@ public class HostedStreams
                 {
                     try
                     {
-                        var contextFilePath = Path.Join(Path.GetDirectoryName(slpFilePath), "context.json");
-                        if (File.Exists(contextFilePath))
-                        {
-                            var contextShape = new
-                            {
-                                scores = new[]
-                                {
-                                    new
-                                    {
-                                        slots = new[]
-                                        {
-                                            new
-                                            {
-                                                displayNames = new string[0],
-                                                ports = new int[0],
-                                            }
-                                        }
-                                    }
-                                }
-                            };
-
-                            var context = JsonConvert.DeserializeAnonymousType(File.ReadAllText(contextFilePath), contextShape);
-                            if (context is not null)
-                            {
-                                stream.NameOverrides = [];
-                                foreach (var slot in context.scores[0].slots)
-                                {
-                                    stream.NameOverrides[slot.ports[0]] = slot.displayNames[0];
-                                }
-                            }
-                            else
-                            {
-                                stream.NameOverrides = null;
-                            }
-                        }
-                        else
-                        {
-                            stream.NameOverrides = null;
-                        }
-
+                        SlippiGame game = new SlippiGame(slpFilePath);
+                        int startMs = Environment.TickCount;
                         using var readStream = new FileStream(slpFilePath, FileMode.Open, FileAccess.Read);
 
                         int frameStarts = 0;
@@ -98,7 +60,13 @@ public class HostedStreams
 
                             if (payload.Command == Slippi.NET.Types.Command.GAME_END)
                             {
-                                Thread.Sleep(TimeSpan.FromSeconds(15));
+                                int totalFrames = game.GetFrames().Count;
+                                int elapsedTime = Environment.TickCount - startMs;
+                                double waitTime = ((1000.0 / 60.0) * totalFrames) + 10_000 - elapsedTime;
+                                if (waitTime > 0)
+                                {
+                                    Thread.Sleep((int)Math.Round(waitTime));
+                                }
                             }
 
                             stream.WriteData(payload.Payload);
