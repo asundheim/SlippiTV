@@ -66,7 +66,13 @@ public class ActiveStream : IDisposable
             if (e.Payload is GameStartPayload payload)
             {
                 // try to put ourselves as Player, unless neither player is Player
-                List<Player> players = payload.GameStart.Players.Where(p => p.Type == 0).ToList();
+                List<Player> players = payload.GameStart.Players.Where(p => p.Type == 0 || p.Type == 1).OrderByDescending(p => p.Type).ToList();
+                if (players.Count != 2)
+                {
+                    IsActive = false;
+                    return;
+                }
+
                 for (int i = 0; i < 2; i++)
                 {
                     Player playerInfo = players[i];

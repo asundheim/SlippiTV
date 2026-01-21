@@ -62,7 +62,7 @@ public class HostedStreams
                             {
                                 int totalFrames = game.GetFrames().Count;
                                 int elapsedTime = Environment.TickCount - startMs;
-                                double waitTime = ((1000.0 / 60.0) * totalFrames) + 10_000 - elapsedTime;
+                                double waitTime = ((1000.0 / 60.0) * totalFrames) + 500 - elapsedTime;
                                 if (waitTime > 0)
                                 {
                                     Thread.Sleep((int)Math.Round(waitTime));
